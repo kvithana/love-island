@@ -2,6 +2,7 @@ const Edge = require('./Edge')
 const Tombola = require('./math/tombola')
 const _ = require('underscore')
 const PIXI = require('pixi.js')
+import { ease } from 'pixi-ease'
 
 let DECK = new Tombola().deck( [0, 45, 90, 135, 180, 225, 270, 315] )
 
@@ -13,10 +14,10 @@ class Node {
     constructor(stage, options) {
         this.stage = stage
         this.edgeSet = new Set();
-        
+
         let defaults = {
             isHub: false,
-            posX: 0, 
+            posX: 0,
             posY: 0
         }
         options = setDefaults(options, defaults)
@@ -27,11 +28,13 @@ class Node {
         let circle = new PIXI.Graphics()
         circle.lineStyle(0);
         circle.beginFill(0xDE3249, 1);
-        circle.drawCircle(0, 0, 20);
+        circle.drawCircle(0, 0, 5);
         circle.endFill();
         console.log(this.position)
         circle.position.set(this.position.posX, this.position.posY)
         stage.addChild(circle)
+        // Animate Circle
+        ease.add(circle, { scale: 4 }, { duration: 1000, reverse: false })
     }
 
     // get a set of connected edges to this node
