@@ -83,8 +83,7 @@ window.onload = function()
     _application.view.style.position = 'fixed'
     _application.view.style.width = '100vw'
     _application.view.style.height = '100vh'
-    const greenGroup = new PIXI.display.Group(0, true);
-
+    
     viewport()
 
     window.addEventListener('resize', resize)
