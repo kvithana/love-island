@@ -118,7 +118,7 @@ window.onload = function()
 
     window.setInterval(function(){
         m.createRandomNode()
-      }, 100)
+      }, 1000)
 
     // let a = new Node(_viewport, {posX: 100, posY: -100})
     // a.createRandomEdge({ distance: 100 })
