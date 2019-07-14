@@ -32,7 +32,7 @@ class Node {
         circle.endFill();
         console.log(this.position)
         circle.position.set(this.position.posX, this.position.posY)
-        stage.addChild(circle)
+        stage.addChildAt(circle, 1)
         // Animate Circle
         ease.add(circle, { scale: 4 }, { duration: 1000, reverse: false })
     }

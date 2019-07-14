@@ -32,7 +32,7 @@ class Edge {
         rectangle.position.set(positions[0].posX, positions[0].posY)
         rectangle.endFill();
         rectangle.angle = this.angle
-        stage.addChild(rectangle)
+        stage.addChildAt(rectangle, 0)
         // Animate Rectangle
         ease.add(rectangle, { width: this.length }, { duration: 1000, reverse: false })
         }
