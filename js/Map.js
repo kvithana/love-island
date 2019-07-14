@@ -22,7 +22,7 @@ class Map {
     }
 
     generateNorthNode = () => {
-        let options = { distance: new Tombola().range(80, 150), direction: 270 }
+        let options = { distance: new Tombola().range(60, 130), direction: 270 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
@@ -30,7 +30,7 @@ class Map {
     }
 
     generateNorthEastNode = () => {
-        let options = { distance: new Tombola().range(80, 150), direction: 315 }
+        let options = { distance: new Tombola().range(60, 130), direction: 315 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
@@ -38,7 +38,7 @@ class Map {
     }
 
     generateEastNode = () => {
-        let options = { distance: new Tombola().range(80, 150), direction: 360}
+        let options = { distance: new Tombola().range(60, 130), direction: 360}
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
@@ -46,7 +46,7 @@ class Map {
     }
 
     generateSouthEastNode = () => {
-        let options = { distance: new Tombola().range(80, 150), direction: 45 }
+        let options = { distance: new Tombola().range(60, 130), direction: 45 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
@@ -54,7 +54,7 @@ class Map {
     }
 
     generateSouthNode = () => {
-        let options = { distance: new Tombola().range(80, 150), direction: 90 }
+        let options = { distance: new Tombola().range(60, 130), direction: 90 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
@@ -62,7 +62,7 @@ class Map {
     }
 
     generateSouthWestNode = () => {
-        let options = { distance: new Tombola().range(80, 150), direction: 135 }
+        let options = { distance: new Tombola().range(60, 130), direction: 135 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
@@ -70,7 +70,7 @@ class Map {
     }
 
     generateWestNode = () => {
-        let options = { distance: new Tombola().range(80, 150), direction: 180 }
+        let options = { distance: new Tombola().range(60, 130), direction: 180 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
@@ -78,7 +78,7 @@ class Map {
     }
 
     generateNorthWestNode = () => {
-        let options = { distance: new Tombola().range(80, 150), direction: 225 }
+        let options = { distance: new Tombola().range(60, 130), direction: 225 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)

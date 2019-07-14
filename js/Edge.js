@@ -26,8 +26,8 @@ class Edge {
 
         // Draw a rectangle
         let rectangle = new PIXI.Graphics()
-        rectangle.beginFill(0x2c3e50); // Dark blue gray 'ish
-        rectangle.drawRect(0, 0, 1, 20); // drawRect(x, y, width, height)
+        rectangle.beginFill(0xDDDDDD); // Dark blue gray 'ish
+        rectangle.drawRect(0, 0, 1, 10); // drawRect(x, y, width, height)
         console.log(positions)
         rectangle.position.set(positions[0].posX, positions[0].posY)
         rectangle.endFill();
