@@ -1,6 +1,7 @@
 const Edge = require('./Edge')
 const Tombola = require('./math/tombola')
 const _ = require('underscore')
+const PIXI = require('pixi.js')
 
 let DECK = new Tombola().deck( [0, 45, 90, 135, 180, 225, 270, 315] )
 
@@ -9,22 +10,28 @@ function setDefaults(options, defaults){
 }
 
 class Node {
-    constructor(options) {
+    constructor(stage, options) {
+        this.stage = stage
         this.edgeSet = new Set();
         
         let defaults = {
             isHub: false,
-            connectingEdge: false,
             posX: 0, 
             posY: 0
         }
         options = setDefaults(options, defaults)
-
         this.position = {posX: options.posX, posY: options.posY}
         this.isHub = options.isHub
-        if (options.connectingEdge) {
-            this.edgeSet.add(options.connectingEdge)
-        }
+
+        // Draw Circle
+        let circle = new PIXI.Graphics()
+        circle.lineStyle(0);
+        circle.beginFill(0xDE3249, 1);
+        circle.drawCircle(0, 0, 20);
+        circle.endFill();
+        console.log(this.position)
+        circle.position.set(this.position.posX, this.position.posY)
+        stage.addChild(circle)
     }
 
     // get a set of connected edges to this node
@@ -39,18 +46,24 @@ class Node {
     createRandomEdge = (options) => {
         let validAngle = false
         let currentAngles = this.getEdgeAngles()
+        console.log(currentAngles)
+        let angle = null
         while (!validAngle) {
-            let angle = DECK.look()
+            angle = DECK.look()
             // TO DO: check for other nodes which are close / other edge intersections
             if (!currentAngles.has(angle))
             validAngle = true
         }
-
-        let newPosX = options.distance * cos(angle * Math.PI / 180)
-        let newPosY = options.distance * sin(angle * Math.PI / 180)
-        let newNode = new Node({ posX: newPosX, posY: newPosY })
-        let newEdge = new Edge({ distance: options.distance, connectingNodes: [this, newNode]})
+        let newPosX = this.position.posX + Math.round(options.distance * Math.cos(angle * Math.PI / 180))
+        let newPosY = this.position.posY + Math.round(options.distance * Math.sin(angle * Math.PI / 180))
+        let newNode = new Node(this.stage, { posX: newPosX, posY: newPosY })
+        let newEdge = new Edge(this.stage, { connectingNodes: [this, newNode], angle: angle})
+        newNode.addEdge(newEdge)
+        // console.log(angle)
+        // console.log(newPosX, newPosY)
+        // console.log(newEdge.length)
         this.edgeSet.add(newEdge)
+        return { newNode: newNode, newEdge: newEdge}
     }
 
     getEdgeAngles = () => {

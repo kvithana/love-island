@@ -12,6 +12,7 @@
     "babel-cli": "^6.26.0",
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
+    "dom-ease": "^0.9.3",
     "pixi-ease": "^2.3.0",
     "pixi-viewport": "^4.0.1",
     "pixi.js": "^5.0.4",

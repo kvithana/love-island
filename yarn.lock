@@ -2155,6 +2155,14 @@ dns-txt@^2.0.2:
   dependencies:
     buffer-indexof "^1.0.0"
 
+dom-ease@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/dom-ease/-/dom-ease-0.9.3.tgz#016773901a963577ec53b63289974f9b9e84d983"
+  integrity sha512-NtmSdoIO1849Nj7wKSbip2u91GMB2Lvwx8UULY+YCC2lknUlvz9wG2gIcuPnovbhAXpHmg/zaH1Z2ZzLJBMIMQ==
+  dependencies:
+    eventemitter3 "^3.1.0"
+    penner "^0.1.3"
+
 domain-browser@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
