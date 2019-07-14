@@ -1,11 +1,15 @@
 const Node = require('./Node.js')
 const Edge = require('./Edge.js')
 const Tombola = require('./math/tombola')
+import Bot from './Bot.js';
 
 class Map {
     constructor (stage) {
         this.nodes = new Set()
         this.nodeDeck = new Tombola().deck()
+
+        console.log(`nodes: ${this.nodes}`)
+        console.log(this.nodes)
 
         let a = new Node(stage)
         this.nodes.add(a)
@@ -83,6 +87,24 @@ class Map {
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
         this.nodes.add(result.newNode)
+    }
+
+    initPopulation = (_viewport, populationSize) => {
+        let nodesArray = Array.from(this.nodes)
+
+        for (var i = 0; i < populationSize; i++) {
+            let randomIndex = Math.floor(Math.random() * nodesArray.length)
+            console.log('creating person')
+            console.log('---')
+            console.log(nodesArray[randomIndex])
+            var bot = new Bot(_viewport, { 
+                posX: nodesArray[randomIndex].position.posX, 
+                posY: nodesArray[randomIndex].position.posY
+            });
+            console.log(`Bot posX: ${bot.posX} and posY: ${bot.posY}`)
+            console.log(`Node posX: ${nodesArray[randomIndex].position.posX} and posY: ${nodesArray[randomIndex].position.posY}`)
+
+        }
     }
 }
 

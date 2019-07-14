@@ -41,8 +41,8 @@ class Bot {
         this.circle = new PIXI.Graphics()
         this.circle.lineStyle(0);
         this.circle.beginFill(this.identity, 1);
-        this.circle.lineStyle(10, this.targetIdentity);  //(thickness, color)
-        this.circle.drawCircle(this.posX, this.posY, 20);
+        this.circle.lineStyle(3, this.targetIdentity);  //(thickness, color)
+        this.circle.drawCircle(this.posX, this.posY, 10);
         this.circle.endFill();
         this.circle.position.set(this.posX, this.posY)
         stage.addChild(this.circle)

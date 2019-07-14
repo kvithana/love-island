@@ -113,9 +113,11 @@ window.onload = function()
     m.generateEastNode()
     m.generateEastNode()
 
+    m.initPopulation(_viewport, 10)
+
     window.setInterval(function(){
         m.createRandomNode()
-      }, 10000)
+      }, 1000)
 
     // let a = new Node(_viewport, {posX: 100, posY: -100})
     // a.createRandomEdge({ distance: 100 })
@@ -123,8 +125,7 @@ window.onload = function()
     // highlight()
 
     const colours = new Colours();
-    var girlBot = new Bot(_viewport,{age: 59,posX:100,posY:100});
-    var boyBot = new Bot(_viewport,{age: 19,posX:-100,posY:-100});
+
 }
 
 
