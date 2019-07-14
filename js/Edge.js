@@ -26,13 +26,13 @@ class Edge {
 
         // Draw a rectangle
         let rectangle = new PIXI.Graphics()
-        rectangle.beginFill(0x2c3e50); // Dark blue gray 'ish
-        rectangle.drawRect(0, 0, 1, 20); // drawRect(x, y, width, height)
+        rectangle.beginFill(0xDDDDDD); // Dark blue gray 'ish
+        rectangle.drawRect(0, 0, 1, 10); // drawRect(x, y, width, height)
         console.log(positions)
         rectangle.position.set(positions[0].posX, positions[0].posY)
         rectangle.endFill();
         rectangle.angle = this.angle
-        stage.addChild(rectangle)
+        stage.addChildAt(rectangle, 0)
         // Animate Rectangle
         ease.add(rectangle, { width: this.length }, { duration: 1000, reverse: false })
         }

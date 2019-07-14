@@ -24,17 +24,17 @@ class Node {
         this.position = {posX: options.posX, posY: options.posY}
         this.isHub = options.isHub
 
-        // Draw Circle
-        let circle = new PIXI.Graphics()
-        circle.lineStyle(0);
-        circle.beginFill(0xDE3249, 1);
-        circle.drawCircle(0, 0, 5);
-        circle.endFill();
+        // Draw Rectangle
+        let rectangle = new PIXI.Graphics()
+        rectangle.lineStyle(0);
+        rectangle.beginFill(0xBBBBBB, 1);
+        rectangle.drawRect(0, 0, 2.5, 2.5);
+        rectangle.endFill();
         console.log(this.position)
-        circle.position.set(this.position.posX, this.position.posY)
-        stage.addChild(circle)
-        // Animate Circle
-        ease.add(circle, { scale: 4 }, { duration: 1000, reverse: false })
+        rectangle.position.set(this.position.posX, this.position.posY)
+        stage.addChildAt(rectangle, 1)
+        // Animate rectangle
+        ease.add(rectangle, { scale: 4 }, { duration: 1000, reverse: false })
     }
 
     // get a set of connected edges to this node
@@ -67,6 +67,17 @@ class Node {
         // console.log(newEdge.length)
         this.edgeSet.add(newEdge)
         return { newNode: newNode, newEdge: newEdge}
+    }
+
+    createEdge = (options) => {
+        let angle = options.direction
+        let newPosX = this.position.posX + Math.round(options.distance * Math.cos(angle * Math.PI / 180))
+        let newPosY = this.position.posY + Math.round(options.distance * Math.sin(angle * Math.PI / 180))
+        let newNode = new Node(this.stage, { posX: newPosX, posY: newPosY })
+        let newEdge = new Edge(this.stage, { connectingNodes: [this, newNode], angle: angle})
+        newNode.addEdge(newEdge)
+        this.edgeSet.add(newEdge)
+        return { newNode: newNode, newEdge: newEdge }
     }
 
     getEdgeAngles = () => {
