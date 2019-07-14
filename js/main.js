@@ -113,7 +113,7 @@ window.onload = function()
     m.generateEastNode()
     m.generateEastNode()
 
-    m.initPopulation(_viewport, 10)
+    m.initPopulation(10)
 
     window.setInterval(function(){
         m.createRandomNode()

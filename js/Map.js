@@ -7,6 +7,7 @@ class Map {
     constructor (stage) {
         this.nodes = new Set()
         this.nodeDeck = new Tombola().deck()
+        this.stage = stage;
 
         console.log(`nodes: ${this.nodes}`)
         console.log(this.nodes)
@@ -89,7 +90,7 @@ class Map {
         this.nodes.add(result.newNode)
     }
 
-    initPopulation = (_viewport, populationSize) => {
+    initPopulation = (populationSize) => {
         let nodesArray = Array.from(this.nodes)
 
         for (var i = 0; i < populationSize; i++) {
@@ -97,7 +98,7 @@ class Map {
             console.log('creating person')
             console.log('---')
             console.log(nodesArray[randomIndex])
-            var bot = new Bot(_viewport, { 
+            var bot = new Bot(this.stage, { 
                 posX: nodesArray[randomIndex].position.posX, 
                 posY: nodesArray[randomIndex].position.posY
             });
