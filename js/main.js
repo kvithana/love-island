@@ -1,12 +1,12 @@
+import Bot from './Bot.js';
+import Colours from './Colours.js';
+import { ease } from 'pixi-ease'
+import DomEase from 'dom-ease'
+
 const PIXI = require('pixi.js')
 const Viewport = require('pixi-viewport').Viewport
 const Node = require('./Node')
 const Map = require('./Map')
-
-import { ease } from 'pixi-ease'
-import DomEase from 'dom-ease'
-
-
 const BORDER = 10
 const WIDTH = 3000
 const HEIGHT = 3000
@@ -30,8 +30,6 @@ function viewport()
         .decelerate()
         .on('clicked', click)
     resize()
-
-    console.log(_viewport.center)
 
     domEase = new DomEase({ duration: FADE_TIME })
     ease.duration = FADE_TIME
@@ -97,10 +95,31 @@ window.onload = function()
 
     window.setInterval(function(){
         m.createRandomNode()
-      }, 1000)
+      }, 10000)
 
     // let a = new Node(_viewport, {posX: 100, posY: -100})
     // a.createRandomEdge({ distance: 100 })
 
     // highlight()
+
+    const colours = new Colours();
+    var girlBot = new Bot(_viewport,{age: 59,posX:100,posY:100});
+    var boyBot = new Bot(_viewport,{age: 19,posX:-100,posY:-100});
 }
+
+
+
+// const colours = new Colours();
+// var girlBot = new Bot(_viewport,{age: 59,posX:10,posY:10});
+// var boyBot = new Bot(_viewport,{age: 19,posX:-10,posY:-10});
+// girlBot.personality = "GP";
+// girlBot.looks = "GL";
+// boyBot.personality = "BP";
+// boyBot.looks = "BL";
+// girlBot.targetPersonality = ["BP"];
+// girlBot.targetLooks = ["BL"];
+// boyBot.targetPersonality = ["GP"];
+// boyBot.targetLooks = ["GL"];
+
+// console.log(girlBot.propose(boyBot));
+// console.log(girlBot.relationship.haveSex());

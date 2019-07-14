@@ -30,11 +30,9 @@ class Relationship {
         }
         if (hurdle > randomNumber){
             //make a baby
-            var genePoolPersonality = [this.spouse1.personality, this.spouse2.personality];
-            var genePoolLooks = [this.spouse1.looks, this.spouse2.looks];
-            var inheritedPersonality = genePoolPersonality[Math.floor(Math.random() * genePoolLooks.length)];
-            var inheritedLooks = genePoolLooks[Math.floor(Math.random() * genePoolLooks.length)];
-            var baby = new Bot({age:0, looks:inheritedLooks, personality:inheritedPersonality});
+            var genePool = [this.spouse1.identity, this.spouse2.identity];
+            var inheritedIdentity = genePool[Math.floor(Math.random() * genePool.length)];
+            var baby = new Bot({age:0, identity:inheritedIdentity});
             this.children.push(baby);
             return baby
         }
