@@ -2,7 +2,6 @@ const Node = require('./Node.js')
 const Edge = require('./Edge.js')
 const Tombola = require('./math/tombola')
 
-
 class Map {
     constructor (stage) {
         this.nodes = new Set()
