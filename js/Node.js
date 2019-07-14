@@ -66,6 +66,17 @@ class Node {
         return { newNode: newNode, newEdge: newEdge}
     }
 
+    createEdge = (options) => {
+        let angle = options.direction
+        let newPosX = this.position.posX + Math.round(options.distance * Math.cos(angle * Math.PI / 180))
+        let newPosY = this.position.posY + Math.round(options.distance * Math.sin(angle * Math.PI / 180))
+        let newNode = new Node(this.stage, { posX: newPosX, posY: newPosY })
+        let newEdge = new Edge(this.stage, { connectingNodes: [this, newNode], angle: angle})
+        newNode.addEdge(newEdge)
+        this.edgeSet.add(newEdge)
+        return { newNode: newNode, newEdge: newEdge }
+    }
+
     getEdgeAngles = () => {
         let angles = new Set()
         this.edgeSet.forEach( edge => {

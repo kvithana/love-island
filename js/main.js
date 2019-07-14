@@ -52,11 +52,11 @@ function border()
 function object()
 {
     _object = _viewport.addChild(new PIXI.Sprite(PIXI.Texture.WHITE))
-    _object.anchor.set(0.5)
-    _object.tint = 0
-    _object.width = _object.height = OBJECT_SIZE
-    _object.position.set(100, 100)
-    ease.add(_object, { rotation: Math.PI * 2 }, { duration: OBJECT_ROTATION_TIME, repeat: true, ease: 'linear' })
+    // _object.anchor.set(0.5)
+    // _object.tint = 0
+    // _object.width = _object.height = OBJECT_SIZE
+    // _object.position.set(100, 100)
+    // ease.add(_object, { rotation: Math.PI * 2 }, { duration: OBJECT_ROTATION_TIME, repeat: true, ease: 'linear' })
 }
 
 function click(data)
@@ -83,6 +83,7 @@ window.onload = function()
     _application.view.style.position = 'fixed'
     _application.view.style.width = '100vw'
     _application.view.style.height = '100vh'
+    const greenGroup = new PIXI.display.Group(0, true);
 
     viewport()
 
@@ -94,6 +95,26 @@ window.onload = function()
 
 
     let m = new Map(_viewport)
+
+    m.generateNorthNode()
+    m.generateEastNode()
+    m.generateSouthNode()
+    m.generateSouthNode()
+    m.generateEastNode()
+    m.generateSouthNode()
+    m.generateWestNode()
+    m.generateWestNode()
+    m.generateWestNode()
+    m.generateWestNode()
+    m.generateNorthNode()
+    m.generateEastNode()
+    m.generateNorthNode()
+    m.generateNorthNode()
+    m.generateWestNode()
+    m.generateNorthNode()
+    m.generateEastNode()
+    m.generateEastNode()
+    m.generateEastNode()
 
     window.setInterval(function(){
         m.createRandomNode()
