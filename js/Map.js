@@ -6,6 +6,7 @@ import Bot from './Bot.js';
 class Map {
     constructor (stage) {
         this.nodes = new Set()
+        this.bots = new Set()
         this.nodeDeck = new Tombola().deck()
         this.stage = stage;
 
@@ -98,10 +99,12 @@ class Map {
             console.log('creating person')
             console.log('---')
             console.log(nodesArray[randomIndex])
-            var bot = new Bot(this.stage, { 
-                posX: nodesArray[randomIndex].position.posX, 
-                posY: nodesArray[randomIndex].position.posY
+            var bot = new Bot(this.stage, {
+                posX: nodesArray[randomIndex].position.posX,
+                posY: nodesArray[randomIndex].position.posY,
+                node: nodesArray[randomIndex]
             });
+            this.bots.add(bot)
             console.log(`Bot posX: ${bot.posX} and posY: ${bot.posY}`)
             console.log(`Node posX: ${nodesArray[randomIndex].position.posX} and posY: ${nodesArray[randomIndex].position.posY}`)
 
