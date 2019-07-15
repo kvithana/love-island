@@ -1,4 +1,5 @@
 import Bot from './Bot.js';
+import Ticker from './Ticker'
 import Colours from './Colours.js';
 import { ease } from 'pixi-ease'
 import DomEase from 'dom-ease'
@@ -115,12 +116,11 @@ window.onload = function()
 
     m.initPopulation(10)
 
+    const ticker = new Ticker(m)
+
     window.setInterval(function(){
         m.createRandomNode()
       }, 1000)
-
-    // let a = new Node(_viewport, {posX: 100, posY: -100})
-    // a.createRandomEdge({ distance: 100 })
 
     // highlight()
 

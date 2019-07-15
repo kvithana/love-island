@@ -24,7 +24,8 @@ class Bot {
             age: 0,
             identity:colours.getRandomColour(),
             posX: 0,
-            posY: 0
+            posY: 0,
+            isBusy: false
         }
         options = setDefaults(options, defaults)
         
@@ -112,6 +113,14 @@ class Bot {
                 otherPartner.circle.destroy();
             }
         }
+    }
+
+    tick() {
+        this.move()
+    }
+
+    move() {
+        
     }
 }
 
