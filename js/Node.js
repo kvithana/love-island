@@ -24,16 +24,29 @@ class Node {
         this.position = {posX: options.posX, posY: options.posY}
         this.isHub = options.isHub
 
-        // Draw Rectangle
-        let rectangle = new PIXI.Graphics()
-        rectangle.lineStyle(0);
-        rectangle.beginFill(0xBBBBBB, 1);
-        rectangle.drawRect(0, 0, 2.5, 2.5);
-        rectangle.endFill();
-        rectangle.position.set(this.position.posX, this.position.posY)
-        stage.addChildAt(rectangle, 1)
-        // Animate rectangle
-        ease.add(rectangle, { scale: 4 }, { duration: 1000, reverse: false })
+        if (this.isHub) {
+            let circle = new PIXI.Graphics()
+            circle.lineStyle(0)
+            circle.beginFill(0xA1A1A1, 1);
+            circle.lineStyle(3, 0xA1A1A1);  //(thickness, color)
+            circle.drawCircle(0, 0, 4);
+            circle.endFill();
+            circle.position.set(this.position.posX, this.position.posY)
+            stage.addChildAt(circle, 1)
+            ease.add(circle, { scale: 4 }, { duration: 1000, reverse: false })
+        } else {
+            // Draw Rectangle
+            let rectangle = new PIXI.Graphics()
+            rectangle.lineStyle(0);
+            rectangle.beginFill(0xBBBBBB, 1);
+            rectangle.drawRect(0, 0, 2.5, 2.5);
+            rectangle.endFill();
+            rectangle.position.set(this.position.posX, this.position.posY)
+            stage.addChildAt(rectangle, 1)
+            // Animate rectangle
+            ease.add(rectangle, { scale: 4 }, { duration: 1000, reverse: false })
+        }
+
     }
 
     // get a set of connected edges to this node
@@ -68,7 +81,12 @@ class Node {
         let angle = options.direction
         let newPosX = this.position.posX + Math.round(options.distance * Math.cos(angle * Math.PI / 180))
         let newPosY = this.position.posY + Math.round(options.distance * Math.sin(angle * Math.PI / 180))
-        let newNode = new Node(this.stage, { posX: newPosX, posY: newPosY })
+        let newNode;
+        if (options.nodeType === 'hub') {
+            newNode = new SocialHub(this.stage, { posX: newPosX, posY: newPosY, isHub: true })
+        } else {
+            newNode = new Node(this.stage, { posX: newPosX, posY: newPosY })
+        }
         let newEdge = new Edge(this.stage, { connectingNodes: [this, newNode], angle: angle})
         newNode.addEdge(newEdge)
         this.edgeSet.add(newEdge)
@@ -100,4 +118,10 @@ class Node {
 
 }
 
-module.exports = Node;
+class SocialHub extends Node {
+    constructor(stage, options) {
+        super(stage, options)
+    }
+}
+
+module.exports = Node, SocialHub;

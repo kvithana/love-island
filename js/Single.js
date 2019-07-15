@@ -1,5 +1,6 @@
 import Couple from './Couple.js';
 import Bot from './Bot.js';
+import BotSet from './State'
 import Colours from './Colours.js';
 const colours = new Colours();
 const _ = require('underscore');
@@ -84,12 +85,13 @@ class Single extends Bot {
         }
         //if they're unlucky, they die (chance increases each year)
         var randomValue = Math.random();
-        if (randomValue < (this.age / 100)){
+        if (randomValue < (this.age / this.invincibility)){
             this.alive = false;
             this.circle.destroy();
+            this.stage.removeChild(this.circle)
+            BotSet.delete(this)
         }
     }
 }
 
-module.exports = Single;
 export default Single;

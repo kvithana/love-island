@@ -99,11 +99,13 @@ window.onload = function()
     m.generateSouthNode()
     m.generateSouthNode()
     m.generateEastNode()
+    m.generateSocialHub()
     m.generateSouthNode()
     m.generateWestNode()
     m.generateWestNode()
     m.generateWestNode()
     m.generateWestNode()
+    m.generateSocialHub()
     m.generateNorthNode()
     m.generateEastNode()
     m.generateNorthNode()
@@ -113,20 +115,20 @@ window.onload = function()
     m.generateEastNode()
     m.generateEastNode()
     m.generateEastNode()
+    m.generateSocialHub()
 
-    //m.initPopulation(10)
+    m.initPopulation(20)
 
     const ticker = new Ticker(m)
 
     window.setInterval(function(){
         m.createRandomNode()
-      }, 1000)
+    }, 1000)
 
     // highlight()
     
     let node = m.source //don't push
     let node2 = Array.from(node.getConnectedNodes())[0];
-    console.log();
 
     var girlBot = new Single(_viewport, node, {age: 59});
     var boyBot = new Single(_viewport, node2, {age: 19});
@@ -143,11 +145,14 @@ window.onload = function()
 
     //var couple = new Couple(_viewport, girlBot,boyBot);
 
-        window.setInterval(function(){
-            if(girlBot.alive){
-                console.log("proposal: " + girlBot.propose(boyBot));
-            }
-        }, 5000)
+    window.setInterval(function(){
+        if(girlBot.alive){
+            console.log("proposal: " + girlBot.propose(boyBot));
+        }
+        if(girlBot.relationship!=null && girlBot.relationship.alive){
+            girlBot.relationship.haveSex();
+        }
+    }, 1000)
   
     
 

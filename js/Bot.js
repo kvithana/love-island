@@ -4,6 +4,7 @@ const _ = require('underscore');
 const PIXI = require('pixi.js')
 import { Ease, ease } from 'pixi-ease'
 
+
 function setDefaults(options, defaults){
     return _.defaults({}, _.clone(options), defaults);
 }
@@ -16,6 +17,8 @@ const milestoneYears = 10;
 class Bot {
     relationship = null; //instantiated with a successful proposal
     alive = true; //changed if they die
+    //called in sub classes getOlder, higher number = less chance of dying year to year
+    invincibility = 1000;
     constructor(stage, node, options) {
         this.stage = stage
         let defaults = {
@@ -43,8 +46,12 @@ class Bot {
     }
 
     tick() {
+      // This calls the getOlder function of Single/Couple
+      //this.getOlder();
       if (!this.isBusy) {
-        this.move()
+        this.move();
+        //TODO - this will call 'act' rather than move
+        this.getOlder();
       }
       this.incrementWaiting()
     }
@@ -72,6 +79,12 @@ class Bot {
         this.wait(1000)
         this.node = nextNode
         // moveBot.on('complete', () => this.isBusy = false)
+    }
+
+    //TODO - this will have all of the allowable actions, logic to pick an action, called by tick
+    act(){
+      var actions = [this.move, this.chill];
+      return;
     }
 }
 

@@ -90,6 +90,14 @@ class Map {
         this.nodes.add(result.newNode)
     }
 
+    generateSocialHub = () => {
+        let options = { distance: new Tombola().range(60, 130), direction: 225, nodeType: 'hub' }
+        let selectedNode = this.nodeDeck.draw()
+        let result = selectedNode.createEdge(options)
+        this.nodeDeck.insert(result.newNode)
+        this.nodes.add(result.newNode)
+    }
+
     initPopulation = (populationSize) => {
         let nodesArray = Array.from(this.nodes)
 

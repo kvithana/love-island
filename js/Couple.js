@@ -6,7 +6,8 @@ const PIXI = require('pixi.js');
 
 
 class Couple extends Bot{
-    children = [];
+    maxChildren = 3;
+    children = new Set();
 
     constructor(stage, spouse1, spouse2) {
         super(stage, spouse1.node,{
@@ -58,12 +59,12 @@ class Couple extends Bot{
         else{
             hurdle = 0.2;
         }
-        if (hurdle > randomNumber){
+        if (hurdle > randomNumber && this.children.size < this.maxChildren){
             //make a baby
             var genePool = [this.spouse1.identity, this.spouse2.identity];
             var inheritedIdentity = genePool[Math.floor(Math.random() * genePool.length)];
-            var baby = new Single({age:0, identity:inheritedIdentity,node:this.spouse1.node});
-            this.children.push(baby);
+            var baby = new Single(this.stage, this.spouse1.node, {age:0, identity:inheritedIdentity});
+            this.children.add(baby);
             BotSet.add(baby);
             return baby;
         }
@@ -73,16 +74,14 @@ class Couple extends Bot{
     }
 
     getOlder(){
-        this.age +=1
+        this.age++;
         //if they're unlucky, they die (chance increases each year)
         var randomValue = Math.random();
-        if (randomValue < (this.age / 100)){
+        if (randomValue < (this.age / this.invincibility)){
             this.alive = false;
-            this.spouse1.alive = false;
-            this.spouse2.alive = false;
             this.circle.destroy();
+            BotSet.delete(this)
         }
-          
     }
 }
 
