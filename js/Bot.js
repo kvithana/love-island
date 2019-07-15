@@ -25,16 +25,18 @@ class Bot {
             identity:colours.getRandomColour(),
             posX: 0,
             posY: 0,
-            isBusy: false
+            isBusy: false,
+            node: null,
         }
         options = setDefaults(options, defaults)
-        
+
         this.alive = options.alive;
         this.age = options.age;
         this.identity = options.identity;
         this.age = options.age;
         this.posX = options.posX;
         this.posY = options.posY;
+        this.node = options.node;
 
         //target identity not a paremeter, as it needs to be different (pesudorandom) from the actual identity
         this.targetIdentity = [colours.getPseudoRandomColour(this.identity)],
@@ -85,7 +87,7 @@ class Bot {
         }
     }
 
-    //should be called every 'year' 
+    //should be called every 'year'
     //every 'milestoneYears' years a new colour is added to their target identity
     //death - changes alive attribute of self (and of partner if they have one)
     getOlder(stage){

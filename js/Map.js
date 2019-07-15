@@ -93,9 +93,10 @@ class Map {
 
         for (var i = 0; i < populationSize; i++) {
             let randomIndex = Math.floor(Math.random() * nodesArray.length)
-            var bot = new Bot(this.stage, { 
-                posX: nodesArray[randomIndex].position.posX, 
+            var bot = new Bot(this.stage, {
+                posX: nodesArray[randomIndex].position.posX,
                 posY: nodesArray[randomIndex].position.posY,
+                node: nodesArray[randomIndex]
             });
             this.bots.add(bot)
         }
