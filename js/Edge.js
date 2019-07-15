@@ -12,7 +12,8 @@ class Edge {
         let defaults = {
             type: 0,
             connectingNodes: [],
-            angle: 0
+            angle: 0,
+            animate: true
         }
         options = setDefaults(options, defaults)
         this.type = options.type
@@ -26,9 +27,11 @@ class Edge {
 
         // Draw a rectangle
         let rectangle = new PIXI.Graphics()
-        rectangle.beginFill(0xDDDDDD); // Dark blue gray 'ish
-        rectangle.drawRect(0, 0, 1, 10); // drawRect(x, y, width, height)
-        rectangle.position.set(positions[0].posX, positions[0].posY)
+        rectangle.beginFill(0x2c3e50); // Dark blue gray 'ish
+        rectangle.drawRect(0, 0, this.length, 10); // drawRect(x, y, width, height)
+        let newPosX = positions[0].posX + Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))
+        let newPosY = positions[0].posY + Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))
+        rectangle.position.set(newPosX, newPosY)
         rectangle.endFill();
         rectangle.angle = this.angle
         stage.addChildAt(rectangle, 0)
@@ -41,6 +44,8 @@ class Edge {
         if (this.edgeNodes.has(oldNode)) {
         this.edgeNodes.delete(oldNode)
         this.edgeNodes.add(newNode)
+        let positions = this.getPositions()
+        this.length = Math.hypot(positions[0].posX - positions[1].posX, positions[0].posY - positions[1].posY)
         } else {
         throw 'oldNode is not connected to edge.'
         }

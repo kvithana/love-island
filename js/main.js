@@ -59,8 +59,8 @@ function object()
 }
 
 function click(data)
-{
-    const sprite = _viewport.addChild(new PIXI.Text('click', { fill: 0xff0000 }))
+{   
+    const sprite = _viewport.addChild(new PIXI.Text(String([Math.round(data.world.x, 2), Math.round(data.world.y, 2)]), { fill: 0xff0000 }))
     sprite.anchor.set(0.5)
     sprite.position = data.world
     const fade = ease.add(sprite, { alpha: 0 })
@@ -77,7 +77,7 @@ function drawWorld()
 
 window.onload = function()
 {
-    _application = new PIXI.Application({ transparent: true, width: window.innerWidth, height: window.innerHeight, resolution: window.devicePixelRatio })
+    _application = new PIXI.Application({ transparent: true, width: window.innerWidth, height: window.innerHeight, resolution: window.devicePixelRatio})
     document.getElementById("canvas").appendChild(_application.view)
     _application.view.style.position = 'fixed'
     _application.view.style.width = '100vw'
@@ -91,49 +91,69 @@ window.onload = function()
 
     // border()
 
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+          if ((new Date().getTime() - start) > milliseconds){
+            break;
+          }
+        }
+      }
 
     let m = new Map(_viewport)
+    // let a = m.createNode(300, 300, {sourceNode: m.source })
+    // let b = m.createNode(600, 600, {sourceNode: a})
+    // let c = m.createNode(500, 300, {sourceNode: b})
+    // let d = m.createNode(400, 250, {sourceNode: c})
 
-    m.generateNorthNode()
-    m.generateEastNode()
-    m.generateSouthNode()
-    m.generateSouthNode()
-    m.generateEastNode()
-    m.generateSouthNode()
-    m.generateWestNode()
-    m.generateWestNode()
-    m.generateWestNode()
-    m.generateWestNode()
-    m.generateNorthNode()
-    m.generateEastNode()
-    m.generateNorthNode()
-    m.generateNorthNode()
-    m.generateWestNode()
-    m.generateNorthNode()
-    m.generateEastNode()
-    m.generateEastNode()
-    m.generateEastNode()
 
-    //m.initPopulation(10)
+    // m.generateNorthNode()
+    // m.generateEastNode()
+    // m.generateSouthNode()
+    // m.generateSouthNode()
+    // m.generateEastNode()
+    // m.generateSouthNode()
+    // m.generateWestNode()
+    // m.generateWestNode()
+    // m.generateWestNode()
+    // m.generateWestNode()
+    // m.generateNorthNode()
+    // m.generateEastNode()
+    // m.generateNorthNode()
+    // m.generateNorthNode()
+    // m.generateWestNode()
+    // m.generateNorthNode()
+    // m.generateEastNode()
+    // m.generateEastNode()
+    // m.generateEastNode()
+
+    // m.initPopulation(10)
 
     const ticker = new Ticker(m)
 
     window.setInterval(function(){
         m.createRandomNode()
-      }, 1000)
+      }, 100 )
+    // for (let i=0; i<15; i++) {
+    //     m.createRandomNode()
+    // }
+
+
+    // let a = new Node(_viewport, {posX: 100, posY: -100})
+    // a.createRandomEdge({ distance: 100 })
 
     // highlight()
     
-    let node = m.source //don't push
-    let node2 = Array.from(node.getConnectedNodes())[0];
-    console.log();
+    // let node = m.source //don't push
+    // let node2 = Array.from(node.getConnectedNodes())[0];
+    // console.log();
 
-    var girlBot = new Single(_viewport, node, {age: 59});
-    var boyBot = new Single(_viewport, node2, {age: 19});
-    m.bots.add(girlBot);
-    m.bots.add(boyBot);
-    girlBot.targetIdentity = [boyBot.identity];
-    boyBot.targetIdentity = [girlBot.identity];
+    // var girlBot = new Single(_viewport, node, {age: 59});
+    // var boyBot = new Single(_viewport, node2, {age: 19});
+    // m.bots.add(girlBot);
+    // m.bots.add(boyBot);
+    // girlBot.targetIdentity = [boyBot.identity];
+    // boyBot.targetIdentity = [girlBot.identity];
     // // girlBot.identity = [""];
     // // boyBot.identity = [""];
     // console.log("boy identity: " + boyBot.identity);
@@ -143,11 +163,11 @@ window.onload = function()
 
     //var couple = new Couple(_viewport, girlBot,boyBot);
 
-        window.setInterval(function(){
-            if(girlBot.alive){
-                console.log("proposal: " + girlBot.propose(boyBot));
-            }
-        }, 5000)
+        // window.setInterval(function(){
+        //     if(girlBot.alive){
+        //         console.log("proposal: " + girlBot.propose(boyBot));
+        //     }
+        // }, 5000)
   
     
 

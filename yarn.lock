@@ -3004,6 +3004,11 @@ interpret@1.2.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
   integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
 
+intersects@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/intersects/-/intersects-2.7.1.tgz#ae6278475d0afae6823954ff1b3eb619ed7523e3"
+  integrity sha512-R4tPClGRjdT+j8A5i8652ZqECiSixyC+D1dh3ra3BiRye95V40qP8FHoV0OASj9ybEBdeDyzq1af94pcKjsvyQ==
+
 invariant@^2.2.2:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
