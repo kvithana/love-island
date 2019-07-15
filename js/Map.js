@@ -28,7 +28,7 @@ class Map {
     }
 
     getIntersect(lineAStart, lineAEnd, lineBStart, lineBEnd) {
-        let point = lineIntersect([[lineAStart.posX, lineAStart.posY], [lineAEnd.posX, lineAEnd.posY]], 
+        let point = lineIntersect([[lineAStart.posX, lineAStart.posY], [lineAEnd.posX, lineAEnd.posY]],
             [[lineBStart.posX, lineBStart.posY], [lineBEnd.posX, lineBEnd.posY]])
         point = point.Right || point.Left
         return point
@@ -40,7 +40,7 @@ class Map {
 
         let positions = edge.getPositions()
 
-        let point = this.getIntersect([node.position.posX, node.position.posY], [newPosX, newPosY], 
+        let point = this.getIntersect([node.position.posX, node.position.posY], [newPosX, newPosY],
             [positions[1].posX, positions[1].posY], [positions[0].posX, positions[0].posY])
 
         let a, b
@@ -103,7 +103,7 @@ class Map {
         // let line = this.drawLine({posX: offPosX, posY: offPosY}, {posX: projPosX, posY: projPosY}, angle)
         for (const edge of this.edges) {
             let positions = edge.getPositions()
-            let intersected = intersects.lineLine(offPosX, offPosY, projPosX, projPosY, 
+            let intersected = intersects.lineLine(offPosX, offPosY, projPosX, projPosY,
                 positions[0].posX, positions[0].posY, positions[1].posX, positions[1].posY, options.bufferWidth, options.bufferWidth)
             if (intersected) {
                 intersections.push(edge)

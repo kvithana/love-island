@@ -27,8 +27,8 @@ class Edge {
 
         // Draw a rectangle
         let rectangle = new PIXI.Graphics()
-        rectangle.beginFill(0x2c3e50); // Dark blue gray 'ish
-        rectangle.drawRect(0, 0, this.length, 10); // drawRect(x, y, width, height)
+        rectangle.beginFill(0xDDDDDD); // Dark blue gray 'ish
+        rectangle.drawRect(0, 0, 1, 10); // drawRect(x, y, width, height)
         let newPosX = positions[0].posX + Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))
         let newPosY = positions[0].posY + Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))
         rectangle.position.set(newPosX, newPosY)

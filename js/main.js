@@ -59,7 +59,7 @@ function object()
 }
 
 function click(data)
-{   
+{
     const sprite = _viewport.addChild(new PIXI.Text(String([Math.round(data.world.x, 2), Math.round(data.world.y, 2)]), { fill: 0xff0000 }))
     sprite.anchor.set(0.5)
     sprite.position = data.world
@@ -127,13 +127,13 @@ window.onload = function()
     // m.generateEastNode()
     // m.generateEastNode()
 
-    // m.initPopulation(10)
+    m.initPopulation(10)
 
     const ticker = new Ticker(m)
 
     window.setInterval(function(){
         m.createRandomNode()
-      }, 100 )
+      }, 1000 )
     // for (let i=0; i<15; i++) {
     //     m.createRandomNode()
     // }
@@ -143,7 +143,7 @@ window.onload = function()
     // a.createRandomEdge({ distance: 100 })
 
     // highlight()
-    
+
     // let node = m.source //don't push
     // let node2 = Array.from(node.getConnectedNodes())[0];
     // console.log();
@@ -168,8 +168,8 @@ window.onload = function()
         //         console.log("proposal: " + girlBot.propose(boyBot));
         //     }
         // }, 5000)
-  
-    
+
+
 
 }
 
