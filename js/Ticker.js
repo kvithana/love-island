@@ -13,7 +13,7 @@ class Ticker {
 
     startTicker = () => {
         window.setInterval(
-            this.tick.bind(this), 200
+            this.tick.bind(this), 100
         )
     }
 

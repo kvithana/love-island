@@ -4,6 +4,7 @@ const colours = new Colours();
 import { isNull } from 'util';
 const _ = require('underscore');
 const PIXI = require('pixi.js')
+import { Ease, ease } from 'pixi-ease'
 
 function setDefaults(options, defaults){
     return _.defaults({}, _.clone(options), defaults);
@@ -37,6 +38,8 @@ class Bot {
         this.posX = options.posX;
         this.posY = options.posY;
         this.node = options.node;
+        this.isBusy = false
+        this.tickData = { remaining: 0 , queue: null }
 
         //target identity not a paremeter, as it needs to be different (pesudorandom) from the actual identity
         this.targetIdentity = [colours.getPseudoRandomColour(this.identity)],
@@ -51,6 +54,10 @@ class Bot {
         stage.addChild(this.circle)
     }
 
+    getPosition = () => {
+      return this.circle.position
+    }
+
     //returns false if they're in a relationship - depends on the 'null' value
     isSingle(){
         if(isNull(this.relationship)){
@@ -60,7 +67,6 @@ class Bot {
             return false;
         }
     }
-
 
     //returns target identity array index if target identity suits the candidate's actual identity, -1 if not
     //therefore a low return value (like 0, or 1) would mean a really good match. A high one would mean they're getting desperate
@@ -118,11 +124,35 @@ class Bot {
     }
 
     tick() {
+      if (!this.isBusy) {
         this.move()
+      }
+      this.incrementWaiting()
+    }
+
+    wait = (ticks) => {
+      ticks = Math.round(ticks / 100)
+      this.tickData.remaining = ticks
+    }
+
+    incrementWaiting = () => {
+      if (this.tickData.remaining > 0) {
+        this.tickData.remaining -= 1
+        this.isBusy = true
+      }
+      else {
+        this.isBusy = false
+      }
     }
 
     move() {
-        
+        let nextNodes = Array.from(this.node.getConnectedNodes())
+        let nextNode = nextNodes[Math.floor(Math.random() * nextNodes.length)]
+        //console.log(nextNode)
+        ease.add(this.circle, { x: nextNode.position.posX, y: nextNode.position.posY }, { duration: 1000, reverse: false })
+        this.wait(1000)
+        this.node = nextNode
+        // moveBot.on('complete', () => this.isBusy = false)
     }
 }
 
