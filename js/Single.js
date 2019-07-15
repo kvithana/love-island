@@ -15,9 +15,17 @@ class Single extends Bot {
     alive = true; //changed if they die
     constructor(stage, node, options) {
         super(stage, node, options);
-
-        //target identity not a paremeter, as it needs to be different from the actual identity ("pesudorandom")
         this.targetIdentity = [colours.getPseudoRandomColour(this.identity)]
+        
+        // Draw Circle
+        this.circle = new PIXI.Graphics();
+        this.circle.lineStyle(0);
+        this.circle.beginFill(this.identity, 1);
+        this.circle.lineStyle(3, this.targetIdentity);  //(thickness, color)
+        this.circle.drawCircle(0, 0, 10);
+        this.circle.endFill();
+        this.circle.position.set(this.posX, this.posY)
+        stage.addChild(this.circle)
     }
 
     //returns target identity array index if target identity suits the candidate's actual identity, -1 if not
@@ -32,14 +40,8 @@ class Single extends Bot {
             if (otherSingleBot.getCompatability(this) > -1){
                 this.personalRelationshipSatisfaction = numberOfColours - this.getCompatability(otherSingleBot);
                 otherSingleBot.personalSatisfaction = numberOfColours - otherSingleBot.getCompatability(this);
-                this.relationship = new Couple(this.stage, this,otherSingleBot);
+                this.relationship = new Couple(this.stage, this, otherSingleBot);
                 otherSingleBot.relationship = this.relationship;
-                this.circle.destroy();
-                otherSingleBot.circle.destroy();
-                this.stage.removeChild(this.circle);
-                this.stage.removeChild(otherSingleBot.circle);
-                this.alive = false;
-                otherSingleBot.alive = false;
                 return true;
             }
             else{

@@ -29,22 +29,14 @@ class Bot {
         this.alive = options.alive;
         this.age = options.age;
         this.identity = options.identity;
-        this.age = options.age;
+        this.targetIdentity = [colours.getPseudoRandomColour(this.identity)]
         this.node = node;
         this.posX = this.node.position.posX;
         this.posY = this.node.position.posY;
         this.isBusy = false
         this.tickData = { remaining: 0 , queue: null }
 
-        // Draw Circle
-        this.circle = new PIXI.Graphics();
-        this.circle.lineStyle(0);
-        this.circle.beginFill(this.identity, 1);
-        this.circle.lineStyle(3, this.targetIdentity);  //(thickness, color)
-        this.circle.drawCircle(0, 0, 10);
-        this.circle.endFill();
-        this.circle.position.set(this.posX, this.posY)
-        stage.addChild(this.circle)
+        
 
     }
 
@@ -79,9 +71,6 @@ class Bot {
         //the 'next node' is a random node from the list of nodes connected to the current node
         let nextNodes = Array.from(this.node.getConnectedNodes())
         let nextNode = nextNodes[Math.floor(Math.random() * nextNodes.length)]
-        console.log('random next node: ', nextNode)
-        console.log(nextNode.position.posX, nextNode.position.posY)
-        console.log(this.circle)
         ease.add(this.circle, { x: nextNode.position.posX, y: nextNode.position.posY }, { duration: 1000, reverse: false })
         this.wait(1000)
         this.node = nextNode

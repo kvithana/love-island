@@ -2,16 +2,19 @@ const Node = require('./Node.js')
 const Edge = require('./Edge.js')
 const Tombola = require('./math/tombola')
 import Single from './Single.js';
+import BotSet from './State.js';
+import { State } from 'pixi.js';
 
 class Map {
     constructor (stage) {
         this.nodes = new Set()
-        this.bots = new Set()
+        this.bots = BotSet;
         this.nodeDeck = new Tombola().deck()
         this.stage = stage;
         let a = new Node(stage)
         this.nodes.add(a)
         this.nodeDeck.insert(a)
+        this.source = a //don't push
     }
 
     createRandomNode = () => {

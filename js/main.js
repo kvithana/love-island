@@ -1,6 +1,6 @@
 import Ticker from './Ticker'
 import Single from './Single.js';
-import Colours from './Colours.js';
+import Couple from './Couple.js';
 import { ease } from 'pixi-ease'
 import DomEase from 'dom-ease'
 
@@ -114,7 +114,7 @@ window.onload = function()
     m.generateEastNode()
     m.generateEastNode()
 
-    m.initPopulation(10)
+    //m.initPopulation(10)
 
     const ticker = new Ticker(m)
 
@@ -123,15 +123,32 @@ window.onload = function()
       }, 1000)
 
     // highlight()
+    
+    let node = m.source //don't push
+    let node2 = Array.from(node.getConnectedNodes())[0];
+    console.log();
 
-    const colours = new Colours();
-    // var girlBot = new Single(_viewport,{age: 59,posX:10,posY:10});
-    // var boyBot = new Single(_viewport,{age: 19,posX:-10,posY:-10});
-    // girlBot.targetIdentity = [boyBot.identity];
-    // boyBot.targetIdentity = [girlBot.identity];
-    // window.setInterval(function(){
-    //     console.log(girlBot.propose(boyBot));
-    //   }, 5000)
+    var girlBot = new Single(_viewport, node, {age: 59});
+    var boyBot = new Single(_viewport, node2, {age: 19});
+    m.bots.add(girlBot);
+    m.bots.add(boyBot);
+    girlBot.targetIdentity = [boyBot.identity];
+    boyBot.targetIdentity = [girlBot.identity];
+    // // girlBot.identity = [""];
+    // // boyBot.identity = [""];
+    // console.log("boy identity: " + boyBot.identity);
+    // console.log("girl identity: " + girlBot.identity);
+    // // console.log("boy target identity: " + boyBot.identity);
+    // console.log("girl target identity: " + girlBot.identity);
+
+    //var couple = new Couple(_viewport, girlBot,boyBot);
+
+        window.setInterval(function(){
+            if(girlBot.alive){
+                console.log("proposal: " + girlBot.propose(boyBot));
+            }
+        }, 5000)
+  
     
 
 }
