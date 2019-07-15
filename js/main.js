@@ -60,7 +60,7 @@ function object()
 
 function click(data)
 {
-    const sprite = _viewport.addChild(new PIXI.Text('click', { fill: 0xff0000 }))
+    const sprite = _viewport.addChild(new PIXI.Text(String([Math.round(data.world.x, 2), Math.round(data.world.y, 2)]), { fill: 0xff0000 }))
     sprite.anchor.set(0.5)
     sprite.position = data.world
     const fade = ease.add(sprite, { alpha: 0 })
@@ -77,7 +77,7 @@ function drawWorld()
 
 window.onload = function()
 {
-    _application = new PIXI.Application({ transparent: true, width: window.innerWidth, height: window.innerHeight, resolution: window.devicePixelRatio })
+    _application = new PIXI.Application({ transparent: true, width: window.innerWidth, height: window.innerHeight, resolution: window.devicePixelRatio})
     document.getElementById("canvas").appendChild(_application.view)
     _application.view.style.position = 'fixed'
     _application.view.style.width = '100vw'
@@ -91,6 +91,14 @@ window.onload = function()
 
     // border()
 
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+          if ((new Date().getTime() - start) > milliseconds){
+            break;
+          }
+        }
+      }
 
     let m = new Map(_viewport)
 

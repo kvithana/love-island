@@ -41,7 +41,7 @@ class Node {
             rectangle.beginFill(0xBBBBBB, 1);
             rectangle.drawRect(0, 0, 2.5, 2.5);
             rectangle.endFill();
-            rectangle.position.set(this.position.posX, this.position.posY)
+            rectangle.position.set(this.position.posX - 2*rectangle.width, this.position.posY - 2*rectangle.height)
             stage.addChildAt(rectangle, 1)
             // Animate rectangle
             ease.add(rectangle, { scale: 4 }, { duration: 1000, reverse: false })
