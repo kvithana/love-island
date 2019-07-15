@@ -35,9 +35,6 @@ class Bot {
         this.posY = this.node.position.posY;
         this.isBusy = false
         this.tickData = { remaining: 0 , queue: null }
-
-        
-
     }
 
     //returns current shape position

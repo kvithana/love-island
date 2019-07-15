@@ -87,12 +87,6 @@ class Single extends Bot {
         if (randomValue < (this.age / 100)){
             this.alive = false;
             this.circle.destroy();
-            if (!this.isSingle()) {
-                //if they have a partner, they die too (of loneliness)
-                var otherPartner = this.relationship.getOtherPartner(this);
-                otherPartner.alive = false;
-                otherPartner.circle.destroy();
-            }
         }
     }
 }
