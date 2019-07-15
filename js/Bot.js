@@ -35,9 +35,9 @@ class Bot {
         this.age = options.age;
         this.identity = options.identity;
         this.age = options.age;
-        this.posX = options.posX;
-        this.posY = options.posY;
         this.node = options.node;
+        this.posX = this.node.position.posX;
+        this.posY = this.node.position.posY;
         this.isBusy = false
         this.tickData = { remaining: 0 , queue: null }
 
