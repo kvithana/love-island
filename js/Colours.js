@@ -18,10 +18,8 @@ class Colours{
     }
 
     getPseudoRandomColour(colourToNotGet){
-        console.log("ran this function - colour not to get: " + colourToNotGet);
         var randomColour = this.pallet[Math.floor(Math.random() * this.numColours)];
         while (randomColour === colourToNotGet){
-            console.log("entered loop");
             randomColour = this.pallet[Math.floor(Math.random() * this.numColours)];
         }
         return randomColour;

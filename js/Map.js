@@ -1,7 +1,7 @@
 const Node = require('./Node.js')
 const Edge = require('./Edge.js')
 const Tombola = require('./math/tombola')
-import Bot from './Bot.js';
+import Single from './Single.js';
 
 class Map {
     constructor (stage) {
@@ -9,7 +9,6 @@ class Map {
         this.bots = new Set()
         this.nodeDeck = new Tombola().deck()
         this.stage = stage;
-
         let a = new Node(stage)
         this.nodes.add(a)
         this.nodeDeck.insert(a)
@@ -93,9 +92,7 @@ class Map {
 
         for (var i = 0; i < populationSize; i++) {
             let randomIndex = Math.floor(Math.random() * nodesArray.length)
-            var bot = new Bot(this.stage, {
-                node: nodesArray[randomIndex]
-            });
+            var bot = new Single(this.stage, nodesArray[randomIndex], {});
             this.bots.add(bot)
         }
     }

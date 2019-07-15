@@ -30,7 +30,6 @@ class Node {
         rectangle.beginFill(0xBBBBBB, 1);
         rectangle.drawRect(0, 0, 2.5, 2.5);
         rectangle.endFill();
-        //console.log(this.position)
         rectangle.position.set(this.position.posX, this.position.posY)
         stage.addChildAt(rectangle, 1)
         // Animate rectangle
@@ -49,7 +48,6 @@ class Node {
     createRandomEdge = (options) => {
         let validAngle = false
         let currentAngles = this.getEdgeAngles()
-        //console.log(currentAngles)
         let angle = null
         while (!validAngle) {
             angle = DECK.look()
@@ -62,9 +60,6 @@ class Node {
         let newNode = new Node(this.stage, { posX: newPosX, posY: newPosY })
         let newEdge = new Edge(this.stage, { connectingNodes: [this, newNode], angle: angle})
         newNode.addEdge(newEdge)
-        // console.log(angle)
-        // console.log(newPosX, newPosY)
-        // console.log(newEdge.length)
         this.edgeSet.add(newEdge)
         return { newNode: newNode, newEdge: newEdge}
     }

@@ -1,5 +1,5 @@
-import Bot from './Bot.js';
 import Ticker from './Ticker'
+import Single from './Single.js';
 import Colours from './Colours.js';
 import { ease } from 'pixi-ease'
 import DomEase from 'dom-ease'
@@ -125,14 +125,23 @@ window.onload = function()
     // highlight()
 
     const colours = new Colours();
+    // var girlBot = new Single(_viewport,{age: 59,posX:10,posY:10});
+    // var boyBot = new Single(_viewport,{age: 19,posX:-10,posY:-10});
+    // girlBot.targetIdentity = [boyBot.identity];
+    // boyBot.targetIdentity = [girlBot.identity];
+    // window.setInterval(function(){
+    //     console.log(girlBot.propose(boyBot));
+    //   }, 5000)
+    
 
 }
 
 
 
 // const colours = new Colours();
-// var girlBot = new Bot(_viewport,{age: 59,posX:10,posY:10});
-// var boyBot = new Bot(_viewport,{age: 19,posX:-10,posY:-10});
+
+
+
 // girlBot.personality = "GP";
 // girlBot.looks = "GL";
 // boyBot.personality = "BP";
