@@ -29,5 +29,10 @@ module.exports = {
           }
         }
       ]
+    },
+    resolve: {
+      alias: {
+        '@javascript-algorithms': path.resolve(__dirname, 'js/javascript-algorithms')
+      }
     }
   };

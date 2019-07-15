@@ -59,7 +59,7 @@ function object()
 }
 
 function click(data)
-{
+{   
     const sprite = _viewport.addChild(new PIXI.Text(String([Math.round(data.world.x, 2), Math.round(data.world.y, 2)]), { fill: 0xff0000 }))
     sprite.anchor.set(0.5)
     sprite.position = data.world
@@ -101,49 +101,62 @@ window.onload = function()
       }
 
     let m = new Map(_viewport)
+    // let a = m.createNode(300, 300, {sourceNode: m.source })
+    // let b = m.createNode(600, 600, {sourceNode: a})
+    // let c = m.createNode(500, 300, {sourceNode: b})
+    // let d = m.createNode(400, 250, {sourceNode: c})
+    // console.log(m.pathFinder.pathTo(m.source, d))
 
-    m.generateNorthNode()
-    m.generateEastNode()
-    m.generateSouthNode()
-    m.generateSouthNode()
-    m.generateEastNode()
-    m.generateSocialHub()
-    m.generateSouthNode()
-    m.generateWestNode()
-    m.generateWestNode()
-    m.generateWestNode()
-    m.generateWestNode()
-    m.generateSocialHub()
-    m.generateNorthNode()
-    m.generateEastNode()
-    m.generateNorthNode()
-    m.generateNorthNode()
-    m.generateWestNode()
-    m.generateNorthNode()
-    m.generateEastNode()
-    m.generateEastNode()
-    m.generateEastNode()
-    m.generateSocialHub()
+    // m.drawLine()
 
-    m.initPopulation(20)
+
+    // m.generateNorthNode()
+    // m.generateEastNode()
+    // m.generateSouthNode()
+    // m.generateSouthNode()
+    // m.generateEastNode()
+    // m.generateSouthNode()
+    // m.generateWestNode()
+    // m.generateWestNode()
+    // m.generateWestNode()
+    // m.generateWestNode()
+    // m.generateNorthNode()
+    // m.generateEastNode()
+    // m.generateNorthNode()
+    // m.generateNorthNode()
+    // m.generateWestNode()
+    // m.generateNorthNode()
+    // m.generateEastNode()
+    // m.generateEastNode()
+    // m.generateEastNode()
+
+    m.initPopulation(10)
 
     const ticker = new Ticker(m)
 
     window.setInterval(function(){
         m.createRandomNode()
-    }, 1000)
+      }, 100 )
+    for (let i=0; i<15; i++) {
+        m.createRandomNode()
+    }
+
+
+    // let a = new Node(_viewport, {posX: 100, posY: -100})
+    // a.createRandomEdge({ distance: 100 })
 
     // highlight()
     
-    let node = m.source //don't push
-    let node2 = Array.from(node.getConnectedNodes())[0];
+    // let node = m.source //don't push
+    // let node2 = Array.from(node.getConnectedNodes())[0];
+    // console.log();
 
-    var girlBot = new Single(_viewport, node, {age: 59});
-    var boyBot = new Single(_viewport, node2, {age: 19});
-    m.bots.add(girlBot);
-    m.bots.add(boyBot);
-    girlBot.targetIdentity = [boyBot.identity];
-    boyBot.targetIdentity = [girlBot.identity];
+    // var girlBot = new Single(_viewport, node, {age: 59});
+    // var boyBot = new Single(_viewport, node2, {age: 19});
+    // m.bots.add(girlBot);
+    // m.bots.add(boyBot);
+    // girlBot.targetIdentity = [boyBot.identity];
+    // boyBot.targetIdentity = [girlBot.identity];
     // // girlBot.identity = [""];
     // // boyBot.identity = [""];
     // console.log("boy identity: " + boyBot.identity);
@@ -153,14 +166,11 @@ window.onload = function()
 
     //var couple = new Couple(_viewport, girlBot,boyBot);
 
-    window.setInterval(function(){
-        if(girlBot.alive){
-            console.log("proposal: " + girlBot.propose(boyBot));
-        }
-        if(girlBot.relationship!=null && girlBot.relationship.alive){
-            girlBot.relationship.haveSex();
-        }
-    }, 1000)
+        // window.setInterval(function(){
+        //     if(girlBot.alive){
+        //         console.log("proposal: " + girlBot.propose(boyBot));
+        //     }
+        // }, 5000)
   
     
 

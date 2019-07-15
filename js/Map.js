@@ -8,6 +8,7 @@ const intersects = require('intersects')
 const lineIntersect = require('./math/line-intersect')
 const _ = require('underscore')
 const PIXI = require('pixi.js')
+const PathFinder = require ('./math/PathFinder')
 
 
 function setDefaults(options, defaults){
@@ -25,6 +26,7 @@ class Map {
         this.source = new Node(stage)
         this.nodes.add(this.source)
         this.nodeDeck.insert(this.source)
+        this.pathFinder = new PathFinder({nodeSet: this.nodes, edgeSet: this.edges })
     }
 
     getIntersect(lineAStart, lineAEnd, lineBStart, lineBEnd) {
@@ -154,7 +156,7 @@ class Map {
             }
         }
         let options = { distance: new Tombola().range(60, 130) }
-        // if (!this.extendEdge(selectedNode, angle)) {
+        // if (!this.extendEdge(selectedNode, angle)) { // BROKEN
         if (true) {
             let newPosX = selectedNode.position.posX + Math.round(options.distance * Math.cos(angle * Math.PI / 180))
             let newPosY = selectedNode.position.posY + Math.round(options.distance * Math.sin(angle * Math.PI / 180))
@@ -175,10 +177,11 @@ class Map {
         let newNode = new Node(this.stage, { posX: newPosX, posY: newPosY })
         let angle = Math.round(Math.atan2(newNode.position.posY - options.sourceNode.position.posY,
             newNode.position.posX - options.sourceNode.position.posX) * 180 / Math.PI)
-        this.extendEdge(options.sourceNode, angle)
+        // this.extendEdge(options.sourceNode, angle)
         // console.log(this.testIntersection({posX: options.sourceNode.position.posX, posY: options.sourceNode.position.posY}, angle, { returnIntersections: true }))
         let newEdge = new Edge(this.stage, { connectingNodes: [options.sourceNode, newNode], angle: angle})
         newNode.addEdge(newEdge)
+        options.sourceNode.addEdge(newEdge)
         this.nodes.add(newNode)
         this.edges.add(newEdge)
         return newNode
@@ -204,7 +207,6 @@ class Map {
         circle.endFill()
         this.stage.addChildAt(circle, 2)
         return circle
-
     }
 
     generateNorthNode = () => {
