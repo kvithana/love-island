@@ -155,7 +155,7 @@ window.onload = function()
 
     m.generateSocialHub();
 
-    m.initPopulation(14)
+    m.initPopulation(5)
 
     // let socialHubs = Array.from(m.socialHubs)
 

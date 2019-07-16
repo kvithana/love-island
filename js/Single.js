@@ -18,7 +18,7 @@ class Single extends Bot {
         super(stage, node, options);
         this.targetIdentity = [colours.getPseudoRandomColour(this.identity)]
         this.actions = [ this.moveToHub, this.moveToRandom ]
-        this.traits = [ 5, 1 ]
+        this.traits = [ 2, 1 ]
         this.relationshipStatus = false
         
         // Draw Circle
@@ -38,11 +38,12 @@ class Single extends Bot {
           let node = this.state.moveQueue.pop()
           if (node) {
             this.move(node)
-          } else if (this.node.isHub) {
-            // They will never leave the hub, until married
-            this.mingle()
+          } else if (this.node.isHub && this.boredom < this.boredomLimit) {
+              console.log("going to mingle");
+              this.mingle() //increments boredom
           } else {
-            new Tombola().weightedFunction(this.actions, this.traits)
+              this.boredom = 0;
+              new Tombola().weightedFunction(this.actions, this.traits)
           }
           //TODO - this will call 'act' rather than move
           // this.getOlder();
@@ -67,6 +68,7 @@ class Single extends Bot {
                 }
             }
         }
+        this.boredom++;
     }
 
     propose(otherSingleBot){

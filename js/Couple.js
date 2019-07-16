@@ -3,6 +3,8 @@ import Bot from './Bot.js';
 import Map from './Map.js';
 import RootState from './RootState.js';
 const PIXI = require('pixi.js');
+const Tombola = require('./math/tombola')
+
 
 
 class Couple extends Bot{
@@ -41,6 +43,20 @@ class Couple extends Bot{
         RootState.BotSet.add(this);
 
     }
+
+    tick() {
+        // If the Bot is not busy
+        if (!this.isBusy) {
+          let node = this.state.moveQueue.pop()
+          if (node) {
+            this.move(node)
+          } else {
+            new Tombola().weightedFunction(this.actions, this.traits)
+          }
+          // this.getOlder();
+        }
+        this.incrementWaiting()
+      }
 
     haveSex() {
         var randomNumber = Math.random();

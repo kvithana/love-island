@@ -43,7 +43,7 @@ class Edge {
 
 		this.rectangle = rectangle
 		this.houses = []
-		this.generateHouses()
+		this.generateHouses() //GENERATE HOUSES EVERYWHERE
 
 		for(var i = 0; i < this.houses.length; i++) {
 			this.houses[i].drawHouse()

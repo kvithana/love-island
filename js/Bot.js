@@ -43,6 +43,8 @@ class Bot {
         this.isBusy = false
         this.tickData = { remaining: 0 , queue: null }
         this.state = { moveQueue: [], actionQueue: [] }
+        this.boredomLimit = 20;
+        this.boredom = 0; //when they do boring tasks (mingle unsuccessfully, sit at home/have sex) this increments
     }
 
     //returns current shape position
@@ -50,9 +52,8 @@ class Bot {
       return this.circle.position
     }
 
+    //this function is overridden in both single and couple. 
     tick() {
-      // This calls the getOlder function of Single/Couple
-      //this.getOlder();
       // If the Bot is not busy
       if (!this.isBusy) {
         let node = this.state.moveQueue.pop()
@@ -61,7 +62,6 @@ class Bot {
         } else {
           new Tombola().weightedFunction(this.actions, this.traits)
         }
-        //TODO - this will call 'act' rather than move
         // this.getOlder();
       }
       this.incrementWaiting()
