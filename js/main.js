@@ -113,25 +113,25 @@ window.onload = function()
     // m.drawLine()
 
 
-    // m.generateNorthNode()
-    // m.generateEastNode()
-    // m.generateSouthNode()
-    // m.generateSouthNode()
-    // m.generateEastNode()
-    // m.generateSouthNode()
-    // m.generateWestNode()
-    // m.generateWestNode()
-    // m.generateWestNode()
-    // m.generateWestNode()
-    // m.generateNorthNode()
-    // m.generateEastNode()
-    // m.generateNorthNode()
-    // m.generateNorthNode()
-    // m.generateWestNode()
-    // m.generateNorthNode()
-    // m.generateEastNode()
-    // m.generateEastNode()
-    // m.generateEastNode()
+    // m.generateNorthNode(100, 100)
+    // m.generateEastNode(100, 100)
+    // m.generateSouthNode(100, 100)
+    // m.generateSouthNode(100, 100)
+    // m.generateEastNode(100, 100)
+    // m.generateSouthNode(100, 100)
+    // m.generateWestNode(100, 100)
+    // m.generateWestNode(100, 100)
+    // m.generateWestNode(100, 100)
+    // m.generateWestNode(100, 100)
+    // m.generateNorthNode(100, 100)
+    // m.generateEastNode(100, 100)
+    // m.generateNorthNode(100, 100)
+    // m.generateNorthNode(100, 100)
+    // m.generateWestNode(100, 100)
+    // m.generateNorthNode(100, 100)
+    // m.generateEastNode(100, 100)
+    // m.generateEastNode(100, 100)
+    // m.generateEastNode(100, 100)
 
     const ticker = new Ticker(m)
 
@@ -182,7 +182,8 @@ window.onload = function()
     // // console.log("boy target identity: " + boyBot.identity);
     // console.log("girl target identity: " + girlBot.identity);
 
-    //var couple = new Couple(_viewport, girlBot,boyBot);
+	//var couple = new Couple(_viewport, girlBot, boyBot);
+	// m.botSet.add(couple)
 
         // window.setInterval(function(){
         //     if(girlBot.alive){

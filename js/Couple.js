@@ -18,14 +18,19 @@ class Couple extends Bot{
         this.spouse1Satisfaction = spouse1.relationshipSatisfaction;
         this.spouse2Satisfaction = spouse2.relationshipSatisfaction;
         this.relationshipSatisfaction = this.spouse1Satisfaction + this.spouse2Satisfaction;
-        
+
         // Draw Circle
         this.circle = new PIXI.Graphics()
-        this.circle.lineStyle(0);
+		this.circle.lineStyle(0);
+		// Draw first circle
         this.circle.beginFill(spouse1.identity, 1);
-        this.circle.lineStyle(3, spouse2.identity);  //(thickness, color)
-        this.circle.drawCircle(0, 0, 30);
-        this.circle.endFill();
+        //this.circle.lineStyle(3, spouse2.identity);  //(thickness, color)
+		this.circle.drawCircle(0, 0, 10);
+		this.circle.endFill();
+		// Draw second circle
+		this.circle.beginFill(spouse2.identity, 1);
+		this.circle.drawCircle(20, 0, 10);
+		this.circle.endFill();
         this.circle.position.set(spouse1.posX, spouse1.posY)
         stage.addChild(this.circle)
         //remove single circles from map
@@ -43,8 +48,7 @@ class Couple extends Bot{
 
     }
 
-
-    haveSex(){
+    haveSex() {
         var randomNumber = Math.random();
         var hurdle;
         if (this.age < 50){
@@ -82,6 +86,16 @@ class Couple extends Bot{
             this.circle.destroy();
             RootState.BotSet.delete(this)
         }
+    }
+
+    buildHouse() {
+      // find an edge
+
+      // ask the edge if there is an available house
+
+      // move to the edge
+
+      // build house
     }
 }
 

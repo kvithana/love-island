@@ -123,7 +123,7 @@ class Map {
     }
 
     findValidAngle = (node) => {
-        let angle = null
+		let angle = null
         let usedAngles = node.getEdgeAngles()
         let angleSet = new Set()
         angleSet.add(0).add(45).add(90).add(135).add(180).add(225).add(270).add(315)
@@ -219,64 +219,64 @@ class Map {
         return nodes[randomIndex]
     }
 
-    generateNorthNode = () => {
-        let options = { distance: new Tombola().range(60, 130), direction: 270 }
+    generateNorthNode = (min, max) => {
+        let options = { distance: new Tombola().range(min, max), direction: 270 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
         this.nodes.add(result.newNode)
     }
 
-    generateNorthEastNode = () => {
-        let options = { distance: new Tombola().range(60, 130), direction: 315 }
+    generateNorthEastNode = (min, max) => {
+        let options = { distance: new Tombola().range(min, max), direction: 315 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
         this.nodes.add(result.newNode)
     }
 
-    generateEastNode = () => {
-        let options = { distance: new Tombola().range(60, 130), direction: 360}
+    generateEastNode = (min, max) => {
+        let options = { distance: new Tombola().range(min, max), direction: 360}
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
         this.nodes.add(result.newNode)
     }
 
-    generateSouthEastNode = () => {
-        let options = { distance: new Tombola().range(60, 130), direction: 45 }
+    generateSouthEastNode = (min, max) => {
+        let options = { distance: new Tombola().range(min, max), direction: 45 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
         this.nodes.add(result.newNode)
     }
 
-    generateSouthNode = () => {
-        let options = { distance: new Tombola().range(60, 130), direction: 90 }
+    generateSouthNode = (min, max) => {
+        let options = { distance: new Tombola().range(min, max), direction: 90 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
         this.nodes.add(result.newNode)
     }
 
-    generateSouthWestNode = () => {
-        let options = { distance: new Tombola().range(60, 130), direction: 135 }
+    generateSouthWestNode = (min, max) => {
+        let options = { distance: new Tombola().range(min, max), direction: 135 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
         this.nodes.add(result.newNode)
     }
 
-    generateWestNode = () => {
-        let options = { distance: new Tombola().range(60, 130), direction: 180 }
+    generateWestNode = (min, max) => {
+        let options = { distance: new Tombola().range(min, max), direction: 180 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
         this.nodes.add(result.newNode)
     }
 
-    generateNorthWestNode = () => {
-        let options = { distance: new Tombola().range(60, 130), direction: 225 }
+    generateNorthWestNode = (min, max) => {
+        let options = { distance: new Tombola().range(min, max), direction: 225 }
         let selectedNode = this.nodeDeck.draw()
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
@@ -300,7 +300,17 @@ class Map {
             var bot = new Single(this.stage, nodesArray[randomIndex], {});
             this.bots.add(bot)
         }
-    }
+	}
+	
+	initCouple = (populationSize) => {
+		let nodesArray = Array.from(this.nodes)
+
+        for (var i = 0; i < populationSize; i++) {
+            let randomIndex = Math.floor(Math.random() * nodesArray.length)
+			var couple = new Couple(_viewport, girlBot, boyBot);
+            this.bots.add(couple)
+        }
+	}
 }
 
 module.exports = Map
