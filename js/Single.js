@@ -1,6 +1,6 @@
 import Couple from './Couple.js';
 import Bot from './Bot.js';
-import BotSet from './State'
+import RootState from './RootState'
 import Colours from './Colours.js';
 const colours = new Colours();
 const _ = require('underscore');
@@ -17,6 +17,8 @@ class Single extends Bot {
     constructor(stage, node, options) {
         super(stage, node, options);
         this.targetIdentity = [colours.getPseudoRandomColour(this.identity)]
+        this.actions = [ this.moveToHub, this.moveToRandom ]
+        this.traits = [ 1, 1 ]
         
         // Draw Circle
         this.circle = new PIXI.Graphics();
@@ -54,6 +56,14 @@ class Single extends Bot {
         }
     }
 
+    moveToHub = () => {
+        this.moveToNode(RootState.map.getRandomSocialHub())
+    }
+
+    moveToRandom = () => {
+        this.moveToNode(RootState.map.getRandomNode())
+    }
+
     //returns direct reference to the other partner in the relationship (the partner not passed in as argument)
     getOtherPartner(partner){
         if(this.spouse1 == partner){
@@ -89,7 +99,7 @@ class Single extends Bot {
             this.alive = false;
             this.circle.destroy();
             this.stage.removeChild(this.circle)
-            BotSet.delete(this)
+            RootState.BotSet.delete(this)
         }
     }
 }

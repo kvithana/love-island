@@ -132,7 +132,7 @@ class SocialHub extends Node {
         if (this.bots.size >= 10) {
             size = MAX_SIZE;
         } else {
-            size = this.bots.size;
+            size = Math.log(this.bots.size + 1);
         }
         ease.add(this.circle, { scale: size + HUB_SIZE }, { duration: 1000, reverse: false })
     }

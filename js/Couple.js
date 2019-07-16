@@ -1,7 +1,7 @@
 import Single from './Single.js';
 import Bot from './Bot.js';
 import Map from './Map.js';
-import BotSet from './State.js';
+import RootState from './RootState.js';
 const PIXI = require('pixi.js');
 
 
@@ -37,9 +37,9 @@ class Couple extends Bot{
         this.spouse1.alive = false;
         this.spouse2.alive = false;
         //Then remove them from the big array, add couple to the big array
-        BotSet.delete(this.spouse1);
-        BotSet.delete(this.spouse2);
-        BotSet.add(this);
+        RootState.BotSet.delete(this.spouse1);
+        RootState.BotSet.delete(this.spouse2);
+        RootState.BotSet.add(this);
 
     }
 
@@ -65,7 +65,7 @@ class Couple extends Bot{
             var inheritedIdentity = genePool[Math.floor(Math.random() * genePool.length)];
             var baby = new Single(this.stage, this.spouse1.node, {age:0, identity:inheritedIdentity});
             this.children.add(baby);
-            BotSet.add(baby);
+            RootState.BotSet.add(baby);
             return baby;
         }
         else{
@@ -80,7 +80,7 @@ class Couple extends Bot{
         if (randomValue < (this.age / this.invincibility)){
             this.alive = false;
             this.circle.destroy();
-            BotSet.delete(this)
+            RootState.BotSet.delete(this)
         }
     }
 }

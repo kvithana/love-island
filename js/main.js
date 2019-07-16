@@ -3,6 +3,8 @@ import Single from './Single.js';
 import Couple from './Couple.js';
 import { ease } from 'pixi-ease'
 import DomEase from 'dom-ease'
+import { State } from 'pixi.js';
+import RootState from './RootState.js';
 
 const PIXI = require('pixi.js')
 const Viewport = require('pixi-viewport').Viewport
@@ -101,6 +103,7 @@ window.onload = function()
       }
 
     let m = new Map(_viewport)
+    RootState.map = m;
     // let a = m.createNode(300, 300, {sourceNode: m.source })
     // let b = m.createNode(600, 600, {sourceNode: a})
     // let c = m.createNode(500, 300, {sourceNode: b})
@@ -130,10 +133,6 @@ window.onload = function()
     // m.generateEastNode()
     // m.generateEastNode()
 
-    m.initPopulation(5)
-    m.generateSocialHub();
-
-
     const ticker = new Ticker(m)
 
     window.setInterval(function(){
@@ -149,11 +148,28 @@ window.onload = function()
 
     // highlight()
     
-    // let node = m.source //don't push
+    let node = m.source //don't push
     // let node2 = Array.from(node.getConnectedNodes())[0];
-    // console.log();
 
     // var girlBot = new Single(_viewport, node, {age: 59});
+
+    m.generateSocialHub();
+
+    m.initPopulation(10)
+
+    // let socialHubs = Array.from(m.socialHubs)
+
+    // girlBot.moveToNode(socialHubs[0])
+    // window.setInterval(function(){
+    //     girlBot.tick()
+    //   }, 100 )
+
+    // for (let bot of m.bots) {
+    //     bot.wait(Math.floor(Math.random()*10000))
+    //     bot.moveToNode(socialHubs[0])
+    // }
+
+    
     // var boyBot = new Single(_viewport, node2, {age: 19});
     // m.bots.add(girlBot);
     // m.bots.add(boyBot);
@@ -178,11 +194,7 @@ window.onload = function()
 
 }
 
-
-
 // const colours = new Colours();
-
-
 
 // girlBot.personality = "GP";
 // girlBot.looks = "GL";

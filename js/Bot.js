@@ -3,6 +3,9 @@ const colours = new Colours();
 const _ = require('underscore');
 const PIXI = require('pixi.js')
 import { Ease, ease } from 'pixi-ease'
+import { State } from 'pixi.js';
+import RootState from './RootState.js';
+const Tombola = require('./math/tombola')
 
 
 function setDefaults(options, defaults){
@@ -12,6 +15,8 @@ function setDefaults(options, defaults){
 const numberOfColours = Colours.numColours;
 //every milestoneYears years they will lower their standards
 const milestoneYears = 10;
+// Adjusts the speed of the animation, determines how long to wait for in ticker
+const animationTime = 1000;
 
 
 class Bot {
@@ -38,6 +43,7 @@ class Bot {
         this.posY = this.node.position.posY;
         this.isBusy = false
         this.tickData = { remaining: 0 , queue: null }
+        this.state = { moveQueue: [] }
     }
 
     //returns current shape position
@@ -48,17 +54,23 @@ class Bot {
     tick() {
       // This calls the getOlder function of Single/Couple
       //this.getOlder();
+      // If the Bot is not busy
       if (!this.isBusy) {
-        this.move();
+        let action = this.state.moveQueue.pop()
+        if (action) {
+          this.move(action)
+        } else {
+          new Tombola().weightedFunction(this.actions, this.traits)
+        }
         //TODO - this will call 'act' rather than move
-        this.getOlder();
+        // this.getOlder();
       }
       this.incrementWaiting()
     }
 
     wait = (ticks) => {
       ticks = Math.round(ticks / 100)
-      this.tickData.remaining = ticks
+      this.tickData.remaining += ticks
     }
 
     incrementWaiting = () => {
@@ -71,12 +83,14 @@ class Bot {
       }
     }
 
-    move() {
-        //the 'next node' is a random node from the list of nodes connected to the current node
-        let nextNodes = Array.from(this.node.getConnectedNodes())
-        let nextNode = nextNodes[Math.floor(Math.random() * nextNodes.length)]
-        ease.add(this.circle, { x: nextNode.position.posX, y: nextNode.position.posY }, { duration: 1000, reverse: false })
-        this.wait(1000)
+    moveToNode(node) {
+      this.state.moveQueue.push(...RootState.map.pathFinder.pathTo(node, this.node))
+    }
+
+    move(nextNode) {
+        ease.add(this.circle, { x: nextNode.position.posX, y: nextNode.position.posY }, { duration: animationTime, reverse: false })
+
+        this.wait(animationTime)
         this.node.bots.delete(this)
         if (this.node.isHub) {
           this.node.resize()

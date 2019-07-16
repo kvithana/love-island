@@ -2,7 +2,7 @@ const Node = require('./Node.js')
 const Edge = require('./Edge.js')
 const Tombola = require('./math/tombola')
 import Single from './Single.js';
-import BotSet from './State.js';
+import RootState from './RootState.js';
 import { State } from 'pixi.js';
 const intersects = require('intersects')
 const lineIntersect = require('./math/line-intersect')
@@ -19,7 +19,8 @@ function setDefaults(options, defaults){
 class Map {
     constructor (stage) {
         this.nodes = new Set()
-        this.bots = BotSet;
+        this.socialHubs = new Set()
+        this.bots = RootState.BotSet;
         this.nodeDeck = new Tombola().deck()
         this.stage = stage;
         this.edges = new Set()
@@ -79,7 +80,6 @@ class Map {
             if (dist < closestEdge.distance ) {
                 closestEdge.edge = edge
                 closestEdge.distance = dist
-                console.log(closestEdge)
             }
         }
         if (possibleEdges.length != 0) {
@@ -97,7 +97,6 @@ class Map {
         }
         let intersections = []
         options = setDefaults(options, defaults)
-        // console.log(position, angle, options)
         let offPosX = position.posX + Math.round((options.bufferWidth*2/3 + 5) * Math.cos(angle * Math.PI / 180))  // offset to avoid outgoing edges from current node
         let offPosY = position.posY + Math.round((options.bufferWidth*2/3 + 5) * Math.sin(angle * Math.PI / 180))
         let projPosX = position.posX + Math.round(options.bufferDistance * Math.cos(angle * Math.PI / 180))   // edge projected outwards to avoid landing close
@@ -178,7 +177,6 @@ class Map {
         let angle = Math.round(Math.atan2(newNode.position.posY - options.sourceNode.position.posY,
             newNode.position.posX - options.sourceNode.position.posX) * 180 / Math.PI)
         // this.extendEdge(options.sourceNode, angle)
-        // console.log(this.testIntersection({posX: options.sourceNode.position.posX, posY: options.sourceNode.position.posY}, angle, { returnIntersections: true }))
         let newEdge = new Edge(this.stage, { connectingNodes: [options.sourceNode, newNode], angle: angle})
         newNode.addEdge(newEdge)
         options.sourceNode.addEdge(newEdge)
@@ -207,6 +205,18 @@ class Map {
         circle.endFill()
         this.stage.addChildAt(circle, 2)
         return circle
+    }
+
+    getRandomSocialHub = () => {
+        let socialHubs = Array.from(this.socialHubs);
+        let randomIndex = Math.floor(Math.random() * socialHubs.length)
+        return socialHubs[randomIndex]
+    }
+
+    getRandomNode = () => {
+        let nodes = Array.from(this.nodes);
+        let randomIndex = Math.floor(Math.random() * nodes.length)
+        return nodes[randomIndex]
     }
 
     generateNorthNode = () => {
@@ -279,6 +289,7 @@ class Map {
         let result = selectedNode.createEdge(options)
         this.nodeDeck.insert(result.newNode)
         this.nodes.add(result.newNode)
+        this.socialHubs.add(result.newNode)
     }
 
     initPopulation = (populationSize) => {
