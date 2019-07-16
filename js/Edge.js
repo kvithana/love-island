@@ -101,7 +101,6 @@ class Edge {
 	generateHouses = () => {
     let houseWidth = this.length / 5
 
-	console.log(houseWidth)
 		// First Side of the Road
 		for (var i = 0; i < 5; i++) {
 			let house = new House(this.stage, this, {
@@ -112,7 +111,6 @@ class Edge {
 				angle: this.angle,
 				isHabited: false,
 			})
-			console.log(house)
 
 			this.houses.push(house)
 		}
@@ -127,7 +125,6 @@ class Edge {
 				angle: this.angle + 180,
 				isHabited: false,
 			})
-			console.log(house)
 
 			this.houses.push(house)
     	}
