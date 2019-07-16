@@ -135,12 +135,26 @@ window.onload = function()
 
     const ticker = new Ticker(m)
 
-    // window.setInterval(function(){
-    //     m.createRandomNode()
-    //   }, 100 )
-    for (let i=0; i<15; i++) {
+    window.setInterval(function(){
+		// m.createRandomNode()
+		let freePlot = m.getRandomFreePlot()
+
+		if(freePlot) {
+			freePlot.drawHouse()
+		}
+      }, 1000 )
+    for (let i=0; i<5; i++) {
         m.createRandomNode()
-    }
+	}
+
+	// for (let i=0; i<5; i++) {
+	// 	let freePlot = m.getRandomFreePlot()
+
+	// 	if(freePlot) {
+	// 		freePlot.drawHouse()
+	// 	}
+	// }
+
 
 
     // let a = new Node(_viewport, {posX: 100, posY: -100})

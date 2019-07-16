@@ -45,9 +45,9 @@ class Edge {
 		this.houses = []
 		this.generateHouses() //GENERATE HOUSES EVERYWHERE
 
-		for(var i = 0; i < this.houses.length; i++) {
-			this.houses[i].drawHouse()
-    	}
+		// for(var i = 0; i < this.houses.length; i++) {
+		// 	this.houses[i].drawHouse()
+    	// }
 	}
 
 	// update an edge node

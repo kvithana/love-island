@@ -27,7 +27,7 @@ class Map {
         this.source = new Node(stage)
         this.nodes.add(this.source)
         this.nodeDeck.insert(this.source)
-        this.pathFinder = new PathFinder({nodeSet: this.nodes, edgeSet: this.edges })
+		this.pathFinder = new PathFinder({nodeSet: this.nodes, edgeSet: this.edges })
     }
 
     getIntersect(lineAStart, lineAEnd, lineBStart, lineBEnd) {
@@ -169,7 +169,7 @@ class Map {
             this.nodeDeck.insert(newNode)
             this.nodes.add(newNode)
             this.edges.add(newEdge)
-        }
+		}
     }
 
     createNode = (newPosX, newPosY, options) => {
@@ -217,6 +217,20 @@ class Map {
         let nodes = Array.from(this.nodes);
         let randomIndex = Math.floor(Math.random() * nodes.length)
         return nodes[randomIndex]
+	}
+	
+	getRandomFreePlot = () => {
+        let edges = Array.from(this.edges);
+		let randomIndex = Math.floor(Math.random() * edges.length)
+		
+		// console.log(edges[randomIndex])
+
+		let houses = edges[randomIndex].houses
+		let randomHouseIndex = Math.floor(Math.random() * houses.length)
+
+		if(houses[randomHouseIndex].isHabited == false) {
+			return houses[randomHouseIndex]
+		} else return false
     }
 
     generateNorthNode = (min, max) => {

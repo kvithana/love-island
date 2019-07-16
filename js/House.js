@@ -43,6 +43,9 @@ class House {
 
 			// Animate house
 			ease.add(house, { height: this.height }, { duration: 1000, reverse: false })
+
+			// Set it to habited
+			this.isHabited = true
 		}, 1000 )
     }
 
