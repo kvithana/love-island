@@ -135,12 +135,12 @@ window.onload = function()
 
     const ticker = new Ticker(m)
 
-    window.setInterval(function(){
-        m.createRandomNode()
-      }, 1000 )
-    // for (let i=0; i<5; i++) {
+    // window.setInterval(function(){
     //     m.createRandomNode()
-    // }
+    //   }, 100 )
+    for (let i=0; i<15; i++) {
+        m.createRandomNode()
+    }
 
 
     // let a = new Node(_viewport, {posX: 100, posY: -100})
@@ -155,7 +155,7 @@ window.onload = function()
 
     m.generateSocialHub();
 
-    m.initPopulation(10)
+    m.initPopulation(14)
 
     // let socialHubs = Array.from(m.socialHubs)
 

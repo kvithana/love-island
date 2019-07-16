@@ -20,8 +20,7 @@ const animationTime = 1000;
 
 
 class Bot {
-    relationship = null; //instantiated with a successful proposal
-    alive = true; //changed if they die
+    // alive = true; //changed if they die
     //called in sub classes getOlder, higher number = less chance of dying year to year
     invincibility = 1000;
     constructor(stage, node, options) {
@@ -43,7 +42,7 @@ class Bot {
         this.posY = this.node.position.posY;
         this.isBusy = false
         this.tickData = { remaining: 0 , queue: null }
-        this.state = { moveQueue: [] }
+        this.state = { moveQueue: [], actionQueue: [] }
     }
 
     //returns current shape position
@@ -56,9 +55,9 @@ class Bot {
       //this.getOlder();
       // If the Bot is not busy
       if (!this.isBusy) {
-        let action = this.state.moveQueue.pop()
-        if (action) {
-          this.move(action)
+        let node = this.state.moveQueue.pop()
+        if (node) {
+          this.move(node)
         } else {
           new Tombola().weightedFunction(this.actions, this.traits)
         }
@@ -88,20 +87,20 @@ class Bot {
     }
 
     move(nextNode) {
-        ease.add(this.circle, { x: nextNode.position.posX, y: nextNode.position.posY }, { duration: animationTime, reverse: false })
+      ease.add(this.circle, { x: nextNode.position.posX, y: nextNode.position.posY }, { duration: animationTime, reverse: false })
 
-        this.wait(animationTime)
-        this.node.bots.delete(this)
-        if (this.node.isHub) {
-          this.node.resize()
-        }
-        this.node = nextNode
-        this.node.bots.add(this)
+      this.wait(animationTime)
+      this.node.bots.delete(this)
+      if (this.node.isHub) {
+        this.node.resize()
+      }
+      this.node = nextNode
+      this.node.bots.add(this)
 
-        if (this.node.isHub) {
-          this.node.resize()
-        }
-        // moveBot.on('complete', () => this.isBusy = false)
+      if (this.node.isHub) {
+        this.node.resize()
+      }
+      // moveBot.on('complete', () => this.isBusy = false)
     }
 
     //TODO - this will have all of the allowable actions, logic to pick an action, called by tick

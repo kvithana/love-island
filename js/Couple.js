@@ -15,9 +15,13 @@ class Couple extends Bot{
         });
         this.spouse1 = spouse1;
         this.spouse2 = spouse2;
+        this.anniversaryNode = spouse1.node;
         this.spouse1Satisfaction = spouse1.relationshipSatisfaction;
         this.spouse2Satisfaction = spouse2.relationshipSatisfaction;
         this.relationshipSatisfaction = this.spouse1Satisfaction + this.spouse2Satisfaction;
+        this.actions = [ this.moveToRandom ]
+        this.traits = [ 1 ]
+        this.relationshipStatus = true
 
         // Draw Circle
         this.circle = new PIXI.Graphics()
@@ -31,19 +35,9 @@ class Couple extends Bot{
 		this.circle.beginFill(spouse2.identity, 1);
 		this.circle.drawCircle(20, 0, 10);
 		this.circle.endFill();
-        this.circle.position.set(spouse1.posX, spouse1.posY)
+        this.circle.position.set(spouse1.node.position.posX, spouse1.node.position.posY)
         stage.addChild(this.circle)
-        //remove single circles from map
-        this.spouse1.circle.destroy();
-        this.spouse2.circle.destroy();
-        stage.removeChild(this.spouse1.circle);
-        stage.removeChild(this.spouse2.circle);
-        //they are no longer alive
-        this.spouse1.alive = false;
-        this.spouse2.alive = false;
-        //Then remove them from the big array, add couple to the big array
-        RootState.BotSet.delete(this.spouse1);
-        RootState.BotSet.delete(this.spouse2);
+        //add couple to the botset
         RootState.BotSet.add(this);
 
     }
@@ -86,6 +80,10 @@ class Couple extends Bot{
             this.circle.destroy();
             RootState.BotSet.delete(this)
         }
+    }
+
+    moveToRandom = () => {
+        this.moveToNode(RootState.map.getRandomNode())
     }
 
     buildHouse() {

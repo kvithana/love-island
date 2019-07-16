@@ -5,20 +5,21 @@ import Colours from './Colours.js';
 const colours = new Colours();
 const _ = require('underscore');
 const PIXI = require('pixi.js');
+const Tombola = require('./math/tombola')
 
 const numberOfColours = Colours.numColours;
 //every milestoneYears years they will lower their standards
 const milestoneYears = 10;
 
 class Single extends Bot {
-    relationship = null; //instantiated with a successful proposal
     personalRelationshipSatisfaction = null; //instantiated with a successful proposal
-    alive = true; //changed if they die
+    // alive = true; //changed if they die
     constructor(stage, node, options) {
         super(stage, node, options);
         this.targetIdentity = [colours.getPseudoRandomColour(this.identity)]
         this.actions = [ this.moveToHub, this.moveToRandom ]
-        this.traits = [ 1, 1 ]
+        this.traits = [ 5, 1 ]
+        this.relationshipStatus = false
         
         // Draw Circle
         this.circle = new PIXI.Graphics();
@@ -31,11 +32,41 @@ class Single extends Bot {
         stage.addChild(this.circle)
     }
 
+    tick() {
+        // If the Bot is not busy
+        if (!this.isBusy) {
+          let node = this.state.moveQueue.pop()
+          if (node) {
+            this.move(node)
+          } else if (this.node.isHub) {
+            // They will never leave the hub, until married
+            this.mingle()
+          } else {
+            new Tombola().weightedFunction(this.actions, this.traits)
+          }
+          //TODO - this will call 'act' rather than move
+          // this.getOlder();
+        }
+        this.incrementWaiting()
+      }
+
     //returns target identity array index if target identity suits the candidate's actual identity, -1 if not
     //therefore a low return value (like 0, or 1) would mean a really good match. A high one would mean they're getting desperate
     getCompatability(otherSingleBot){
-        var identityApproval = this.targetIdentity.indexOf(otherSingleBot.identity);
-        return identityApproval;
+        // var identityApproval = this.targetIdentity.indexOf(otherSingleBot.identity);
+        // return identityApproval;
+        return 0; //DONT PUSH
+    }
+
+    mingle() {
+        for (let bot of this.node.bots){
+            if (bot !== this && !bot.isBusy && !bot.relationshipStatus && bot.alive && this.alive) {
+                if(this.propose(bot)){
+                    //they're married
+                    console.log("married couple: " + this.identity + " and " + bot.identity);
+                }
+            }
+        }
     }
 
     propose(otherSingleBot){
@@ -43,11 +74,24 @@ class Single extends Bot {
             if (otherSingleBot.getCompatability(this) > -1){
                 this.personalRelationshipSatisfaction = numberOfColours - this.getCompatability(otherSingleBot);
                 otherSingleBot.personalSatisfaction = numberOfColours - otherSingleBot.getCompatability(this);
-                this.relationship = new Couple(this.stage, this, otherSingleBot);
-                otherSingleBot.relationship = this.relationship;
+                let couple = new Couple(this.stage, this, otherSingleBot);
+                //they are no longer alive
+                this.alive = false;
+                otherSingleBot.alive = false;
+                // Delete the Single bots from the node they are in before killing them
+                this.node.bots.delete(this)
+                this.node.bots.delete(otherSingleBot)
+                //remove single circles from map
+                this.stage.removeChild(this.circle);
+                this.stage.removeChild(otherSingleBot.circle);
+                this.circle.destroy();
+                otherSingleBot.circle.destroy();
+                //Then remove them from the big array
+                RootState.BotSet.delete(this);
+                RootState.BotSet.delete(otherSingleBot);
                 return true;
             }
-            else{
+            else {
                 return false;
             }
         }
