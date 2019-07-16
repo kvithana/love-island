@@ -77,7 +77,16 @@ class Bot {
         let nextNode = nextNodes[Math.floor(Math.random() * nextNodes.length)]
         ease.add(this.circle, { x: nextNode.position.posX, y: nextNode.position.posY }, { duration: 1000, reverse: false })
         this.wait(1000)
+        this.node.bots.delete(this)
+        if (this.node.isHub) {
+          this.node.resize()
+        }
         this.node = nextNode
+        this.node.bots.add(this)
+
+        if (this.node.isHub) {
+          this.node.resize()
+        }
         // moveBot.on('complete', () => this.isBusy = false)
     }
 
