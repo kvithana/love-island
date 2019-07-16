@@ -130,7 +130,9 @@ window.onload = function()
     // m.generateEastNode()
     // m.generateEastNode()
 
-    m.initPopulation(10)
+    m.initPopulation(5)
+    m.generateSocialHub();
+
 
     const ticker = new Ticker(m)
 
