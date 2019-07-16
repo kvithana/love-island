@@ -1,5 +1,7 @@
 const _ = require('underscore')
 const PIXI = require('pixi.js')
+const { Ease, ease } = require ('pixi-ease')
+
 
 function setDefaults(options, defaults) {
     return _.defaults({}, _.clone(options), defaults);
@@ -33,16 +35,15 @@ class House {
 			// Draw a house somewhere on the edge
 			let house = new PIXI.Graphics()
 			house.beginFill(0x777777) // Black
-			house.drawRect(0, 0, this.width, this.height)
+			house.drawRect(0, 0, this.width, 0.01)
 			house.position.set(this.posX, this.posY)
 			house.endFill();
 			house.angle = this.angle
 			this.stage.addChildAt(house, 0)
+
+			// Animate house
+			ease.add(house, { height: this.height }, { duration: 1000, reverse: false })
 		}, 1000 )
-
-
-        // Animate house
-        //ease.add(house, { width: this.width }, { duration: 1000, reverse: false })
     }
 
 }

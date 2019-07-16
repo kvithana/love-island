@@ -154,7 +154,7 @@ class Map {
                 validNode = true
             }
         }
-        let options = { distance: new Tombola().range(60, 130) }
+        let options = { distance: new Tombola().range(100, 300) }
         // if (!this.extendEdge(selectedNode, angle)) { // BROKEN
         if (true) {
             let newPosX = selectedNode.position.posX + Math.round(options.distance * Math.cos(angle * Math.PI / 180))

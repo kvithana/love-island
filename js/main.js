@@ -137,10 +137,10 @@ window.onload = function()
 
     window.setInterval(function(){
         m.createRandomNode()
-      }, 100 )
-    for (let i=0; i<15; i++) {
-        m.createRandomNode()
-    }
+      }, 1000 )
+    // for (let i=0; i<5; i++) {
+    //     m.createRandomNode()
+    // }
 
 
     // let a = new Node(_viewport, {posX: 100, posY: -100})

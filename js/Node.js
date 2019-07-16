@@ -30,8 +30,8 @@ class Node {
         if (this.isHub) {
             let circle = new PIXI.Graphics()
             circle.lineStyle(0)
-            circle.beginFill(0xA1A1A1, 1);
-            circle.lineStyle(3, 0xA1A1A1);  //(thickness, color)
+            circle.beginFill(0x000000, 1);
+            //circle.lineStyle(3, 0xA1A1A1);  //(thickness, color)
             circle.drawCircle(0, 0, 4);
             circle.endFill();
             circle.position.set(this.position.posX, this.position.posY)

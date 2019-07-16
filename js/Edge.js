@@ -37,7 +37,7 @@ class Edge {
 		rectangle.position.set(newPosX, newPosY)
 		rectangle.endFill();
 		rectangle.angle = this.angle
-		stage.addChildAt(rectangle, 0)
+		stage.addChildAt(rectangle, 0.5)
 		// Animate Rectangle
 		ease.add(rectangle, { width: this.length }, { duration: 1000, reverse: false })
 
@@ -99,35 +99,23 @@ class Edge {
 	}
 
 	generateHouses = () => {
-    let houseWidth = this.length / 5
+	let houseWidth = this.length / 10
+	
+	let numberOfHouses = Math.floor(this.length / houseWidth) * 2
 
 		// First Side of the Road
-		for (var i = 0; i < 5; i++) {
+		for (var i = 0; i < numberOfHouses; i++) {
 			let house = new House(this.stage, this, {
-				posX: this.rectangle.position.x + Math.round((houseWidth * i) * Math.cos(this.angle * Math.PI / 180) - Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))),
-				posY: this.rectangle.position.y + Math.round((houseWidth * i) * Math.sin(this.angle * Math.PI / 180) - Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))),
-				width: houseWidth - 5,
-				height: new Tombola().cluster( 1, 10, 20, 5 ),
-				angle: this.angle,
+				posX: this.rectangle.position.x + Math.round((houseWidth * Math.floor(i/2) + (i%2 ? houseWidth : 0)) * Math.cos(this.angle * Math.PI / 180) - Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))),
+				posY: this.rectangle.position.y + Math.round((houseWidth * Math.floor(i/2) + (i%2 ? houseWidth : 0)) * Math.sin(this.angle * Math.PI / 180) - Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))),
+				width: new Tombola().chance(1, 3) ? houseWidth - (houseWidth / 4) : houseWidth,
+				height: new Tombola().cluster( 1, 20, 40, 5 ),
+				angle: this.angle + (180 * (i%2)),
 				isHabited: false,
 			})
 
 			this.houses.push(house)
 		}
-		
-		// Second Side of the Road
-		for (var i = 0; i < 5; i++) {
-			let house = new House(this.stage, this, {
-				posX: this.rectangle.position.x + Math.round((houseWidth * i) * Math.cos(this.angle * Math.PI / 180) - Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))),
-				posY: this.rectangle.position.y + Math.round((houseWidth * i) * Math.sin(this.angle * Math.PI / 180) - Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))),
-				width: houseWidth - 5,
-				height: new Tombola().cluster( 1, 10, 20, 5 ),
-				angle: this.angle + 180,
-				isHabited: false,
-			})
-
-			this.houses.push(house)
-    	}
 	}
 }
 
