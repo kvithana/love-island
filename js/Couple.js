@@ -2,10 +2,10 @@ import Single from './Single.js';
 import Bot from './Bot.js';
 import Map from './Map.js';
 import RootState from './RootState.js';
+import { ease } from 'pixi-ease';
 const PIXI = require('pixi.js');
 const Tombola = require('./math/tombola')
-
-
+const animationTime = RootState.animationTime;
 
 class Couple extends Bot{
     maxChildren = 3;
@@ -22,8 +22,8 @@ class Couple extends Bot{
         this.spouse1Satisfaction = spouse1.relationshipSatisfaction;
         this.spouse2Satisfaction = spouse2.relationshipSatisfaction;
         this.relationshipSatisfaction = this.spouse1Satisfaction + this.spouse2Satisfaction;
-        this.actions = [ this.moveToRandom ]
-        this.traits = [ 1 ]
+        this.actions = [ this.moveToRandom, this.moveToHouse, this.moveToHub]
+        this.traits = [ 1, 1, 1 ]
         this.relationshipStatus = true
 
         // Draw Circle
@@ -59,17 +59,28 @@ class Couple extends Bot{
                 if (!this.house.isDrawn) {
                     this.house.drawHouse();
                 }
+                else if (this.boredom < this.boredomLimit){
+                    this.haveSex();
+                    this.boredom++;
+                }
             }
             this.move(node)
           } else {
+            this.boredom = 0;
             new Tombola().weightedFunction(this.actions, this.traits)
           }
-          // this.getOlder();
+          this.getOlder();
         }
         this.incrementWaiting()
       }
 
+     
     haveSex() {
+        console.log("currently making love");
+        //animate sex
+        ease.add(this.circle, { height: 30 }, { duration: animationTime, reverse: true })
+        this.wait(animationTime)
+
         var randomNumber = Math.random();
         var hurdle;
         if (this.age < 50){
@@ -88,7 +99,7 @@ class Couple extends Bot{
             //make a baby
             var genePool = [this.spouse1.identity, this.spouse2.identity];
             var inheritedIdentity = genePool[Math.floor(Math.random() * genePool.length)];
-            var baby = new Single(this.stage, this.spouse1.node, {age:0, identity:inheritedIdentity});
+            var baby = new Single(this.stage, this.node, {age:0, identity:inheritedIdentity});
             this.children.add(baby);
             RootState.BotSet.add(baby);
             return baby;
@@ -110,10 +121,17 @@ class Couple extends Bot{
     }
 
     moveToRandom = () => {
-        this.moveToNode(RootState.map.getRandomNode(), {})
+        console.log("moving to random");
+        this.moveToNode(RootState.map.getRandomNode(), {});
+    }
+
+    moveToHub = () => {
+        console.log("moving to anniversary hub");
+        this.moveToNode(this.anniversaryNode, {});
     }
 
     moveToHouse = () => {
+        console.log("moving to house");
         // Determine the shortest route to the house plot by checking distance to both edge nodes
         let node1 = Array.from(this.house.edge.edgeNodes)[0]
         let node2 = Array.from(this.house.edge.edgeNodes)[1]

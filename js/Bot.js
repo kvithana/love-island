@@ -16,13 +16,13 @@ const numberOfColours = Colours.numColours;
 //every milestoneYears years they will lower their standards
 const milestoneYears = 10;
 // Adjusts the speed of the animation, determines how long to wait for in ticker
-const animationTime = 1000;
+const animationTime = RootState.animationTime;
 
 
 class Bot {
     // alive = true; //changed if they die
     //called in sub classes getOlder, higher number = less chance of dying year to year
-    invincibility = 1000;
+    invincibility = 5000;
     constructor(stage, node, options) {
         this.stage = stage
         let defaults = {
@@ -42,9 +42,9 @@ class Bot {
         this.posY = this.node.position.posY;
         this.isBusy = false
         this.tickData = { remaining: 0 , queue: null }
-        this.state = { moveQueue: [], actionQueue: [] }
-        this.boredomLimit = 20;
-        this.boredom = 0; //when they do boring tasks (mingle unsuccessfully, sit at home/have sex) this increments
+        this.state = { moveQueue: []}
+        this.boredomLimit = 20; //they'll try to mingle for up to 20 times before going for a walk
+        this.boredom = 0; //when they do boring tasks (mingle unsuccessfully) this increments
     }
 
     //returns current shape position
@@ -56,13 +56,13 @@ class Bot {
     tick() {
       // If the Bot is not busy
       if (!this.isBusy) {
-        let node = this.state.moveQueue.pop()
-        if (node) {
-          this.move(node)
+        let action = this.state.moveQueue.pop()
+        if (action) {
+          this.move(action)
         } else {
           new Tombola().weightedFunction(this.actions, this.traits)
         }
-        // this.getOlder();
+        this.getOlder();
       }
       this.incrementWaiting()
     }
@@ -83,7 +83,7 @@ class Bot {
     }
 
     moveToNode(node, options) {
-      // If there is a house location in the movement path, move to that location
+      // If there is a house location in the movement path, move to that location, then move back to the node
       if (options.finalPosition) {
         this.state.moveQueue.push(node)
         this.state.moveQueue.push(options.finalPosition)

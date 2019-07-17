@@ -6,31 +6,51 @@ const colours = new Colours();
 const _ = require('underscore');
 const PIXI = require('pixi.js');
 const Tombola = require('./math/tombola')
+import { ease } from 'pixi-ease'
 
+const animationTime = RootState.animationTime;
 const numberOfColours = Colours.numColours;
 //every milestoneYears years they will lower their standards
 const milestoneYears = 10;
 
 class Single extends Bot {
-	personalRelationshipSatisfaction = null; //instantiated with a successful proposal
-	// alive = true; //changed if they die
-	constructor(stage, node, options) {
-		super(stage, node, options);
-		this.targetIdentity = [colours.getPseudoRandomColour(this.identity)]
-		this.actions = [this.moveToHub, this.moveToRandom]
-		this.traits = [2, 1]
-		this.relationshipStatus = false
+    personalRelationshipSatisfaction = null; //instantiated with a successful proposal
+    // alive = true; //changed if they die
+    constructor(stage, node, options) {
+        super(stage, node, options);
+        this.targetIdentity = [colours.getPseudoRandomColour(this.identity)]
+        this.actions = [ this.moveToRandom ]
+        this.traits = [ 1 ]
+        this.relationshipStatus = false
+        
+        // Draw Circle
+        this.circle = new PIXI.Graphics();
+        this.circle.lineStyle(0);
+        this.circle.beginFill(this.identity, 1);
+        this.circle.lineStyle(3, this.targetIdentity);  //(thickness, color)
+        this.circle.drawCircle(0, 0, 5);
+        this.circle.endFill();
+        this.circle.position.set(this.posX, this.posY)
+        stage.addChild(this.circle)
+    }
 
-		// Draw Circle
-		this.circle = new PIXI.Graphics();
-		this.circle.lineStyle(0);
-		this.circle.beginFill(this.identity, 1);
-		this.circle.lineStyle(3, this.targetIdentity);  //(thickness, color)
-		this.circle.drawCircle(0, 0, 10);
-		this.circle.endFill();
-		this.circle.position.set(this.posX, this.posY)
-		stage.addChild(this.circle)
-	}
+    tick() {
+        // If the Bot is not busy
+        if (!this.isBusy) {
+          let node = this.state.moveQueue.pop()
+          if (node) {
+            this.move(node)
+          } else if (this.node.isHub && this.boredom < this.boredomLimit) {
+              this.mingle() //increments boredom
+              //this.wait(1000); //stop them aging rapdly while they mingle over and over
+          } else {
+              this.boredom = 0;
+              new Tombola().weightedFunction(this.actions, this.traits)
+          }
+          this.getOlder();
+        }
+        this.incrementWaiting()
+      }
 
 	tick() {
 		// If the Bot is not busy
@@ -41,11 +61,11 @@ class Single extends Bot {
 			} else if (this.node.isHub && this.boredom < this.boredomLimit) {
 				this.mingle() //increments boredom
 			} else {
-				this.boredom = 0;
+                this.boredom = 0;
+                console.log(this.actions)
 				new Tombola().weightedFunction(this.actions, this.traits)
 			}
-			//TODO - this will call 'act' rather than move
-			// this.getOlder();
+			this.getOlder();
 		}
 		this.incrementWaiting()
 	}
@@ -97,53 +117,55 @@ class Single extends Bot {
 			return false;
 		}
 	}
-
-	moveToHub = () => {
+    moveToHub = () => {
 		this.moveToNode(RootState.map.getRandomSocialHub(), {})
 	}
+    //moves to a random node but not a hub - 
+    //cause they shouldnt go to hubs without the moveToHub action, which they get when they're old enough
+    moveToRandom = () => {
+        let randomNode = RootState.map.getRandomNode();
+        while (randomNode.isHub){
+            randomNode = RootState.map.getRandomNode();
+        }
+        this.moveToNode(randomNode, {})
+    }
 
-	moveToRandom = () => {
-		this.moveToNode(RootState.map.getRandomNode(), {})
-	}
-
-	//returns direct reference to the other partner in the relationship (the partner not passed in as argument)
-	getOtherPartner(partner) {
-		if (this.spouse1 == partner) {
-			return this.spouse2;
-		}
-		else if (this.spouse2 == partner) {
-			return this.spouse1;
-		}
-		else {
-			throw "CALLING PARTNER IS NOT EITHER PARTNER IN RELATIONSHIP"
-		}
-	}
-
-	//should be called every 'year' 
-	//every 'milestoneYears' years a new colour is added to their target identity
-	//death - changes alive attribute of self (and of partner if they have one)
-	getOlder(stage) {
-		this.age += 1;
-		//if they hit a milestone, they get a new target ('acceptable') colour/identity
-		if (this.age % milestoneYears == 0) {
-			var newTargetColourInserted = false;
-			while (newTargetColourInserted == false && this.targetIdentity.length < numberOfColours) {
-				newColour = colours.getRandomColour();
-				if (this.targetIdentity.indexOf(newColour) == -1) {
-					this.targetIdentity[this.targetIdentity.length] = newColour;
-					newTargetColourInserted = true;
-				}
-			}
-		}
-		//if they're unlucky, they die (chance increases each year)
-		var randomValue = Math.random();
-		if (randomValue < (this.age / this.invincibility)) {
-			this.alive = false;
-			this.circle.destroy();
-			this.stage.removeChild(this.circle)
-			RootState.BotSet.delete(this)
-		}
-	}
+    //should be called every 'year' 
+    //every 'milestoneYears' years a new colour is added to their target identity
+    //death - changes alive attribute of self (and of partner if they have one)
+    getOlder(stage){
+        this.age += 1;
+        console.log("age:")
+        console.log(this.age)
+        console.log("index of move to hub:")
+        console.log(this.actions.indexOf(this.moveToHub))
+        //if they hit a milestone, they get a new target ('acceptable') colour/identity
+        if (this.age % milestoneYears == 0){
+            var newTargetColourInserted = false;
+            while (newTargetColourInserted == false && this.targetIdentity.length < numberOfColours){
+                newColour = colours.getRandomColour();
+                if (this.targetIdentity.indexOf(newColour) == -1){
+                    this.targetIdentity[this.targetIdentity.length] = newColour;
+                    newTargetColourInserted = true;
+                }
+            }
+        }
+        if (this.age == 22){
+            this.actions.push(this.moveToHub);
+            this.traits.push(2);
+            ease.add(this.circle, { scale: 2 }, { duration: 1000, reverse: false })
+        }
+        if (this.age > 30){
+            //if they're over 30, and unlucky, they die (chance increases each year)
+            var randomValue = Math.random();
+            if (randomValue < (this.age / this.invincibility)){
+                this.alive = false;
+                this.circle.destroy();
+                this.stage.removeChild(this.circle)
+                RootState.BotSet.delete(this)
+            }
+        }
+    }
 }
 
 export default Single;
