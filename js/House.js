@@ -28,25 +28,24 @@ class House {
 		this.angle = options.angle
 		this.stage = stage
         this.isHabited = options.isHabited
+        this.isDrawn = options.isDrawn
     }
 
     drawHouse = () => {
-		window.setTimeout( () => {
-			// Draw a house somewhere on the edge
-			let house = new PIXI.Graphics()
-			house.beginFill(0x777777) // Black
-			house.drawRect(0, 0, this.width, 0.01)
-			house.position.set(this.posX, this.posY)
-			house.endFill();
-			house.angle = this.angle
-			this.stage.addChildAt(house, 0)
+        // Draw a house somewhere on the edge
+        let house = new PIXI.Graphics()
+        house.beginFill(0x777777) // Black
+        house.drawRect(0, 0, this.width, 0.01)
+        house.position.set(this.posX, this.posY)
+        house.endFill();
+        house.angle = this.angle
+        this.stage.addChildAt(house, 0)
 
-			// Animate house
-			ease.add(house, { height: this.height }, { duration: 1000, reverse: false })
+        // Animate house
+        ease.add(house, { height: this.height }, { duration: 1000, reverse: false })
 
-			// Set it to habited
-			this.isHabited = true
-		}, 1000 )
+        // Set it to habited
+        this.isDrawn = true
     }
 
 }

@@ -39,7 +39,6 @@ class Single extends Bot {
           if (node) {
             this.move(node)
           } else if (this.node.isHub && this.boredom < this.boredomLimit) {
-              console.log("going to mingle");
               this.mingle() //increments boredom
           } else {
               this.boredom = 0;
@@ -64,7 +63,6 @@ class Single extends Bot {
             if (bot !== this && !bot.isBusy && !bot.relationshipStatus && bot.alive && this.alive) {
                 if(this.propose(bot)){
                     //they're married
-                    console.log("married couple: " + this.identity + " and " + bot.identity);
                 }
             }
         }
@@ -103,11 +101,11 @@ class Single extends Bot {
     }
 
     moveToHub = () => {
-        this.moveToNode(RootState.map.getRandomSocialHub())
+        this.moveToNode(RootState.map.getRandomSocialHub(), {})
     }
 
     moveToRandom = () => {
-        this.moveToNode(RootState.map.getRandomNode())
+        this.moveToNode(RootState.map.getRandomNode(), {})
     }
 
     //returns direct reference to the other partner in the relationship (the partner not passed in as argument)

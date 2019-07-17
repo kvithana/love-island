@@ -15,6 +15,7 @@ class Couple extends Bot{
         super(stage, spouse1.node,{
             age : Math.floor(spouse1.age + spouse2.age / 2)
         });
+        this.house = RootState.map.getRandomFreePlot();
         this.spouse1 = spouse1;
         this.spouse2 = spouse2;
         this.anniversaryNode = spouse1.node;
@@ -46,9 +47,19 @@ class Couple extends Bot{
 
     tick() {
         // If the Bot is not busy
+        if (!this.house.isHabited) {
+            this.moveToHouse()
+            this.house.isHabited = true
+        }
         if (!this.isBusy) {
           let node = this.state.moveQueue.pop()
           if (node) {
+            // If the node is the house, build it (if it's not already built)
+            if (node.pseudonode) {
+                if (!this.house.isDrawn) {
+                    this.house.drawHouse();
+                }
+            }
             this.move(node)
           } else {
             new Tombola().weightedFunction(this.actions, this.traits)
@@ -99,7 +110,20 @@ class Couple extends Bot{
     }
 
     moveToRandom = () => {
-        this.moveToNode(RootState.map.getRandomNode())
+        this.moveToNode(RootState.map.getRandomNode(), {})
+    }
+
+    moveToHouse = () => {
+        // Determine the shortest route to the house plot by checking distance to both edge nodes
+        let node1 = Array.from(this.house.edge.edgeNodes)[0]
+        let node2 = Array.from(this.house.edge.edgeNodes)[1]
+        let route1 = RootState.map.pathFinder.pathTo(this.node, node1);
+        let route2 = RootState.map.pathFinder.pathTo(this.node, node2);
+        let destination;
+        route1.length > route2.length ? destination = node2 : destination = node1;
+        let options = {};
+        options.finalPosition = { bots: new Set(), position : { posX: this.house.posX, posY: this.house.posY }, pseudonode: true }
+        this.moveToNode(destination, options)
     }
 
     buildHouse() {

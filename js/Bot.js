@@ -82,13 +82,20 @@ class Bot {
       }
     }
 
-    moveToNode(node) {
-      this.state.moveQueue.push(...RootState.map.pathFinder.pathTo(node, this.node))
+    moveToNode(node, options) {
+      // If there is a house location in the movement path, move to that location
+      if (options.finalPosition) {
+        this.state.moveQueue.push(node)
+        this.state.moveQueue.push(options.finalPosition)
+        this.state.moveQueue.push(...RootState.map.pathFinder.pathTo(node, this.node))
+      } else {
+        this.state.moveQueue.push(...RootState.map.pathFinder.pathTo(node, this.node))
+      }
     }
 
     move(nextNode) {
       ease.add(this.circle, { x: nextNode.position.posX, y: nextNode.position.posY }, { duration: animationTime, reverse: false })
-
+      
       this.wait(animationTime)
       this.node.bots.delete(this)
       if (this.node.isHub) {
