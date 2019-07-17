@@ -118,14 +118,29 @@ class Single extends Bot {
 		}
 	}
     moveToHub = () => {
-		this.moveToNode(RootState.map.getRandomSocialHub(), {})
-	}
+        this.moveToNode(RootState.map.getRandomSocialHub(), {})
+    }
+
     //moves to a random node but not a hub - 
     //cause they shouldnt go to hubs without the moveToHub action, which they get when they're old enough
     moveToRandom = () => {
         let randomNode = RootState.map.getRandomNode();
         while (randomNode.isHub){
             randomNode = RootState.map.getRandomNode();
+        }
+        this.moveToNode(randomNode, {})
+    }
+
+    //returns direct reference to the other partner in the relationship (the partner not passed in as argument)
+    getOtherPartner(partner){
+        if(this.spouse1 == partner){
+            return this.spouse2;
+        }
+        else if(this.spouse2 == partner){
+        return this.spouse1;
+        }
+        else{
+            throw "CALLING PARTNER IS NOT EITHER PARTNER IN RELATIONSHIP"
         }
         this.moveToNode(randomNode, {})
     }
@@ -150,9 +165,9 @@ class Single extends Bot {
                 }
             }
         }
-        if (this.age == 22){
+        if (this.age == 5){
             this.actions.push(this.moveToHub);
-            this.traits.push(2);
+            this.traits.push(10);
             ease.add(this.circle, { scale: 2 }, { duration: 1000, reverse: false })
         }
         if (this.age > 30){

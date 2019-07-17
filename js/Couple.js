@@ -114,6 +114,7 @@ class Couple extends Bot{
         //if they're unlucky, they die (chance increases each year)
         var randomValue = Math.random();
         if (randomValue < (this.age / this.invincibility)){
+            console.log("couple dying");
             this.alive = false;
             this.circle.destroy();
             RootState.BotSet.delete(this)
