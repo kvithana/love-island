@@ -44,7 +44,8 @@ class House {
         this.stage.addChildAt(house, 0)
 
         // Animate house
-        ease.add(house, { height: this.height }, { duration: 1000, reverse: false })
+        ease.add(house, { height: this.height}, { duration: 1000, reverse: false })
+        ease.add(house, { skewX: 0.4 }, { duration: 500, reverse: true })
 
         // Set it to habited
         this.isDrawn = true
