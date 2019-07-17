@@ -165,13 +165,13 @@ window.onload = function()
 
     // highlight()
     
-    let node = m.source //don't push
+    // let node = m.source //don't push
     // let node2 = Array.from(node.getConnectedNodes())[0];
 
     // var girlBot = new Single(_viewport, node, {age: 59});
 
 
-    m.initPopulation(8)
+    m.initPopulation(200)
 
     // let socialHubs = Array.from(m.socialHubs)
 

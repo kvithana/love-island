@@ -8,7 +8,7 @@ const Tombola = require('./math/tombola')
 const animationTime = RootState.animationTime;
 
 class Couple extends Bot{
-    maxChildren = 3;
+    maxChildren = 5;
     children = new Set();
 
     constructor(stage, spouse1, spouse2) {
@@ -137,7 +137,8 @@ class Couple extends Bot{
         let node1 = Array.from(this.house.edge.edgeNodes)[0]
         let node2 = Array.from(this.house.edge.edgeNodes)[1]
         let route1 = RootState.map.pathFinder.pathTo(this.node, node1);
-        let route2 = RootState.map.pathFinder.pathTo(this.node, node2);
+		let route2 = RootState.map.pathFinder.pathTo(this.node, node2);
+		console.log('routes: ', route1, route2)
         let destination;
         route1.length > route2.length ? destination = node2 : destination = node1;
         let options = {};
