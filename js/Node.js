@@ -16,7 +16,8 @@ class Node {
     constructor(stage, options) {
         this.stage = stage
         this.edgeSet = new Set();
-        this.bots = new Set();
+		this.bots = new Set();
+		this.availableHousesDeck = new Tombola().deck();
 
         let defaults = {
             isHub: false,
@@ -30,8 +31,8 @@ class Node {
         if (this.isHub) {
             let circle = new PIXI.Graphics()
             circle.lineStyle(0)
-            circle.beginFill(0xA1A1A1, 1);
-            circle.lineStyle(3, 0xA1A1A1);  //(thickness, color)
+            circle.beginFill(0x000000, 1);
+            //circle.lineStyle(3, 0xA1A1A1);  //(thickness, color)
             circle.drawCircle(0, 0, 4);
             circle.endFill();
             circle.position.set(this.position.posX, this.position.posY)
@@ -118,7 +119,15 @@ class Node {
     // check if an edge is connected to this node
     hasEdge = (edge) => {
         return this.edgeSet.has(edge)
-    }
+	}
+
+	getNodeVacancies = () => {
+		let availableHouses = []
+		for (var edge of Array.from(this.edgeSet)) {
+			availableHouses.push(...edge.getEdgeVacancies());
+		}
+		return availableHouses;
+	}
 
 }
 
@@ -132,7 +141,7 @@ class SocialHub extends Node {
         if (this.bots.size >= 10) {
             size = MAX_SIZE;
         } else {
-            size = this.bots.size;
+            size = Math.log(this.bots.size + 1);
         }
         ease.add(this.circle, { scale: size + HUB_SIZE }, { duration: 1000, reverse: false })
     }

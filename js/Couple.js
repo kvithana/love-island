@@ -1,8 +1,10 @@
 import Single from './Single.js';
 import Bot from './Bot.js';
 import Map from './Map.js';
-import BotSet from './State.js';
+import RootState from './RootState.js';
 const PIXI = require('pixi.js');
+const Tombola = require('./math/tombola')
+
 
 
 class Couple extends Bot{
@@ -12,39 +14,62 @@ class Couple extends Bot{
     constructor(stage, spouse1, spouse2) {
         super(stage, spouse1.node,{
             age : Math.floor(spouse1.age + spouse2.age / 2)
-        });
+		});
+		this.anniversaryNode = spouse1.node;
+        this.house = RootState.map.getRandomFreePlot(this.anniversaryNode);
         this.spouse1 = spouse1;
         this.spouse2 = spouse2;
         this.spouse1Satisfaction = spouse1.relationshipSatisfaction;
         this.spouse2Satisfaction = spouse2.relationshipSatisfaction;
         this.relationshipSatisfaction = this.spouse1Satisfaction + this.spouse2Satisfaction;
-        
+        this.actions = [ this.moveToRandom ]
+        this.traits = [ 1 ]
+        this.relationshipStatus = true
+
         // Draw Circle
         this.circle = new PIXI.Graphics()
-        this.circle.lineStyle(0);
+		this.circle.lineStyle(0);
+		// Draw first circle
         this.circle.beginFill(spouse1.identity, 1);
-        this.circle.lineStyle(3, spouse2.identity);  //(thickness, color)
-        this.circle.drawCircle(0, 0, 30);
-        this.circle.endFill();
-        this.circle.position.set(spouse1.posX, spouse1.posY)
+        //this.circle.lineStyle(3, spouse2.identity);  //(thickness, color)
+		this.circle.drawCircle(0, 0, 10);
+		this.circle.endFill();
+		// Draw second circle
+		this.circle.beginFill(spouse2.identity, 1);
+		this.circle.drawCircle(20, 0, 10);
+		this.circle.endFill();
+        this.circle.position.set(spouse1.node.position.posX, spouse1.node.position.posY)
         stage.addChild(this.circle)
-        //remove single circles from map
-        this.spouse1.circle.destroy();
-        this.spouse2.circle.destroy();
-        stage.removeChild(this.spouse1.circle);
-        stage.removeChild(this.spouse2.circle);
-        //they are no longer alive
-        this.spouse1.alive = false;
-        this.spouse2.alive = false;
-        //Then remove them from the big array, add couple to the big array
-        BotSet.delete(this.spouse1);
-        BotSet.delete(this.spouse2);
-        BotSet.add(this);
+        //add couple to the botset
+		RootState.BotSet.add(this);
 
     }
 
+    tick() {
+        // If the Bot is not busy
+        if (!this.house.isHabited) {
+            this.moveToHouse()
+            this.house.isHabited = true
+        }
+        if (!this.isBusy) {
+          let node = this.state.moveQueue.pop()
+          if (node) {
+            // If the node is the house, build it (if it's not already built)
+            if (node.pseudonode) {
+                if (!this.house.isDrawn) {
+                    this.house.drawHouse();
+                }
+            }
+            this.move(node)
+          } else {
+            new Tombola().weightedFunction(this.actions, this.traits)
+          }
+          // this.getOlder();
+        }
+        this.incrementWaiting()
+      }
 
-    haveSex(){
+    haveSex() {
         var randomNumber = Math.random();
         var hurdle;
         if (this.age < 50){
@@ -65,7 +90,7 @@ class Couple extends Bot{
             var inheritedIdentity = genePool[Math.floor(Math.random() * genePool.length)];
             var baby = new Single(this.stage, this.spouse1.node, {age:0, identity:inheritedIdentity});
             this.children.add(baby);
-            BotSet.add(baby);
+            RootState.BotSet.add(baby);
             return baby;
         }
         else{
@@ -80,8 +105,35 @@ class Couple extends Bot{
         if (randomValue < (this.age / this.invincibility)){
             this.alive = false;
             this.circle.destroy();
-            BotSet.delete(this)
+            RootState.BotSet.delete(this)
         }
+    }
+
+    moveToRandom = () => {
+        this.moveToNode(RootState.map.getRandomNode(), {})
+    }
+
+    moveToHouse = () => {
+        // Determine the shortest route to the house plot by checking distance to both edge nodes
+        let node1 = Array.from(this.house.edge.edgeNodes)[0]
+        let node2 = Array.from(this.house.edge.edgeNodes)[1]
+        let route1 = RootState.map.pathFinder.pathTo(this.node, node1);
+        let route2 = RootState.map.pathFinder.pathTo(this.node, node2);
+        let destination;
+        route1.length > route2.length ? destination = node2 : destination = node1;
+        let options = {};
+        options.finalPosition = { bots: new Set(), position : { posX: this.house.posX, posY: this.house.posY }, pseudonode: true }
+        this.moveToNode(destination, options)
+    }
+
+    buildHouse() {
+      // find an edge
+
+      // ask the edge if there is an available house
+
+      // move to the edge
+
+      // build house
     }
 }
 

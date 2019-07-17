@@ -42,30 +42,25 @@ class PathFinder {
                 if (!visited.get(neighbour)) {
                     const existingDistance = distances.get(neighbour)
                     const newDistance = distances.get(currentNode) + 1
-                    console.log(existingDistance, newDistance)
                     if (newDistance < existingDistance) {
                         distances.set(neighbour, newDistance)
 
                         if (queue.hasValue(neighbour)) {
-                            console.log("update priority")
                             queue.changePriority(neighbour, distances.get(neighbour))
                         }
                         previousVerticies.set(neighbour, currentNode)
                     }
                     if (!queue.hasValue(neighbour)) {
-                        console.log("update queue")
                         queue.add(neighbour, distances.get(neighbour))
                     }
                 }
             })
             visited.set(currentNode, currentNode)
             if (currentNode == destination) {
-                console.log(currentNode, destination)
                 let result = []
                 let current = currentNode
                 result.push(current)
                 while (current != source) {
-                    console.log("HELLO")
                     current = previousVerticies.get(current)
                     result.push(current)
                 }

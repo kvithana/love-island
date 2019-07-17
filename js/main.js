@@ -3,6 +3,8 @@ import Single from './Single.js';
 import Couple from './Couple.js';
 import { ease } from 'pixi-ease'
 import DomEase from 'dom-ease'
+import { State } from 'pixi.js';
+import RootState from './RootState.js';
 
 const PIXI = require('pixi.js')
 const Viewport = require('pixi-viewport').Viewport
@@ -101,6 +103,7 @@ window.onload = function()
       }
 
     let m = new Map(_viewport)
+    RootState.map = m;
     // let a = m.createNode(300, 300, {sourceNode: m.source })
     // let b = m.createNode(600, 600, {sourceNode: a})
     // let c = m.createNode(500, 300, {sourceNode: b})
@@ -110,38 +113,52 @@ window.onload = function()
     // m.drawLine()
 
 
-    // m.generateNorthNode()
-    // m.generateEastNode()
-    // m.generateSouthNode()
-    // m.generateSouthNode()
-    // m.generateEastNode()
-    // m.generateSouthNode()
-    // m.generateWestNode()
-    // m.generateWestNode()
-    // m.generateWestNode()
-    // m.generateWestNode()
-    // m.generateNorthNode()
-    // m.generateEastNode()
-    // m.generateNorthNode()
-    // m.generateNorthNode()
-    // m.generateWestNode()
-    // m.generateNorthNode()
-    // m.generateEastNode()
-    // m.generateEastNode()
-    // m.generateEastNode()
-
-    m.initPopulation(5)
-    m.generateSocialHub();
-
+    // m.generateNorthNode(100, 100)
+    // m.generateEastNode(100, 100)
+    // m.generateSouthNode(100, 100)
+    // m.generateSouthNode(100, 100)
+    // m.generateEastNode(100, 100)
+    // m.generateSouthNode(100, 100)
+    // m.generateWestNode(100, 100)
+    // m.generateWestNode(100, 100)
+    // m.generateWestNode(100, 100)
+    // m.generateWestNode(100, 100)
+    // m.generateNorthNode(100, 100)
+    // m.generateEastNode(100, 100)
+    // m.generateNorthNode(100, 100)
+    // m.generateNorthNode(100, 100)
+    // m.generateWestNode(100, 100)
+    // m.generateNorthNode(100, 100)
+    // m.generateEastNode(100, 100)
+    // m.generateEastNode(100, 100)
+    // m.generateEastNode(100, 100)
 
     const ticker = new Ticker(m)
 
     window.setInterval(function(){
+		m.initPopulation(1)
+	//	m.createRandomNode()
+	// 	// let freePlot = m.getRandomFreePlot()
+
+	// 	// if(freePlot) {
+	// 	// 	freePlot.drawHouse()
+	// 	// }
+      }, 1000 )
+    for (let i=0; i<50; i++) {
         m.createRandomNode()
-      }, 100 )
-    for (let i=0; i<15; i++) {
-        m.createRandomNode()
-    }
+        if(i % 10 == 0) {
+			m.generateSocialHub();
+        }
+	}
+
+	// for (let i=0; i<5; i++) {
+	// 	let freePlot = m.getRandomFreePlot()
+
+	// 	if(freePlot) {
+	// 		freePlot.drawHouse()
+	// 	}
+	// }
+
 
 
     // let a = new Node(_viewport, {posX: 100, posY: -100})
@@ -149,11 +166,27 @@ window.onload = function()
 
     // highlight()
     
-    // let node = m.source //don't push
+    let node = m.source //don't push
     // let node2 = Array.from(node.getConnectedNodes())[0];
-    // console.log();
 
     // var girlBot = new Single(_viewport, node, {age: 59});
+
+
+    // m.initPopulation(50)
+
+    // let socialHubs = Array.from(m.socialHubs)
+
+    // girlBot.moveToNode(socialHubs[0])
+    // window.setInterval(function(){
+    //     girlBot.tick()
+    //   }, 100 )
+
+    // for (let bot of m.bots) {
+    //     bot.wait(Math.floor(Math.random()*10000))
+    //     bot.moveToNode(socialHubs[0])
+    // }
+
+    
     // var boyBot = new Single(_viewport, node2, {age: 19});
     // m.bots.add(girlBot);
     // m.bots.add(boyBot);
@@ -166,7 +199,8 @@ window.onload = function()
     // // console.log("boy target identity: " + boyBot.identity);
     // console.log("girl target identity: " + girlBot.identity);
 
-    //var couple = new Couple(_viewport, girlBot,boyBot);
+	//var couple = new Couple(_viewport, girlBot, boyBot);
+	// m.botSet.add(couple)
 
         // window.setInterval(function(){
         //     if(girlBot.alive){
@@ -178,11 +212,7 @@ window.onload = function()
 
 }
 
-
-
 // const colours = new Colours();
-
-
 
 // girlBot.personality = "GP";
 // girlBot.looks = "GL";

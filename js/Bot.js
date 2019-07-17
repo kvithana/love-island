@@ -3,6 +3,9 @@ const colours = new Colours();
 const _ = require('underscore');
 const PIXI = require('pixi.js')
 import { Ease, ease } from 'pixi-ease'
+import { State } from 'pixi.js';
+import RootState from './RootState.js';
+const Tombola = require('./math/tombola')
 
 
 function setDefaults(options, defaults){
@@ -12,11 +15,12 @@ function setDefaults(options, defaults){
 const numberOfColours = Colours.numColours;
 //every milestoneYears years they will lower their standards
 const milestoneYears = 10;
+// Adjusts the speed of the animation, determines how long to wait for in ticker
+const animationTime = 1000;
 
 
 class Bot {
-    relationship = null; //instantiated with a successful proposal
-    alive = true; //changed if they die
+    // alive = true; //changed if they die
     //called in sub classes getOlder, higher number = less chance of dying year to year
     invincibility = 1000;
     constructor(stage, node, options) {
@@ -38,6 +42,9 @@ class Bot {
         this.posY = this.node.position.posY;
         this.isBusy = false
         this.tickData = { remaining: 0 , queue: null }
+        this.state = { moveQueue: [], actionQueue: [] }
+        this.boredomLimit = 20;
+        this.boredom = 0; //when they do boring tasks (mingle unsuccessfully, sit at home/have sex) this increments
     }
 
     //returns current shape position
@@ -45,20 +52,24 @@ class Bot {
       return this.circle.position
     }
 
+    //this function is overridden in both single and couple. 
     tick() {
-      // This calls the getOlder function of Single/Couple
-      //this.getOlder();
+      // If the Bot is not busy
       if (!this.isBusy) {
-        this.move();
-        //TODO - this will call 'act' rather than move
-        this.getOlder();
+        let node = this.state.moveQueue.pop()
+        if (node) {
+          this.move(node)
+        } else {
+          new Tombola().weightedFunction(this.actions, this.traits)
+        }
+        // this.getOlder();
       }
       this.incrementWaiting()
     }
 
     wait = (ticks) => {
       ticks = Math.round(ticks / 100)
-      this.tickData.remaining = ticks
+      this.tickData.remaining += ticks
     }
 
     incrementWaiting = () => {
@@ -71,23 +82,32 @@ class Bot {
       }
     }
 
-    move() {
-        //the 'next node' is a random node from the list of nodes connected to the current node
-        let nextNodes = Array.from(this.node.getConnectedNodes())
-        let nextNode = nextNodes[Math.floor(Math.random() * nextNodes.length)]
-        ease.add(this.circle, { x: nextNode.position.posX, y: nextNode.position.posY }, { duration: 1000, reverse: false })
-        this.wait(1000)
-        this.node.bots.delete(this)
-        if (this.node.isHub) {
-          this.node.resize()
-        }
-        this.node = nextNode
-        this.node.bots.add(this)
+    moveToNode(node, options) {
+      // If there is a house location in the movement path, move to that location
+      if (options.finalPosition) {
+        this.state.moveQueue.push(node)
+        this.state.moveQueue.push(options.finalPosition)
+        this.state.moveQueue.push(...RootState.map.pathFinder.pathTo(node, this.node))
+      } else {
+        this.state.moveQueue.push(...RootState.map.pathFinder.pathTo(node, this.node))
+      }
+    }
 
-        if (this.node.isHub) {
-          this.node.resize()
-        }
-        // moveBot.on('complete', () => this.isBusy = false)
+    move(nextNode) {
+      ease.add(this.circle, { x: nextNode.position.posX, y: nextNode.position.posY }, { duration: animationTime, reverse: false })
+      
+      this.wait(animationTime)
+      this.node.bots.delete(this)
+      if (this.node.isHub) {
+        this.node.resize()
+      }
+      this.node = nextNode
+      this.node.bots.add(this)
+
+      if (this.node.isHub) {
+        this.node.resize()
+      }
+      // moveBot.on('complete', () => this.isBusy = false)
     }
 
     //TODO - this will have all of the allowable actions, logic to pick an action, called by tick
