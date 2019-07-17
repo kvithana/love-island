@@ -41,7 +41,7 @@ class Couple extends Bot{
         this.circle.position.set(spouse1.node.position.posX, spouse1.node.position.posY)
         stage.addChild(this.circle)
         //add couple to the botset
-        RootState.BotSet.add(this);
+		RootState.BotSet.add(this);
 
     }
 

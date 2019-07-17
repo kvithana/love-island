@@ -61,9 +61,7 @@ class Single extends Bot {
     mingle() {
         for (let bot of this.node.bots){
             if (bot !== this && !bot.isBusy && !bot.relationshipStatus && bot.alive && this.alive) {
-                if(this.propose(bot)){
-                    //they're married
-                }
+                this.propose(bot)
             }
         }
         this.boredom++;

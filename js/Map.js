@@ -220,18 +220,21 @@ class Map {
 	}
 	
 	getRandomFreePlot = () => {
-        let edges = Array.from(this.edges);
-		let randomIndex = Math.floor(Math.random() * edges.length)
-		
-		// console.log(edges[randomIndex])
+		let edges = Array.from(this.edges);
+		let edgesDeck = new Tombola().deck( edges )
+		console.log('finding new plot')
 
-		let houses = edges[randomIndex].houses
-		let randomHouseIndex = Math.floor(Math.random() * houses.length)
-
-		if(houses[randomHouseIndex].isHabited == false) {
-			return houses[randomHouseIndex]
-		} else return false
-    }
+		if (edgesDeck.contents.length > 0) {
+			let edge = edgesDeck.draw()
+			let availableHouse = edge.getAvailableHouse()
+			if(availableHouse) {
+				console.log('house found')
+				return availableHouse
+			} else { 
+				console.log('No house found')
+			}
+		}
+	}
 
     generateNorthNode = (min, max) => {
         let options = { distance: new Tombola().range(min, max), direction: 270 }

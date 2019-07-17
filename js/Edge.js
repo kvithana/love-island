@@ -100,7 +100,6 @@ class Edge {
 
 	generateHouses = () => {
 	let houseWidth = this.length / 10
-	
 	let numberOfHouses = Math.floor(this.length / houseWidth) * 2
 
 		// First Side of the Road
@@ -116,6 +115,44 @@ class Edge {
 
 			this.houses.push(house)
 		}
+	}
+
+	getAvailableHouse = () => {
+		let availableHouses = []
+		// let availableHouse = null
+		for (var house of this.houses) {
+			if (house.isHabited == false) {
+				availableHouses.push(house)
+			}
+		}
+		// Sets the chance of clustering to a value
+		let chanceOfClustering = (Math.random() < 0.8)
+
+		let length = availableHouses.length;
+
+		if(chanceOfClustering) {
+			// if all houses are available on the edge, then let it build on the node
+			if (length == 20) {
+				return availableHouses[0]
+			} else if (length > 0 ) {
+				for(var i = 0; i < length - 1; i++) {
+					var nextElement = availableHouses[i + 1];
+
+					if(nextElement.isHabited) {
+						return availableHouses[i]
+					} else{
+						return availableHouses[i+1]
+					}
+				}
+			} else {
+				console.log('No available houses')
+				return false	
+			}
+		} else {
+			let availableHousesDeck = new Tombola().deck( availableHouses )
+			return(availableHousesDeck.draw())
+		}
+		
 	}
 }
 
