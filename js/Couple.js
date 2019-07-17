@@ -32,11 +32,11 @@ class Couple extends Bot{
 		// Draw first circle
         this.circle.beginFill(spouse1.identity, 1);
         //this.circle.lineStyle(3, spouse2.identity);  //(thickness, color)
-		this.circle.drawCircle(0, 0, 15);
+		this.circle.drawCircle(-10, 0, 15);
 		this.circle.endFill();
 		// Draw second circle
 		this.circle.beginFill(spouse2.identity, 1);
-		this.circle.drawCircle(25, 0, 15);
+		this.circle.drawCircle(15, 0, 15);
 		this.circle.endFill();
         this.circle.position.set(spouse1.node.position.posX, spouse1.node.position.posY)
         stage.addChild(this.circle)
@@ -60,7 +60,7 @@ class Couple extends Bot{
                     this.house.drawHouse();
                 } else if (this.boredom < this.boredomLimit){
                     this.haveSex();
-                    console.log("having sex")
+                    // console.log("having sex")
                     this.boredom++;
                 }
                 else if (this.boredom < this.boredomLimit){
@@ -80,7 +80,7 @@ class Couple extends Bot{
 
      
     haveSex() {
-        console.log("currently making love");
+        // console.log("currently making love");
         //animate sex
         ease.add(this.circle, { height: 30 }, { duration: animationTime, reverse: true })
         this.wait(animationTime)
@@ -118,7 +118,7 @@ class Couple extends Bot{
         //if they're unlucky, they die (chance increases each year)
         var randomValue = Math.random();
         if (randomValue < (this.age / this.invincibility)){
-            console.log("couple dying");
+            // console.log("couple dying");
             this.alive = false;
             this.circle.destroy();
             RootState.BotSet.delete(this)
@@ -126,12 +126,12 @@ class Couple extends Bot{
     }
 
     moveToRandom = () => {
-        console.log("moving to random");
+        // console.log("moving to random");
         this.moveToNode(RootState.map.getRandomNode(), {});
     }
 
     moveToHub = () => {
-        console.log("moving to anniversary hub");
+        // console.log("moving to anniversary hub");
         this.moveToNode(this.anniversaryNode, {});
     }
 
@@ -140,7 +140,7 @@ class Couple extends Bot{
     }
 
     moveToHouse = () => {
-        console.log("moving to house");
+        // console.log("moving to house");
         // Determine the shortest route to the house plot by checking distance to both edge nodes
         let node1 = Array.from(this.house.edge.edgeNodes)[0]
         let node2 = Array.from(this.house.edge.edgeNodes)[1]
