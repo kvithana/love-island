@@ -4,8 +4,6 @@ const _ = require('underscore')
 const PIXI = require('pixi.js')
 import { ease } from 'pixi-ease'
 
-const MAX_SIZE = 10;
-const HUB_SIZE = 2.5;
 let DECK = new Tombola().deck( [0, 45, 90, 135, 180, 225, 270, 315] )
 
 function setDefaults(options, defaults){
@@ -22,12 +20,27 @@ class Node {
         let defaults = {
             isHub: false,
             posX: 0,
-            posY: 0
+            posY: 0,
+            type: "road"
         }
         options = setDefaults(options, defaults)
+        if (isNaN(options.posX)) {
+            throw("OOPS")
+        }
         this.position = {posX: options.posX, posY: options.posY}
         this.isHub = options.isHub
+        this.type = options.type
 
+        this.drawObject = null
+
+        this.draw()
+ 
+        }
+
+    draw = () => {
+        if (this.drawObject) {
+            this.drawObject.clear()
+        }
         if (this.isHub) {
             let circle = new PIXI.Graphics()
             circle.lineStyle(0)
@@ -36,10 +49,23 @@ class Node {
             circle.drawCircle(0, 0, 4);
             circle.endFill();
             circle.position.set(this.position.posX, this.position.posY)
-            stage.addChildAt(circle, 1)
-            ease.add(circle, { scale: HUB_SIZE }, { duration: 1000, reverse: false })
-            this.circle = circle;
-        } else {
+            this.stage.addChildAt(circle, 1)
+            ease.add(circle, { scale: 4 }, { duration: 1000, reverse: false })
+            this.drawObject = circle
+
+        } else if (this.type == "wall") {
+            // Draw Rectangle
+            let rectangle = new PIXI.Graphics()
+            rectangle.lineStyle(0);
+            rectangle.beginFill(0x34495e, 1);
+            rectangle.drawRect(0, 0, 10, 10);
+            rectangle.endFill();
+            rectangle.position.set(this.position.posX - 2*rectangle.width, this.position.posY - 2*rectangle.height)
+            this.stage.addChildAt(rectangle, 1)
+            // Animate rectangle
+            // ease.add(rectangle, { scale: 4 }, { duration: 1000, reverse: false })
+            this.drawObject = rectangle
+        }else {
             // Draw Rectangle
             let rectangle = new PIXI.Graphics()
             rectangle.lineStyle(0);
@@ -47,11 +73,11 @@ class Node {
             rectangle.drawRect(0, 0, 2.5, 2.5);
             rectangle.endFill();
             rectangle.position.set(this.position.posX - 2*rectangle.width, this.position.posY - 2*rectangle.height)
-            stage.addChildAt(rectangle, 1)
+            this.stage.addChildAt(rectangle, 1)
             // Animate rectangle
             ease.add(rectangle, { scale: 4 }, { duration: 1000, reverse: false })
+            this.drawObject = rectangle
         }
-
     }
 
     // get a set of connected edges to this node
