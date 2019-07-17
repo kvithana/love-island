@@ -3,7 +3,9 @@ const Tombola = require('./math/tombola')
 const _ = require('underscore')
 const PIXI = require('pixi.js')
 import { ease, Ease } from 'pixi-ease'
-const HUB_SIZE = 5;
+
+const MAX_SIZE = 10;
+const HUB_SIZE = 6;
 let DECK = new Tombola().deck( [0, 45, 90, 135, 180, 225, 270, 315] )
 
 function setDefaults(options, defaults){
@@ -44,9 +46,9 @@ class Node {
         if (this.isHub) {
             let circle = new PIXI.Graphics()
             circle.lineStyle(0)
-            circle.beginFill(0x000000, 1);
-            //circle.lineStyle(3, 0xA1A1A1);  //(thickness, color)
-            circle.drawCircle(0, 0, 4);
+            circle.beginFill(0xA1A1A1, 1);
+            // circle.drawCircle(0, 0, 4);
+            circle.drawStar(0, 0, 3, 5, 5, 0);
             circle.endFill();
             circle.position.set(this.position.posX, this.position.posY)
             this.stage.addChildAt(circle, 1)
@@ -161,6 +163,10 @@ class Node {
 class SocialHub extends Node {
     constructor(stage, options) {
         super(stage, options)
+
+        while (this.bots.size > 0) {
+            ease.add(this.circle, { rotation: size / 2 }, { duration: 500, reverse: false })
+        }
     }
 
     resize() {
@@ -170,7 +176,6 @@ class SocialHub extends Node {
         } else {
             size = Math.log(this.bots.size + 1);
 		}
-		// console.log('hub size:' , size + HUB_SIZE)
 		console.log('circle: ', this.circle)
         ease.add(this.circle, { scale: size + HUB_SIZE }, { duration: 1000, reverse: false })
     }

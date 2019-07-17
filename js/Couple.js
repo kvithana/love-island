@@ -8,7 +8,7 @@ const Tombola = require('./math/tombola')
 const animationTime = RootState.animationTime;
 
 class Couple extends Bot{
-    maxChildren = 3;
+    maxChildren = 5;
     children = new Set();
 
     constructor(stage, spouse1, spouse2) {
@@ -32,11 +32,11 @@ class Couple extends Bot{
 		// Draw first circle
         this.circle.beginFill(spouse1.identity, 1);
         //this.circle.lineStyle(3, spouse2.identity);  //(thickness, color)
-		this.circle.drawCircle(0, 0, 10);
+		this.circle.drawCircle(0, 0, 15);
 		this.circle.endFill();
 		// Draw second circle
 		this.circle.beginFill(spouse2.identity, 1);
-		this.circle.drawCircle(20, 0, 10);
+		this.circle.drawCircle(25, 0, 15);
 		this.circle.endFill();
         this.circle.position.set(spouse1.node.position.posX, spouse1.node.position.posY)
         stage.addChild(this.circle)
@@ -58,6 +58,10 @@ class Couple extends Bot{
             if (node.pseudonode) {
                 if (!this.house.isDrawn) {
                     this.house.drawHouse();
+                } else if (this.boredom < this.boredomLimit){
+                    this.haveSex();
+                    console.log("having sex")
+                    this.boredom++;
                 }
                 else if (this.boredom < this.boredomLimit){
                     this.haveSex();
@@ -129,6 +133,10 @@ class Couple extends Bot{
     moveToHub = () => {
         console.log("moving to anniversary hub");
         this.moveToNode(this.anniversaryNode, {});
+    }
+
+    moveToHub = () => {
+        this.moveToNode(this.anniversaryNode, {})
     }
 
     moveToHouse = () => {

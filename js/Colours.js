@@ -1,14 +1,14 @@
 class Colours{
-    RED = 0xC92C26;
-    BROWN = 0xA7804F;
-    BLUE = 0x227275;
-    TEAL = 0x0C6E5F;
-    LIGHT_BLUE = 0x69ECDA;
-    PINK = 0xD34768;
-    LIME = 0xC4DD70;
-    TAN = 0xE9D38B;
+    PURPLE = 0x5856A4;
+    WATERMELON = 0xED5D92;
+    NABRED = 0xC20000;
+    GREEN = 0x8DCD59;
+    LIGHT_BLUE = 0x59B5E4;
+    LILAC = 0xB36DDD;
+    DARKBLUE = 0x203D85;
+    SEAWEED = 0x1D8F94;
 
-    pallet = [this.RED, this.BROWN, this.BLUE, this.LIGHT_BLUE, this.TEAL, this.PINK, this.LIME, this.TAN];
+    pallet = [this.PURPLE, this.WATERMELON, this.NABRED, this.GREEN, this.LIGHT_BLUE, this.LILAC, this.DARKBLUE, this.SEAWEED];
     
     numColours = this.pallet.length;
 

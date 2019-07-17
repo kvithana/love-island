@@ -145,7 +145,7 @@ window.onload = function()
       }, 1000 )
     for (let i=0; i<15; i++) {
         m.createRandomNode()
-        if(i % 10 == 0) {
+        if(i % 5 == 0) {
 			m.generateSocialHub();
         }
 	}
@@ -171,7 +171,7 @@ window.onload = function()
     // var girlBot = new Single(_viewport, node, {age: 59});
 
 
-    m.initPopulation(8)
+    m.initPopulation(25)
 
     // let socialHubs = Array.from(m.socialHubs)
 

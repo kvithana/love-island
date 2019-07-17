@@ -147,7 +147,7 @@ class Edge {
 				posX: this.rectangle.position.x + Math.round((houseWidth * Math.floor(i/2) + (i%2 ? houseWidth : 0)) * Math.cos(this.angle * Math.PI / 180) - Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))),
 				posY: this.rectangle.position.y + Math.round((houseWidth * Math.floor(i/2) + (i%2 ? houseWidth : 0)) * Math.sin(this.angle * Math.PI / 180) - Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))),
 				width: new Tombola().chance(1, 3) ? houseWidth - (houseWidth / 4) : houseWidth,
-				height: new Tombola().cluster( 1, 20, 40, 5 ),
+				height: new Tombola().cluster( 1, 20, 30, 5 ),
 				angle: this.angle + (180 * (i%2)),
 				isHabited: false,
 			})

@@ -34,7 +34,9 @@ class House {
     drawHouse = () => {
         // Draw a house somewhere on the edge
         let house = new PIXI.Graphics()
-        house.beginFill(0x777777) // Black
+        // Either terracotta or light yellow
+        let color = Math.random() < 0.9 ? 0xFFFBCF : 0xFFCFD3;
+        house.beginFill(color)
         house.drawRect(0, 0, this.width, 0.01)
         house.position.set(this.posX, this.posY)
         house.endFill();

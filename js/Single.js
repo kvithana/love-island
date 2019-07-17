@@ -27,7 +27,7 @@ class Single extends Bot {
         this.circle = new PIXI.Graphics();
         this.circle.lineStyle(0);
         this.circle.beginFill(this.identity, 1);
-        this.circle.lineStyle(3, this.targetIdentity);  //(thickness, color)
+        // this.circle.lineStyle(3, this.targetIdentity);  //(thickness, color)
         this.circle.drawCircle(0, 0, 5);
         this.circle.endFill();
         this.circle.position.set(this.posX, this.posY)
