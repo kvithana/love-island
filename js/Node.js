@@ -2,8 +2,8 @@ const Edge = require('./Edge')
 const Tombola = require('./math/tombola')
 const _ = require('underscore')
 const PIXI = require('pixi.js')
-import { ease } from 'pixi-ease'
-
+import { ease, Ease } from 'pixi-ease'
+const HUB_SIZE = 5;
 let DECK = new Tombola().deck( [0, 45, 90, 135, 180, 225, 270, 315] )
 
 function setDefaults(options, defaults){
@@ -169,7 +169,7 @@ class SocialHub extends Node {
         } else {
             size = Math.log(this.bots.size + 1);
         }
-        ease.add(this.circle, { scale: size + HUB_SIZE }, { duration: 1000, reverse: false })
+        //ease.add(this.circle, { scale: size + HUB_SIZE }, { duration: 1000, reverse: false })
     }
 }
 

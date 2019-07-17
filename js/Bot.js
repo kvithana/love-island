@@ -43,7 +43,7 @@ class Bot {
         this.isBusy = false
         this.tickData = { remaining: 0 , queue: null }
         this.state = { moveQueue: []}
-        this.boredomLimit = 20; //they'll try to mingle for up to 20 times before going for a walk
+        this.boredomLimit = 20; //they'll try to mingle for up to 20 times before going for a walk (or starting the mingle again)
         this.boredom = 0; //when they do boring tasks (mingle unsuccessfully) this increments
     }
 
