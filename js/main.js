@@ -136,15 +136,19 @@ window.onload = function()
     const ticker = new Ticker(m)
 
     window.setInterval(function(){
-		// m.createRandomNode()
-		let freePlot = m.getRandomFreePlot()
+		m.initPopulation(1)
+	//	m.createRandomNode()
+	// 	// let freePlot = m.getRandomFreePlot()
 
-		if(freePlot) {
-			freePlot.drawHouse()
-		}
+	// 	// if(freePlot) {
+	// 	// 	freePlot.drawHouse()
+	// 	// }
       }, 1000 )
-    for (let i=0; i<5; i++) {
+    for (let i=0; i<50; i++) {
         m.createRandomNode()
+        if(i % 10 == 0) {
+			m.generateSocialHub();
+        }
 	}
 
 	// for (let i=0; i<5; i++) {
@@ -167,9 +171,8 @@ window.onload = function()
 
     // var girlBot = new Single(_viewport, node, {age: 59});
 
-    m.generateSocialHub();
 
-    m.initPopulation(5)
+    // m.initPopulation(50)
 
     // let socialHubs = Array.from(m.socialHubs)
 

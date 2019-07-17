@@ -14,11 +14,11 @@ class Couple extends Bot{
     constructor(stage, spouse1, spouse2) {
         super(stage, spouse1.node,{
             age : Math.floor(spouse1.age + spouse2.age / 2)
-        });
-        this.house = RootState.map.getRandomFreePlot();
+		});
+		this.anniversaryNode = spouse1.node;
+        this.house = RootState.map.getRandomFreePlot(this.anniversaryNode);
         this.spouse1 = spouse1;
         this.spouse2 = spouse2;
-        this.anniversaryNode = spouse1.node;
         this.spouse1Satisfaction = spouse1.relationshipSatisfaction;
         this.spouse2Satisfaction = spouse2.relationshipSatisfaction;
         this.relationshipSatisfaction = this.spouse1Satisfaction + this.spouse2Satisfaction;

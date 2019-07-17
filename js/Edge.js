@@ -27,6 +27,7 @@ class Edge {
 		this.length = Math.hypot(positions[0].posX - positions[1].posX, positions[0].posY - positions[1].posY)
 		this.angle = options.angle
 		this.stage = stage
+		this.connectingNodes = options.connectingNodes
 
 		// Draw a rectangle
 		let rectangle = new PIXI.Graphics()
@@ -99,7 +100,7 @@ class Edge {
 	}
 
 	generateHouses = () => {
-	let houseWidth = this.length / 10
+	let houseWidth = this.length / 5
 	let numberOfHouses = Math.floor(this.length / houseWidth) * 2
 
 		// First Side of the Road
@@ -117,11 +118,21 @@ class Edge {
 		}
 	}
 
+	getEdgeVacancies = () => {
+		let availableHouses = []
+		for (var house of this.houses) {
+			if (house && house.isHabited == false) {
+				availableHouses.push(house)
+			}
+		}
+		return availableHouses
+	}
+
 	getAvailableHouse = () => {
 		let availableHouses = []
 		// let availableHouse = null
 		for (var house of this.houses) {
-			if (house.isHabited == false) {
+			if (house && house.isHabited == false) {
 				availableHouses.push(house)
 			}
 		}
@@ -146,13 +157,13 @@ class Edge {
 				}
 			} else {
 				console.log('No available houses')
+
 				return false	
 			}
 		} else {
 			let availableHousesDeck = new Tombola().deck( availableHouses )
 			return(availableHousesDeck.draw())
 		}
-		
 	}
 }
 

@@ -1,6 +1,6 @@
 var RootState = {
     BotSet : new Set(),
-    map : null
+	map : null,
 }
 
 module.exports = RootState;

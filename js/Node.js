@@ -16,7 +16,8 @@ class Node {
     constructor(stage, options) {
         this.stage = stage
         this.edgeSet = new Set();
-        this.bots = new Set();
+		this.bots = new Set();
+		this.availableHousesDeck = new Tombola().deck();
 
         let defaults = {
             isHub: false,
@@ -118,7 +119,15 @@ class Node {
     // check if an edge is connected to this node
     hasEdge = (edge) => {
         return this.edgeSet.has(edge)
-    }
+	}
+
+	getNodeVacancies = () => {
+		let availableHouses = []
+		for (var edge of Array.from(this.edgeSet)) {
+			availableHouses.push(...edge.getEdgeVacancies());
+		}
+		return availableHouses;
+	}
 
 }
 
