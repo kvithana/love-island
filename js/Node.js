@@ -3,9 +3,8 @@ const Tombola = require('./math/tombola')
 const _ = require('underscore')
 const PIXI = require('pixi.js')
 import { ease, Ease } from 'pixi-ease'
-
+const HUB_SIZE = 5;
 const MAX_SIZE = 10;
-const HUB_SIZE = 6;
 let DECK = new Tombola().deck( [0, 45, 90, 135, 180, 225, 270, 315] )
 
 function setDefaults(options, defaults){

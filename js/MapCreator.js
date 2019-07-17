@@ -8,8 +8,8 @@ class MapCreator {
     }
 
     createWalls = () => {
-        let width = 4000
-        let height = 2000
+        let width = 2000
+        let height = 1000
         let a = new Node(this.stage, { posX: -1 * width / 2, posY: -1 * height / 2, type: "wall" })
         let entryTop = this.createNode(0, -1 * height / 2, {type: "wall", sourceNode: a})
         let b = this.createNode(width/2, -1 * height / 2, {type: "wall", sourceNode: entryTop.node})

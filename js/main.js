@@ -136,7 +136,7 @@ window.onload = function()
     const ticker = new Ticker(m)
 
     window.setInterval(function(){
-		m.createRandomNode()
+		// m.createRandomNode()
 		//let freePlot = m.getRandomFreePlot()
 
 		// if(freePlot) {
@@ -165,13 +165,13 @@ window.onload = function()
 
     // highlight()
     
-    let node = m.source //don't push
+    // let node = m.source //don't push
     // let node2 = Array.from(node.getConnectedNodes())[0];
 
     // var girlBot = new Single(_viewport, node, {age: 59});
 
 
-    m.initPopulation(25)
+    m.initPopulation(40)
 
     // let socialHubs = Array.from(m.socialHubs)
 
