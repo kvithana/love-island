@@ -15,7 +15,8 @@ class Edge {
 			type: 0,
 			connectingNodes: [],
 			angle: 0,
-			animate: true
+            animate: true,
+            type: "road"
 		}
 		options = setDefaults(options, defaults)
 		this.type = options.type
@@ -27,30 +28,54 @@ class Edge {
 		this.length = Math.hypot(positions[0].posX - positions[1].posX, positions[0].posY - positions[1].posY)
 		this.angle = options.angle
 		this.stage = stage
-		this.connectingNodes = options.connectingNodes
+        this.connectingNodes = options.connectingNodes
+        this.type = options.type
 
-		// Draw a rectangle
-		let rectangle = new PIXI.Graphics()
-		rectangle.beginFill(0xDDDDDD); // Dark blue gray 'ish
-		rectangle.drawRect(0, 0, 1, 10); // drawRect(x, y, width, height)
-		let newPosX = positions[0].posX + Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))
-		let newPosY = positions[0].posY + Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))
-		rectangle.position.set(newPosX, newPosY)
-		rectangle.endFill();
-		rectangle.angle = this.angle
-		stage.addChildAt(rectangle, 0.5)
-		// Animate Rectangle
-		ease.add(rectangle, { width: this.length }, { duration: 1000, reverse: false })
-
-		this.rectangle = rectangle
 		this.houses = []
-		this.generateHouses() //GENERATE HOUSES EVERYWHERE
 
 		// for(var i = 0; i < this.houses.length; i++) {
 		// 	this.houses[i].drawHouse()
     	// }
-	}
 
+        this.draw()
+        this.generateHouses() //GENERATE HOUSES EVERYWHERE
+
+    }
+    
+    draw = (colour=0xDDDDDD) => {
+        if (this.rectangle) {
+            this.rectangle.clear()
+        }
+        if (this.type == "wall") {
+            let positions = this.getPositions()
+            let rectangle = new PIXI.Graphics()
+            rectangle.beginFill(0x2c3e50); // Dark blue gray 'ish
+            rectangle.drawRect(0, 0, this.length, 20); // drawRect(x, y, width, height)
+            let newPosX = positions[0].posX + Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))
+            let newPosY = positions[0].posY + Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))
+            rectangle.position.set(newPosX, newPosY)
+            rectangle.endFill();
+            rectangle.angle = this.angle
+            this.stage.addChildAt(rectangle, 0)
+            // Animate Rectangle
+            this.rectangle = rectangle
+        } else {
+            let positions = this.getPositions()
+            let rectangle = new PIXI.Graphics()
+            rectangle.beginFill(colour); // Dark blue gray 'ish
+            rectangle.drawRect(0, 0, 1, 10); // drawRect(x, y, width, height)
+            let newPosX = positions[0].posX + Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))
+            let newPosY = positions[0].posY + Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))
+            rectangle.position.set(newPosX, newPosY)
+            rectangle.endFill();
+            rectangle.angle = this.angle
+            this.stage.addChildAt(rectangle, 0)
+            // Animate Rectangle
+            ease.add(rectangle, { width: this.length }, { duration: 1000, reverse: false })
+            this.rectangle = rectangle
+        }
+
+    }
 	// update an edge node
 	update = (oldNode, newNode) => {
 		if (this.edgeNodes.has(oldNode)) {
@@ -82,21 +107,34 @@ class Edge {
 		} else {
 			return found
 		}
-	}
+    }
+    
+    getNodes = () => {
+        let nodes = []
+        this.edgeNodes.forEach(node => {
+            nodes.push(node)
+        })
+        return nodes
+    }
 
-	getPositions = () => {
-		let positions = []
-		this.edgeNodes.forEach(node => {
-			positions.push(node.position)
-		})
-		return positions
-	}
+
+    getPositions = () => {
+        let positions = []
+        this.edgeNodes.forEach(node => {
+            if (isNaN(node.position.posX)) {
+                console.log(node)
+                throw ("node has no position")
+            }
+            positions.push(node.position)
+        })
+        return positions
+    }
 
 	// given a source node, return the angle to the edge node.
 	getAngle = sourceNode => {
 		let destNode = this.getDestination(sourceNode)
-		return Math.round(Math.atan2(destNode.position.posY - sourceNode.position.posY,
-			destNode.position.posX - sourceNode.position.posX) * 180 / Math.PI)
+        return Math.atan2(destNode.position.posY - sourceNode.position.posY,
+            destNode.position.posX - sourceNode.position.posX) * 180 / Math.PI
 	}
 
 	generateHouses = () => {
@@ -163,7 +201,8 @@ class Edge {
 		} else {
 			let availableHousesDeck = new Tombola().deck( availableHouses )
 			return(availableHousesDeck.draw())
-		}
+        }
+        
 	}
 }
 
