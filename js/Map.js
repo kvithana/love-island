@@ -294,7 +294,7 @@ class Map {
 
 	getRandomFreePlot = (anniversaryNode) => {
 		if(anniversaryNode.availableHousesDeck.contents.length == 0){
-			this.initSuburb(anniversaryNode);
+			this.expandSuburb(anniversaryNode);
 			return anniversaryNode.availableHousesDeck.draw();
 		}
 		else{
@@ -303,7 +303,7 @@ class Map {
 	}
 
 	//updates the node on it's available houses (spreads out wider as they fill up)
-	initSuburb = (anniversaryNode) => {
+	expandSuburb = (anniversaryNode) => {
 		// Get all connecting edges as a Set
 		let centralNodes = [];
 		let loopingNodes = [anniversaryNode];
