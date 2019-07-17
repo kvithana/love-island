@@ -292,54 +292,6 @@ class Map {
 		return nodes[randomIndex]
 	}
 
-	// getRandomFreePlot = (anniversaryNode) => {
-	// 	// console.log(socialHub.edgeSet)
-	// 	let centralNode = anniversaryNode
-
-	// 	// Sets the chance of clustering to a value
-	// 	let chanceOfClustering = (Math.random() < 0.9)
-	// 	let edges = chanceOfClustering ? centralNode.edgeSet : this.edges
-
-	// 	let edgesArray = Array.from(edges);
-	// 	let edgesDeck = new Tombola().deck(edgesArray)
-	// 	console.log('finding new plot')
-
-	// 	if (edgesDeck.contents.length > 0) {
-	// 		let edge = edgesDeck.draw()
-	// 		console.log(edge.connectingNodes)
-	// 		let availableHouse = edge.getAvailableHouse()
-	// 		if (availableHouse) {
-	// 			console.log('house found')
-	// 			return availableHouse
-	// 		} else {
-	// 			console.log('No house found')
-	// 			let connectingNodesDeck = new Tombola().deck( edge.connectingNodes )
-	// 			let connectingNode = connectingNodesDeck.draw()
-	// 			console.log('Connecting Node Edge Set: ', connectingNode.edgeSet)
-	// 			let connectingEdgesDeck = new Tombola().deck( Array.from(connectingNode.edgeSet) )
-	// 			console.log('Connecting Edges Set: ', connectingEdgesDeck)
-
-	// 			let connectedEdge = connectingEdgesDeck.draw()
-
-	// 			while (connectedEdge.getEdgeVacancies == 0) {
-	// 				connectedEdge = connectingEdgesDeck.draw()
-	// 			}
-
-	// 			let house = connectedEdge.getAvailableHouse()
-
-	// 			while (!house) {
-	// 				console.log('Getting another house')
-	// 				house = connectedEdge.getAvailableHouse()
-	// 			}
-
-				
-	// 			return house
-	// 		}
-	// 	} else {
-	// 		this.createRandomNode()
-	// 	}
-	// }
-
 	getRandomFreePlot = (anniversaryNode) => {
 		if(anniversaryNode.availableHousesDeck.contents.length == 0){
 			this.initSuburb(anniversaryNode);

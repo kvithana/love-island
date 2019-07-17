@@ -62,7 +62,7 @@ class Single extends Bot {
 				this.mingle() //increments boredom
 			} else {
                 this.boredom = 0;
-                console.log(this.actions)
+                // console.log(this.actions)
 				new Tombola().weightedFunction(this.actions, this.traits)
 			}
 			this.getOlder();
@@ -150,10 +150,10 @@ class Single extends Bot {
     //death - changes alive attribute of self (and of partner if they have one)
     getOlder(stage){
         this.age += 1;
-        console.log("age:")
-        console.log(this.age)
-        console.log("index of move to hub:")
-        console.log(this.actions.indexOf(this.moveToHub))
+        // console.log("age:")
+        // console.log(this.age)
+        // console.log("index of move to hub:")
+        // console.log(this.actions.indexOf(this.moveToHub))
         //if they hit a milestone, they get a new target ('acceptable') colour/identity
         if (this.age % milestoneYears == 0){
             var newTargetColourInserted = false;

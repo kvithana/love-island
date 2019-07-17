@@ -51,7 +51,8 @@ class Node {
             circle.position.set(this.position.posX, this.position.posY)
             this.stage.addChildAt(circle, 1)
             ease.add(circle, { scale: 4 }, { duration: 1000, reverse: false })
-            this.drawObject = circle
+			this.drawObject = circle
+			this.circle = circle
 
         } else if (this.type == "wall") {
             // Draw Rectangle
@@ -168,8 +169,10 @@ class SocialHub extends Node {
             size = MAX_SIZE;
         } else {
             size = Math.log(this.bots.size + 1);
-        }
-        //ease.add(this.circle, { scale: size + HUB_SIZE }, { duration: 1000, reverse: false })
+		}
+		// console.log('hub size:' , size + HUB_SIZE)
+		console.log('circle: ', this.circle)
+        ease.add(this.circle, { scale: size + HUB_SIZE }, { duration: 1000, reverse: false })
     }
 }
 
