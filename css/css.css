@@ -91,8 +91,8 @@ svg:hover {
 	height: 100vh;
 	width: 100vw;
 	z-index: 10;
-	background-image: linear-gradient(to right, #7f53ac 0, #657ced 100%);
-	opacity: 0.5
+	background-image: linear-gradient(to right, #192a56 0, #273c75 100%);
+	opacity: 0.8
   }
   a {
 	color: inherit;

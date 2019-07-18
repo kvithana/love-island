@@ -45,6 +45,7 @@ class MapCreator {
         let newNode = this.createNode(1500, -300, {type: "bridge", sourceNode: nodes[12]})
         newNode.node.addEdge(newNode.edge)
         nodes[12].addEdge(newNode.edge)
+        newNode.edge.houses = []
         return { 
             edges,
             nodes: entries,

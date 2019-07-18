@@ -152,10 +152,13 @@ class Map {
 					}
                 }
                 for (let i = 0; i < Math.ceil(this.regions.totalExpansions / 10); i++) {
-                    this.generateSocialHub()
+                    while (!this.generateSocialHub()) {
+                            console.log("forcing regeneration...")
+                            this.createRandomNode()
                 }
                 this.regions.currentHubs.delete(socialHubDensity.socialHub)
-			}
+            }
+        }
         });
         this.connectEntries()
 		return resultArray
@@ -502,7 +505,14 @@ class Map {
             }
             let selectedNode = this.nodeDeck.look()
             for (const hub of this.socialHubs) {
-                if (new Helper().calculateDistanceFromNodes(selectedNode, hub) < SOCIAL_HUB_MIN_DIST) {
+                let dist = new Helper().calculateDistanceFromNodes(hub, this.regions.central)
+                let threshold = 0
+                if (dist < 1500) {
+                    threshold = 300
+                } else {
+                    threshold = 500
+                }
+                if (new Helper().calculateDistanceFromNodes(selectedNode, hub) < threshold) {
                     validLocation = false
                     break
                 }
@@ -510,18 +520,21 @@ class Map {
         }
         if (!validLocation) {
             console.log("cannot generate social hub with constraints")
-            selectedNode = this.nodeDeck.draw()
+            return false
+            // selectedNode = this.nodeDeck.draw()
+        } else {
+            let options = { distance: new Tombola().range(150, 300), direction: this.findValidAngle(selectedNode), nodeType: 'hub' }
+            let result = selectedNode.createEdge(options)
+            this.edges.add(result.newEdge)
+            this.nodeDeck.insert(result.newNode)
+            this.nodes.add(result.newNode)
+            this.socialHubs.add(result.newNode)
+            this.regions.currentHubs.add(result.newNode)
+            console.log(this.regions.currentHubs)
+            return result.newNode
+            // let selectedNode = this.nodeDeck.look()
         }
-        let options = { distance: new Tombola().range(150, 300), direction: this.findValidAngle(selectedNode), nodeType: 'hub' }
-        let result = selectedNode.createEdge(options)
-        this.edges.add(result.newEdge)
-        this.nodeDeck.insert(result.newNode)
-        this.nodes.add(result.newNode)
-        this.socialHubs.add(result.newNode)
-        this.regions.currentHubs.add(result.newNode)
-        console.log(this.regions.currentHubs)
-        return result.newNode
-        // let selectedNode = this.nodeDeck.look()
+
 
     }
 }
