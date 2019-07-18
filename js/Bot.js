@@ -23,7 +23,7 @@ class Bot {
     // alive = true; //changed if they die
     //called in sub classes getOlder, higher number = less chance of dying year to year
 	invincibility = 20000;
-	ageToStartDying = 150;
+	ageToStartDying = 80;
     constructor(stage, node, options) {
         this.stage = stage
         let defaults = {

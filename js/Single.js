@@ -7,7 +7,7 @@ const _ = require('underscore');
 const PIXI = require('pixi.js');
 const Tombola = require('./math/tombola')
 import { ease } from 'pixi-ease'
-const legalAge = 50;
+const legalAge = 18;
 
 const animationTime = RootState.animationTime;
 const numberOfColours = Colours.numColours;
