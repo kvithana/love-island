@@ -82,7 +82,7 @@ class Couple extends Bot{
     haveSex() {
         // console.log("currently making love");
         //animate sex
-        ease.add(this.circle, { height: 30 }, { duration: animationTime, reverse: true })
+        ease.add(this.circle, { scale: 1.3 }, { duration: animationTime, reverse: true })
         this.wait(animationTime)
 
         var randomNumber = Math.random();
