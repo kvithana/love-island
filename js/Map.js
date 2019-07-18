@@ -90,7 +90,7 @@ class Map {
 			if (socialHubDensity.density > 0.1) {
 				console.log('social hub is too dense, generating new suburb')
 				let randomNodeArray = []
-				for(var i = 0; i < 10; i++) {
+				for(var i = 0; i < 3; i++) {
 					let newNode = this.createRandomNode()
 					if (!newNode) {
 						console.log("undefined newNode")

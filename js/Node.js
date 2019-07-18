@@ -58,12 +58,12 @@ class Node {
 			this.drawObject = circle
 			this.circle = circle
 
-        } else if (this.type == "wall") {
+        } else if (this.type == "wall" && this.modifier === "entry") {
             // Draw Rectangle
             let rectangle = new PIXI.Graphics()
-            rectangle.lineStyle(0);
-            rectangle.beginFill(0xFFFFFF, 1);
-            rectangle.drawRoundedRect(0, 0, 30, 30, 3);
+            rectangle.lineStyle();
+            rectangle.beginFill(0xFDFDFD, 1);
+            rectangle.drawRoundedRect(0, 0, 70, 70, 3);
             rectangle.endFill();
             rectangle.alpha = 0;
             rectangle.position.set(this.position.posX - 0.5*rectangle.width, this.position.posY - 0.5*rectangle.height)
