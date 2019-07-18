@@ -119,13 +119,15 @@ class Couple extends Bot{
     getOlder(){
         this.age++;
         //if they're unlucky, they die (chance increases each year)
-        var randomValue = Math.random();
-        if (randomValue < (this.age / this.invincibility)){
-            // console.log("couple dying");
-            this.alive = false;
-            this.circle.destroy();
-            RootState.BotSet.delete(this)
-        }
+		var randomValue = Math.random();
+		if (this.age > this.ageToStartDying) {
+			if (randomValue < ((this.age - this.ageToStartDying) / this.invincibility)){
+				// console.log("couple dying");
+				this.alive = false;
+				this.circle.destroy();
+				RootState.BotSet.delete(this)
+			}
+		}
     }
 
     moveToRandom = () => {
@@ -155,16 +157,6 @@ class Couple extends Bot{
         let options = {};
         options.finalPosition = { bots: new Set(), position : { posX: this.house.posX, posY: this.house.posY }, pseudonode: true }
         this.moveToNode(destination, options)
-    }
-
-    buildHouse() {
-      // find an edge
-
-      // ask the edge if there is an available house
-
-      // move to the edge
-
-      // build house
     }
 }
 
