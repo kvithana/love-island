@@ -5,6 +5,7 @@ import { ease } from 'pixi-ease'
 import DomEase from 'dom-ease'
 import { State } from 'pixi.js';
 import RootState from './RootState.js';
+import Tombola from './math/tombola'
 
 const PIXI = require('pixi.js')
 const Viewport = require('pixi-viewport').Viewport
@@ -62,11 +63,20 @@ function object()
 
 function click(data)
 {   
-    const sprite = _viewport.addChild(new PIXI.Text(String([Math.round(data.world.x, 2), Math.round(data.world.y, 2)]), { fill: 0xff0000 }))
-    sprite.anchor.set(0.5)
-    sprite.position = data.world
-    const fade = ease.add(sprite, { alpha: 0 })
-    fade.on('done', () => _viewport.removeChild(sprite))
+
+	const style = new PIXI.TextStyle({
+		fontFamily: "Arial",
+		fontSize: 81,
+		fill: "black",
+	})
+
+	const emojiDeck = new Tombola().deck( ['😍', '😎', '👽', '🍑', '☕', '🔥', '💯', '❤️', '💕', '🍆', '🤔', '👀', '💪', '👻'] )
+
+    const emoji = _viewport.addChild(new PIXI.Text(emojiDeck.draw(), style))
+	emoji.anchor.set(0.5)
+    emoji.position = data.world
+    const fade = ease.add(emoji, { alpha: 0 })
+    fade.on('done', () => _viewport.removeChild(emoji))
 }
 
 function drawWorld()
@@ -120,7 +130,8 @@ window.onload = function()
 		// 	freePlot.drawHouse()
 		// }
 		m.socialHubsRegionStatus()
-      }, 1000 )
+	  }, 1000 )
+
     for (let i=0; i <1; i++) {
         m.createRandomNode()
 		m.generateSocialHub();
