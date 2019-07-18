@@ -18,7 +18,14 @@ class Helper{
             }
         } 
         return true
-	}
+    }
+    
+    calculateCoordsFromVector = (source, angle, distance) => {
+        let posX = source.position.posX + distance * Math.cos(angle * Math.PI / 180)
+        let posY = source.position.posY + distance * Math.sin(angle * Math.PI / 180)
+        
+        return {posX, posY}
+    }
 	
 	calculateDistanceToEdge(node, edge) {
 		let nodes = edge.getNodes()

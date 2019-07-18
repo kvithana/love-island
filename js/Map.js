@@ -46,14 +46,14 @@ class Map {
 	}
 
 	initWalls = () => {
-		// let walls = this.MapCreator.createWalls()
-        // for (const edge of walls.edges) {
-        //     this.edges.add(edge)
-        // }
-        // for (const node of walls.nodes) {
-        //     // this.nodes.add(node)
-        //     // this.nodeDeck.insert(node)
-		// }
+		let walls = this.MapCreator.createWalls()
+        for (const edge of walls.edges) {
+            this.edges.add(edge)
+        }
+        for (const node of walls.nodes) {
+            // this.nodes.add(node)
+            // this.nodeDeck.insert(node)
+		}
 		// this.walls = walls
 		// let e = new Edge(this.stage, { connectingNodes: [this.source, this.walls.nodes[3]] })
 		// this.source.addEdge(e)
