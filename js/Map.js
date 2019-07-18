@@ -16,9 +16,11 @@ const EDGE_SNAP_DIST = 500
 const MAX_EDGE_SNAP_ANGLE = 20
 const VALID_ANGLE_BUFFER_DIST = 300
 const VALID_ANGLE_BUFFER_WIDTH = 100
-const EXTEND_EDGE_BUFFER_DIST = 500
+const EXTEND_EDGE_BUFFER_DIST = 300
 const EXTEND_EDGE_BUFFER_WIDTH = 50
 const SOCIAL_HUB_MIN_DIST = 400
+const ROAD_MIN_LENGTH = 150
+const ROAD_MAX_LENGTH = 300
 
 
 
@@ -36,7 +38,7 @@ class Map {
 		this.stage = stage;
 		this.edges = new Set()
 		this.source = new Node(stage, { posX: 0, posY: 3000 })
-		this.regions = { central: null, currentHubs: new Set() }
+		this.regions = { totalExpansions: 1, central: null, currentHubs: new Set() }
 		this.nodes.add(this.source)
 		// this.nodeDeck.insert(this.source)
         this.pathFinder = new PathFinder({nodeSet: this.nodes, edgeSet: this.edges })
@@ -47,24 +49,64 @@ class Map {
 	}
 
 	initWalls = () => {
-		let walls = this.MapCreator.createWalls({posX: 0, posY: 0}, 1500)
+		let walls = this.MapCreator.createWalls({posX: 0, posY: 0}, 1200)
         for (const edge of walls.edges) {
             this.edges.add(edge)
         }
         for (const node of walls.nodes) {
             // this.nodes.add(node)
             // this.nodeDeck.insert(node)
-		}
-		// this.walls = walls
-		// let e = new Edge(this.stage, { connectingNodes: [this.source, this.walls.nodes[3]] })
-		// this.source.addEdge(e)
-		// this.walls.nodes[3].addEdge(e)
-		// this.edges.add(e)
-		// this.nodeDeck.insert(this.walls.nodes[3])
-		// this.nodes.add[this.walls.nodes[3]]
-		let a = this.createNode(0, 0, {sourceNode: this.source })
-		this.regions.central = a
-	}
+        }
+        this.walls = walls
+        let index
+        for (let i=0; i<walls.length; i++) {
+            if (walls[i].position.posX == 0 && walls[i].position.posY == 1000) {
+                index = i
+            }
+        }
+        this.walls.remaining = walls.nodes
+        this.walls.remaining.splice(index, 1)
+        // let a = this.createNode(0, 1500, {sourceNode: this.source, avoidDeck: true})
+        let b = this.createNode(0, 1000, {sourceNode: this.source, avoidDeck: true})
+        let c = this.createNode(0, 500, {sourceNode: b })
+        let d = this.createNode(0, 0, {sourceNode: c })
+        this.regions.central = d
+        Array.from(this.source.edgeSet)[0].houses = []
+    }
+    
+    connectEntries = () => {
+        if (this.walls.remaining.length > 0) {
+            let results = []
+            this.walls.remaining.forEach( wallNode => {
+                let closestNode = {distance: 9999, node: null}
+                for (const node of this.nodes) {
+                    let dist = new Helper().calculateDistanceFromNodes(node, wallNode)
+                    if (dist < closestNode.distance) {
+                        closestNode.distance = dist
+                        closestNode.node = node
+                    }
+                }
+                results.push({wallNode: wallNode, distance: closestNode.distance, connectingNode: closestNode.node})
+            })
+            results.sort( (a, b) =>  (a.distance > b.distance) ? 1 : -1)
+            if (results) {
+                if (results[0].distance < 500) {
+                    let wallNode = results[0].wallNode
+                    let connectingNode = results[0].connectingNode
+                    let index = this.walls.remaining.indexOf(wallNode)
+                    console.log("wallNode", wallNode)
+                    this.walls.remaining.splice(index, 1);
+                    let newEdge = new Edge(this.stage, { connectingNodes: [wallNode, connectingNode]})
+                    wallNode.addEdge(newEdge)
+                    connectingNode.addEdge(newEdge)
+                    this.edges.add(newEdge)
+                    this.nodes.add(wallNode)
+                    this.nodeDeck.insert(wallNode)
+                }
+            }
+        }
+    }
+
 
 	getRegionStatus = (regionNode, distance) => {
 		let count = 0
@@ -87,23 +129,25 @@ class Map {
 			resultArray.push({ socialHub, density: this.getRegionStatus(socialHub, 300) })
 		}
 		resultArray.forEach(socialHubDensity => {
-			if (socialHubDensity.density > 0.2) {
+			if (socialHubDensity.density > 0.1) {
+                this.regions.totalExpansions ++
 				console.log('social hub is too dense, generating new suburb')
 				let randomNodeArray = []
-				for(var i = 0; i < 3; i++) {
+				for(var i = 0; i < Math.log(this.regions.totalExpansions + 1) * 5 ; i++) {
 					let newNode = this.createRandomNode()
 					if (!newNode) {
 						console.log("undefined newNode")
 					} else {
 						randomNodeArray.push(newNode)
 					}
-				}
-				this.generateSocialHub()
-				this.regions.currentHubs.delete(socialHubDensity.socialHub)
-			} else {
-
+                }
+                for (let i = 0; i < Math.ceil(this.regions.totalExpansions / 10); i++) {
+                    this.generateSocialHub()
+                }
+                this.regions.currentHubs.delete(socialHubDensity.socialHub)
 			}
-		});
+        });
+        this.connectEntries()
 		return resultArray
 	}
 
@@ -175,7 +219,6 @@ class Map {
             }
         }
         nodeDistances.sort( (a, b) =>  (a.distance > b.distance) ? 1 : -1)
-        console.log(nodeDistances)
 
         for (const edgeNode of nodeDistances) {
             // console.log(edgeNode)
@@ -267,7 +310,6 @@ class Map {
                 throw("ERROR")
                 validNode = true
             }
-            console.log(count, selectedNode)
             angle = this.findValidAngle(selectedNode)
             // console.log("valid angle", angle)
             if (angle == -1) {
@@ -282,7 +324,7 @@ class Map {
         } else {
             // console.log("selected a node!", selectedNode)
         }
-        let options = { distance: new Tombola().range(150, 300) }
+        let options = { distance: new Tombola().range(ROAD_MIN_LENGTH, ROAD_MAX_LENGTH) }
         if (selectedNode && !this.extendEdge(selectedNode, angle)) { // BROKEN
         // if (true) {
             let newPosX = selectedNode.position.posX + Math.round(options.distance * Math.cos(angle * Math.PI / 180))
@@ -314,7 +356,9 @@ class Map {
         options.sourceNode.addEdge(newEdge)
         this.nodes.add(newNode)
         this.edges.add(newEdge)
-        this.nodeDeck.insert(newNode)
+        if (!options.avoidDeck) {
+            this.nodeDeck.insert(newNode)
+        }
         this.extendEdge(newNode, angle)
         return newNode
 
@@ -388,15 +432,15 @@ class Map {
 
 			}
 
-			console.log(node)
+			// console.log(node)
 			if (node.availableHousesDeck.contents.length == 0) {
 				this.expandSuburb(node)
 				let drawnHouse = node.availableHousesDeck.draw();
-				console.log('Drew random house: ', drawnHouse, node)
+				// console.log('Drew random house: ', drawnHouse, node)
 				return drawnHouse
 			} else {
 				let drawnHouse = node.availableHousesDeck.draw();
-				console.log('Drew random house: ', drawnHouse, node)
+				// console.log('Drew random house: ', drawnHouse, node)
 				return drawnHouse
 			}
 			

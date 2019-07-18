@@ -112,7 +112,6 @@ window.onload = function()
     // m.drawLine()
 
     const ticker = new Ticker(m)
-
     window.setInterval(function(){
 		// m.createRandomNode()
 		//let freePlot = m.getRandomFreePlot()
