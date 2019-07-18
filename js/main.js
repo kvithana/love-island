@@ -52,7 +52,7 @@ function border()
 
 function object()
 {
-    _object = _viewport.addChild(new PIXI.Sprite(PIXI.Texture.WHITE))
+    _object = _viewport.addChild(new PIXI.Sprite())
     // _object.anchor.set(0.5)
     // _object.tint = 0
     // _object.width = _object.height = OBJECT_SIZE
