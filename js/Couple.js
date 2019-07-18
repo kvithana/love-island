@@ -32,11 +32,11 @@ class Couple extends Bot{
 		// Draw first circle
         this.circle.beginFill(spouse1.identity, 1);
         //this.circle.lineStyle(3, spouse2.identity);  //(thickness, color)
-		this.circle.drawCircle(-10, 0, 15);
+		this.circle.drawCircle(-7, 0, 10);
 		this.circle.endFill();
 		// Draw second circle
 		this.circle.beginFill(spouse2.identity, 1);
-		this.circle.drawCircle(15, 0, 15);
+		this.circle.drawCircle(8, 0, 10);
 		this.circle.endFill();
         this.circle.position.set(spouse1.node.position.posX, spouse1.node.position.posY)
         stage.addChild(this.circle)
