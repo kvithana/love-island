@@ -22,7 +22,8 @@ class Node {
             isHub: false,
             posX: 0,
             posY: 0,
-            type: "road"
+            type: "road",
+            modifier: null
         }
         options = setDefaults(options, defaults)
         if (isNaN(options.posX)) {
@@ -31,6 +32,7 @@ class Node {
         this.position = {posX: options.posX, posY: options.posY}
         this.isHub = options.isHub
         this.type = options.type
+        this.modifier = options.modifier
 
         this.drawObject = null
 
