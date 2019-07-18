@@ -60,13 +60,14 @@ class Node {
             // Draw Rectangle
             let rectangle = new PIXI.Graphics()
             rectangle.lineStyle(0);
-            rectangle.beginFill(0x34495e, 1);
-            rectangle.drawRect(0, 0, 10, 10);
+            rectangle.beginFill(0xFFFFFF, 1);
+            rectangle.drawRoundedRect(0, 0, 30, 30, 3);
             rectangle.endFill();
-            rectangle.position.set(this.position.posX - 2*rectangle.width, this.position.posY - 2*rectangle.height)
+            rectangle.alpha = 0;
+            rectangle.position.set(this.position.posX - 0.5*rectangle.width, this.position.posY - 0.5*rectangle.height)
             this.stage.addChildAt(rectangle, 1)
             // Animate rectangle
-            // ease.add(rectangle, { scale: 4 }, { duration: 1000, reverse: false })
+            ease.add(rectangle, { alpha: 1 }, { duration: 1000, reverse: false })
             this.drawObject = rectangle
         }else {
             // Draw Rectangle
