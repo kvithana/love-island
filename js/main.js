@@ -83,7 +83,7 @@ window.onload = function()
     document.getElementById("canvas").appendChild(_application.view)
     _application.view.style.position = 'fixed'
     _application.view.style.width = '100vw'
-    _application.view.style.height = '100vh'
+	_application.view.style.height = '100vh'
 
     viewport()
 
@@ -104,7 +104,6 @@ window.onload = function()
 
     let m = new Map(_viewport)
 	RootState.map = m;
-	console.log(m.walls)
 	// let a = m.createNode(0, 0, {sourceNode: m.walls.nodes[2] })
     // let b = m.createNode(600, 600, {sourceNode: a})
     // let c = m.createNode(500, 300, {sourceNode: b})
@@ -121,7 +120,7 @@ window.onload = function()
 		// if(freePlot) {
 		// 	freePlot.drawHouse()
 		// }
-		console.log(m.socialHubsRegionStatus())
+		m.socialHubsRegionStatus()
       }, 1000 )
     for (let i=0; i <1; i++) {
         m.createRandomNode()
@@ -132,7 +131,7 @@ window.onload = function()
         _viewport.zoom(0.14)
     }, 1)
 
-    m.initPopulation(100)
+    m.initPopulation(10)
 
 }
 

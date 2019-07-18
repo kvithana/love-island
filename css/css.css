@@ -11,23 +11,17 @@ body, html { height:100%; }
 
 .soundContainer {
 	position: fixed;
-	bottom: 50px;
-	right: 50px;
+	top: 5%;
+	right: 5%;
 	z-index: 100;
 }
 
-.soundOn {
-	background-image: url('../assets/volume-up-solid.svg');
-	background-size: contain;
-	background-repeat: no-repeat;
-	height: 50px;
-	width: 50px;
+svg {
+	fill: #A1A1A1;
+	transition: all .2s ease-in-out; 
 }
 
-.soundOff {
-	background-image: url('../assets/volume-mute-solid.svg');
-	background-size: contain;
-	background-repeat: no-repeat;
-	height: 50px;
-	width: 50px;
+svg:hover {
+	fill: #222222;
+	transform: scale(1.3);
 }

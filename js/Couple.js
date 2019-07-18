@@ -8,7 +8,7 @@ const Tombola = require('./math/tombola')
 const animationTime = RootState.animationTime;
 
 class Couple extends Bot{
-    maxChildren = 5;
+    maxChildren = 10;
     children = new Set();
 
     constructor(stage, spouse1, spouse2) {
@@ -60,7 +60,6 @@ class Couple extends Bot{
                     this.house.drawHouse();
                 } else if (this.boredom < this.boredomLimit){
                     this.haveSex();
-                    // console.log("having sex")
                     this.boredom++;
                 }
                 else if (this.boredom < this.boredomLimit){
@@ -83,7 +82,6 @@ class Couple extends Bot{
 
      
     haveSex() {
-        // console.log("currently making love");
         //animate sex
         ease.add(this.circle, { scale: 1.3 }, { duration: animationTime, reverse: true })
         this.wait(animationTime)
@@ -122,7 +120,6 @@ class Couple extends Bot{
 		var randomValue = Math.random();
 		if (this.age > this.ageToStartDying) {
 			if (randomValue < ((this.age - this.ageToStartDying) / this.invincibility)){
-				// console.log("couple dying");
 				this.alive = false;
 				this.circle.destroy();
 				RootState.BotSet.delete(this)
@@ -131,12 +128,10 @@ class Couple extends Bot{
     }
 
     moveToRandom = () => {
-        // console.log("moving to random");
         this.moveToNode(RootState.map.getRandomNode(), {});
     }
 
     moveToHub = () => {
-        // console.log("moving to anniversary hub");
         this.moveToNode(this.anniversaryNode, {});
     }
 
@@ -145,13 +140,11 @@ class Couple extends Bot{
     }
 
     moveToHouse = () => {
-        // console.log("moving to house");
         // Determine the shortest route to the house plot by checking distance to both edge nodes
         let node1 = Array.from(this.house.edge.edgeNodes)[0]
         let node2 = Array.from(this.house.edge.edgeNodes)[1]
         let route1 = RootState.map.pathFinder.pathTo(this.node, node1);
 		let route2 = RootState.map.pathFinder.pathTo(this.node, node2);
-		// console.log('routes: ', route1, route2)
         let destination;
         route1.length > route2.length ? destination = node2 : destination = node1;
         let options = {};

@@ -19,7 +19,7 @@ class Single extends Bot {
     // alive = true; //changed if they die
     constructor(stage, node, options) {
         super(stage, node, options);
-        this.targetIdentity = [colours.getPseudoRandomColour(this.identity)]
+        this.targetIdentity = colours.getInitialTargetColours(this.identity) //gives their subpallet
         this.actions = [ this.moveToRandom ]
         this.traits = [ 1 ]
         this.relationshipStatus = false
@@ -45,7 +45,6 @@ class Single extends Bot {
 				this.mingle() //increments boredom
 			} else {
                 this.boredom = 0;
-				// console.log(this.actions)
 				new Tombola().weightedFunction(this.actions, this.traits)
 			}
 			this.getOlder();
@@ -56,9 +55,9 @@ class Single extends Bot {
 	//returns target identity array index if target identity suits the candidate's actual identity, -1 if not
 	//therefore a low return value (like 0, or 1) would mean a really good match. A high one would mean they're getting desperate
 	getCompatability(otherSingleBot) {
-		// var identityApproval = this.targetIdentity.indexOf(otherSingleBot.identity);
-		// return identityApproval;
-		return 0; //DONT PUSH
+		var identityApproval = this.targetIdentity.indexOf(otherSingleBot.identity);
+		return identityApproval;
+		//return 0; //DONT PUSH
 	}
 
 	mingle() {
@@ -133,10 +132,6 @@ class Single extends Bot {
     //death - changes alive attribute of self (and of partner if they have one)
     getOlder(stage){
         this.age += 1;
-        // console.log("age:")
-        // console.log(this.age)
-        // console.log("index of move to hub:")
-        // console.log(this.actions.indexOf(this.moveToHub))
         //if they hit a milestone, they get a new target ('acceptable') colour/identity
         if (this.age % milestoneYears == 0){
             var newTargetColourInserted = false;
@@ -151,7 +146,6 @@ class Single extends Bot {
         if (this.age == legalAge){
             this.actions.push(this.moveToHub);
 			this.traits.push(10);
-			// console.log(this.circle)
 			if(this.alive) {
 				ease.add(this.circle, { scale: 2 }, { duration: 1000, reverse: false })
 			}

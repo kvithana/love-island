@@ -179,8 +179,6 @@ class SocialHub extends Node {
         } else {
             size = Math.log(this.bots.size + 1);
 		}
-		// console.log('hub size:' , size + HUB_SIZE)
-		// console.log('circle: ', this.circle)
         ease.add(this.circle, { scale: size + HUB_SIZE }, { duration: 1000, reverse: false })
     }
 }

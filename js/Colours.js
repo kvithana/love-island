@@ -1,21 +1,30 @@
 class Colours{
-    PURPLE = 0x5856A4;
-    WATERMELON = 0xED5D92;
-    NABRED = 0xC20000;
-    GREEN = 0x8DCD59;
-    LIGHT_BLUE = 0x59B5E4;
-    LILAC = 0xB36DDD;
-    DARKBLUE = 0x203D85;
-    SEAWEED = 0x1D8F94;
+    DARK_BLUE = 0x4F7DB3;
+    LIGHT_BLUE = 0x7CA1CC;
+    DARK_RED = 0xD9736A;
+    LIGHT_RED = 0xFF897E;
+    DARK_YELLOW = 0xB36DDD;
+    LIGHT_YELLOW = 0xFFE083;
 
-    pallet = [this.PURPLE, this.WATERMELON, this.NABRED, this.GREEN, this.LIGHT_BLUE, this.LILAC, this.DARKBLUE, this.SEAWEED];
-    
+    pallet = [this.DARK_BLUE, this.LIGHT_BLUE, this.DARK_RED, this.LIGHT_RED, this.DARK_YELLOW, this.LIGHT_YELLOW];
+	subPallets = [[this.DARK_BLUE,this.LIGHT_BLUE],[this.DARK_RED,this.LIGHT_RED],[this.DARK_YELLOW, this.LIGHT_YELLOW]]
+	
     numColours = this.pallet.length;
 
     getRandomColour(){
         var randomColour = this.pallet[Math.floor(Math.random() * this.numColours)];
         return randomColour;
     }
+
+	getInitialTargetColours(identityColour){
+
+		for(var i = 0; i < this.subPallets.length; i++) {
+			if(this.subPallets[i].includes(identityColour)){ 
+				return this.subPallets[i]; 
+			}
+		}
+		console.log("getInitialTargetColours(): no subpallet returning for initial target colour assignment")
+	}
 
     getPseudoRandomColour(colourToNotGet){
         var randomColour = this.pallet[Math.floor(Math.random() * this.numColours)];

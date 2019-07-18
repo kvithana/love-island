@@ -37,7 +37,6 @@ class Bot {
         this.alive = options.alive;
         this.age = options.age;
         this.identity = options.identity;
-        this.targetIdentity = [colours.getPseudoRandomColour(this.identity)]
         this.node = node;
         this.posX = this.node.position.posX;
         this.posY = this.node.position.posY;
