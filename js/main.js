@@ -126,8 +126,14 @@ window.onload = function()
 		m.generateSocialHub();
     }
     
+    // Set initial viewport zoom (70% zoomed)
+    _viewport.setZoom(0.7)
+
+    // Zoom out a tiny amount every 1ms
     window.setInterval(function(){
-        _viewport.zoom(0.14)
+        if (_viewport.hitArea.height < 5600) {
+            _viewport.zoom(0.05)
+        }
     }, 1)
 
     m.initPopulation(200)
