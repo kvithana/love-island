@@ -58,7 +58,6 @@ class Couple extends Bot{
             if (node.pseudonode) {
                 if (!this.house.isDrawn) {
                     this.house.drawHouse();
-                    console.log("HOUSE HOUSE drawing house HOUSE HOUSE");
                 } else if (this.boredom < this.boredomLimit){
                     this.haveSex();
                     this.boredom++;
@@ -79,7 +78,6 @@ class Couple extends Bot{
 
      
     haveSex() {
-        console.log("having sex");
         //animate sex
         ease.add(this.circle, { scale: 1.3 }, { duration: animationTime, reverse: true })
         this.wait(animationTime)
@@ -100,7 +98,6 @@ class Couple extends Bot{
         }
         if (hurdle > randomNumber && this.children.size < this.maxChildren){
             //make a baby
-            console.log("making a baby");
             var genePool = [this.spouse1.identity, this.spouse2.identity];
             var inheritedIdentity = genePool[Math.floor(Math.random() * genePool.length)];
             var baby = new Single(this.stage, this.node, {age:0, identity:inheritedIdentity});
@@ -120,7 +117,6 @@ class Couple extends Bot{
 		if (this.age > this.ageToStartDying) {
 			if (randomValue < ((this.age - this.ageToStartDying) / this.invincibility)){
                 this.alive = false;
-                console.log("couple dying")
 				this.circle.destroy();
 				RootState.BotSet.delete(this)
 			}

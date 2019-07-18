@@ -154,7 +154,6 @@ class Single extends Bot {
             //if they're over 30, and unlucky, they die (chance increases each year)
             var randomValue = Math.random();
             if (randomValue < ((this.age - this.ageToStartDying) / this.invincibility)){
-                console.log("single dying")
                 this.alive = false;
                 this.circle.destroy();
                 this.stage.removeChild(this.circle)
