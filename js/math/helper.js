@@ -12,15 +12,22 @@ class Helper{
     isAngleOkay = (node, destNode) => {
         let angle = this.calculateAngleFromNodes(destNode, node)
         let destAngles = destNode.getEdgeAngles()
-        console.log(angle, destNode, destAngles)
         for (const edgeAngle of destAngles) {
             if (Math.abs(angle - edgeAngle) < 45) {
-                console.log(Math.abs(angle - edgeAngle) < 20)
                 return false
             }
         } 
         return true
-    }
+	}
+	
+	calculateDistanceToEdge(node, edge) {
+		let nodes = edge.getNodes()
+		let dist = this.calculateDistanceFromNodes(nodes[0], nodes[1])
+		let angle = this.calculateAngleFromNodes(nodes[0], nodes[1])
+		let posX = nodes[0].position.posX + dist * Math.cos(angle * Math.PI / 180)
+		let posY = nodes[0].position.posY + dist * Math.sin(angle * Math.PI / 180)
+		return this.calculateDistanceFromNodes(node, {position: {posX: posX, posY: posY}})
+	}
 }
 
 module.exports = Helper

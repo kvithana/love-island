@@ -70,7 +70,10 @@ class Couple extends Bot{
             }
             this.move(node)
           } else {
-            this.boredom = 0;
+			this.boredom = 0;
+			if (!this.node) {
+				console.log("current node on bot is undefined")
+			}
             new Tombola().weightedFunction(this.actions, this.traits)
           }
           this.getOlder();
@@ -146,7 +149,7 @@ class Couple extends Bot{
         let node2 = Array.from(this.house.edge.edgeNodes)[1]
         let route1 = RootState.map.pathFinder.pathTo(this.node, node1);
 		let route2 = RootState.map.pathFinder.pathTo(this.node, node2);
-		console.log('routes: ', route1, route2)
+		// console.log('routes: ', route1, route2)
         let destination;
         route1.length > route2.length ? destination = node2 : destination = node1;
         let options = {};

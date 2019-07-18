@@ -4,7 +4,7 @@ const _ = require('underscore')
 const PIXI = require('pixi.js')
 import { ease, Ease } from 'pixi-ease'
 const HUB_SIZE = 5;
-const MAX_SIZE = 10;
+const MAX_SIZE = 5;
 let DECK = new Tombola().deck( [0, 45, 90, 135, 180, 225, 270, 315] )
 
 function setDefaults(options, defaults){
@@ -123,8 +123,8 @@ class Node {
             newNode = new Node(this.stage, { posX: newPosX, posY: newPosY })
         }
         let newEdge = new Edge(this.stage, { connectingNodes: [this, newNode], angle: angle})
-        newNode.addEdge(newEdge)
-        this.edgeSet.add(newEdge)
+		newNode.addEdge(newEdge)
+		this.addEdge(newEdge)
         return { newNode: newNode, newEdge: newEdge }
     }
 
@@ -174,8 +174,10 @@ class SocialHub extends Node {
         if (this.bots.size >= 10) {
             size = MAX_SIZE;
         } else {
-            size = this.bots.size / 2;
+            size = Math.log(this.bots.size + 1);
 		}
+		// console.log('hub size:' , size + HUB_SIZE)
+		// console.log('circle: ', this.circle)
         ease.add(this.circle, { scale: size + HUB_SIZE }, { duration: 1000, reverse: false })
     }
 }

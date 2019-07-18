@@ -14,7 +14,7 @@ class Edge {
 		let defaults = {
 			type: 0,
 			connectingNodes: [],
-			angle: 0,
+			angle: null,
             animate: true,
             type: "road"
 		}
@@ -26,10 +26,14 @@ class Edge {
 			positions.push(node.position)
 		})
 		this.length = Math.hypot(positions[0].posX - positions[1].posX, positions[0].posY - positions[1].posY)
-		this.angle = options.angle
 		this.stage = stage
         this.connectingNodes = options.connectingNodes
-        this.type = options.type
+		this.type = options.type
+		if (!options.angle) {
+			this.angle = this.getAngle(options.connectingNodes[0])
+		} else {
+			this.angle = options.angle
+		}
 
 		this.houses = []
 
@@ -123,7 +127,6 @@ class Edge {
         let positions = []
         this.edgeNodes.forEach(node => {
             if (isNaN(node.position.posX)) {
-                console.log(node)
                 throw ("node has no position")
             }
             positions.push(node.position)

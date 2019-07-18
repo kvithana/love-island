@@ -30,14 +30,17 @@ class PathFinder {
             previousVerticies.set(node, null);
         }
 
-        distances.set(source, 0);
+		distances.set(source, 0);
+		
+		if (!source) {
+			console.log("pathfinder source is not defined")
+		}
 
-        queue.add(source, distances.get(source))
+		queue.add(source, distances.get(source))
 
         let currentNode
         while (!queue.isEmpty()) {
             currentNode = queue.poll()
-
             Array.from(currentNode.getConnectedNodes()).forEach( (neighbour) => {
                 if (!visited.get(neighbour)) {
                     const existingDistance = distances.get(neighbour)
@@ -55,12 +58,17 @@ class PathFinder {
                     }
                 }
             })
-            visited.set(currentNode, currentNode)
+			visited.set(currentNode, currentNode)
+			let count = 0
             if (currentNode == destination) {
                 let result = []
                 let current = currentNode
                 result.push(current)
                 while (current != source) {
+					if (count == 100) {
+						break
+					}
+					count += 1
                     current = previousVerticies.get(current)
                     result.push(current)
                 }

@@ -7,6 +7,7 @@ const _ = require('underscore');
 const PIXI = require('pixi.js');
 const Tombola = require('./math/tombola')
 import { ease } from 'pixi-ease'
+const legalAge = 11;
 
 const animationTime = RootState.animationTime;
 const numberOfColours = Colours.numColours;
@@ -32,37 +33,19 @@ class Single extends Bot {
         this.circle.endFill();
         this.circle.position.set(this.posX, this.posY)
         stage.addChild(this.circle)
-    }
-
-    tick() {
-        // If the Bot is not busy
-        if (!this.isBusy) {
-          let node = this.state.moveQueue.pop()
-          if (node) {
-            this.move(node)
-          } else if (this.node.isHub && this.boredom < this.boredomLimit) {
-              this.mingle() //increments boredom
-              //this.wait(1000); //stop them aging rapdly while they mingle over and over
-          } else {
-              this.boredom = 0;
-              new Tombola().weightedFunction(this.actions, this.traits)
-          }
-          this.getOlder();
-        }
-        this.incrementWaiting()
-      }
-
+	}
+	
 	tick() {
 		// If the Bot is not busy
 		if (!this.isBusy) {
 			let node = this.state.moveQueue.pop()
 			if (node) {
 				this.move(node)
-			} else if (this.node.isHub && this.boredom < this.boredomLimit) {
+			} else if (this.node.isHub && this.boredom < this.boredomLimit && this.age >= legalAge) {
 				this.mingle() //increments boredom
 			} else {
                 this.boredom = 0;
-                // console.log(this.actions)
+				// console.log(this.actions)
 				new Tombola().weightedFunction(this.actions, this.traits)
 			}
 			this.getOlder();
@@ -165,10 +148,13 @@ class Single extends Bot {
                 }
             }
         }
-        if (this.age == 5){
+        if (this.age == legalAge){
             this.actions.push(this.moveToHub);
-            this.traits.push(10);
-            ease.add(this.circle, { scale: 2 }, { duration: 1000, reverse: false })
+			this.traits.push(10);
+			console.log(this.circle)
+			if(this.alive) {
+				ease.add(this.circle, { scale: 2 }, { duration: 1000, reverse: false })
+			}
         }
         if (this.age > 30){
             //if they're over 30, and unlucky, they die (chance increases each year)

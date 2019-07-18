@@ -34,19 +34,77 @@ class Map {
 		this.nodeDeck = new Tombola().deck()
 		this.stage = stage;
 		this.edges = new Set()
-		this.source = new Node(stage)
+		this.source = new Node(stage, { posX: 0, posY: 3000 })
+		this.regions = { central: null, currentHubs: new Set() }
 		this.nodes.add(this.source)
-		this.nodeDeck.insert(this.source)
+		// this.nodeDeck.insert(this.source)
         this.pathFinder = new PathFinder({nodeSet: this.nodes, edgeSet: this.edges })
-        this.MapCreator = new MapCreator(this)
-        let walls = this.MapCreator.createWalls()
-        for (const edge of walls.edges) {
-            this.edges.add(edge)
-        }
-        for (const node of walls.nodes) {
-            // this.nodes.add(node)
-            // this.nodeDeck.insert(node)
-        }
+		this.MapCreator = new MapCreator(this)
+		this.walls = null
+		this.initWalls()
+
+	}
+
+	initWalls = () => {
+		// let walls = this.MapCreator.createWalls()
+        // for (const edge of walls.edges) {
+        //     this.edges.add(edge)
+        // }
+        // for (const node of walls.nodes) {
+        //     // this.nodes.add(node)
+        //     // this.nodeDeck.insert(node)
+		// }
+		// this.walls = walls
+		// let e = new Edge(this.stage, { connectingNodes: [this.source, this.walls.nodes[3]] })
+		// this.source.addEdge(e)
+		// this.walls.nodes[3].addEdge(e)
+		// this.edges.add(e)
+		// this.nodeDeck.insert(this.walls.nodes[3])
+		// this.nodes.add[this.walls.nodes[3]]
+		let a = this.createNode(0, 0, {sourceNode: this.source })
+		this.regions.central = a
+	}
+
+	getRegionStatus = (regionNode, distance) => {
+		let count = 0
+		let totalEdges = 0
+		for (const edge of this.edges) {
+			if (new Helper().calculateDistanceToEdge(regionNode, edge) < distance) {
+				count += edge.getEdgeVacancies().length
+				totalEdges += 1
+			} 
+		}
+		return (1 - count / (totalEdges * 10))
+	}
+
+	tick = () => {
+	}
+
+	socialHubsRegionStatus = () => {
+		let resultArray = []
+		for (var socialHub of this.regions.currentHubs) {
+			resultArray.push({ socialHub, density: this.getRegionStatus(socialHub, 300) })
+		}
+		console.log("resultArray", resultArray)
+		resultArray.forEach(socialHubDensity => {
+			if (socialHubDensity.density > 0.1) {
+				console.log('social hub is too dense, generating new suburb')
+				let randomNodeArray = []
+				for(var i = 0; i < 10; i++) {
+					let newNode = this.createRandomNode()
+					if (!newNode) {
+						console.log("undefined newNode")
+					} else {
+						randomNodeArray.push(newNode)
+					}
+				}
+				this.generateSocialHub()
+				this.regions.currentHubs.delete(socialHubDensity.socialHub)
+			} else {
+
+			}
+		});
+		return resultArray
 	}
 
 	getIntersect(lineAStart, lineAEnd, lineBStart, lineBEnd) {
@@ -127,7 +185,8 @@ class Map {
                     let newEdge = new Edge(this.stage, {connectingNodes: [node, edgeNode.node], angle: newAngle})
                     node.addEdge(newEdge)
                     edgeNode.node.addEdge(newEdge)
-                    this.edges.add(newEdge)
+					this.edges.add(newEdge)
+					this.nodeDeck.insert(node)
                     return true
                 }
             }
@@ -195,24 +254,25 @@ class Map {
     }
 
 
-    createRandomNode = () => {
+    createRandomNode = (nodeDeck = this.nodeDeck) => {
         let validNode = false
         let angle
         let count = 0
-        let selectedNode
-        selectedNode = this.nodeDeck.draw()
+		let selectedNode
+		
+        selectedNode = nodeDeck.draw()
         while (!validNode) {
             count += 1
             if (count == 10) {
                 throw("ERROR")
                 validNode = true
             }
-            // console.log(count, selectedNode)
+            console.log(count, selectedNode)
             angle = this.findValidAngle(selectedNode)
             // console.log("valid angle", angle)
             if (angle == -1) {
-                this.nodeDeck.insert(selectedNode)
-                selectedNode = this.nodeDeck.draw()
+                nodeDeck.insert(selectedNode)
+                selectedNode = nodeDeck.draw()
             } else {
                 validNode = true
             }
@@ -220,10 +280,10 @@ class Map {
         if (selectedNode == null) {
             console.log("FUKK")
         } else {
-            console.log("selected a node!", selectedNode)
+            // console.log("selected a node!", selectedNode)
         }
         let options = { distance: new Tombola().range(150, 300) }
-        if (!this.extendEdge(selectedNode, angle)) { // BROKEN
+        if (selectedNode && !this.extendEdge(selectedNode, angle)) { // BROKEN
         // if (true) {
             let newPosX = selectedNode.position.posX + Math.round(options.distance * Math.cos(angle * Math.PI / 180))
             let newPosY = selectedNode.position.posY + Math.round(options.distance * Math.sin(angle * Math.PI / 180))
@@ -232,14 +292,16 @@ class Map {
             newNode.addEdge(newEdge)
             selectedNode.addEdge(newEdge)
             if (selectedNode.edgeSet.size < 3 && selectedNode != null) {
-                this.nodeDeck.insert(selectedNode)
+                nodeDeck.insert(selectedNode)
             }
-            this.nodeDeck.insert(newNode)
+            nodeDeck.insert(newNode)
             this.nodes.add(newNode)
-            this.edges.add(newEdge)
+			this.edges.add(newEdge)
+			return newNode
         }
-        // this.tidyUpEdges()
-    }
+		// this.tidyUpEdges() 
+		return false 
+	}
 
     createNode = (newPosX, newPosY, options) => {
         let newNode = new Node(this.stage, { posX: newPosX, posY: newPosY })
@@ -333,80 +395,20 @@ class Map {
 
 		let housesDeck = new Tombola().deck(housesArray)
 		anniversaryNode.availableHousesDeck = housesDeck;
-		console.log(housesDeck)
 	}
 
-	generateNorthNode = (min, max) => {
-		let options = { distance: new Tombola().range(min, max), direction: 270 }
-		let selectedNode = this.nodeDeck.draw()
-		let result = selectedNode.createEdge(options)
-		this.nodeDeck.insert(result.newNode)
-		this.nodes.add(result.newNode)
-	}
-
-	generateNorthEastNode = (min, max) => {
-		let options = { distance: new Tombola().range(min, max), direction: 315 }
-		let selectedNode = this.nodeDeck.draw()
-		let result = selectedNode.createEdge(options)
-		this.nodeDeck.insert(result.newNode)
-		this.nodes.add(result.newNode)
-	}
-
-	generateEastNode = (min, max) => {
-		let options = { distance: new Tombola().range(min, max), direction: 360 }
-		let selectedNode = this.nodeDeck.draw()
-		let result = selectedNode.createEdge(options)
-		this.nodeDeck.insert(result.newNode)
-		this.nodes.add(result.newNode)
-	}
-
-	generateSouthEastNode = (min, max) => {
-		let options = { distance: new Tombola().range(min, max), direction: 45 }
-		let selectedNode = this.nodeDeck.draw()
-		let result = selectedNode.createEdge(options)
-		this.nodeDeck.insert(result.newNode)
-		this.nodes.add(result.newNode)
-	}
-
-	generateSouthNode = (min, max) => {
-		let options = { distance: new Tombola().range(min, max), direction: 90 }
-		let selectedNode = this.nodeDeck.draw()
-		let result = selectedNode.createEdge(options)
-		this.nodeDeck.insert(result.newNode)
-		this.nodes.add(result.newNode)
-	}
-
-	generateSouthWestNode = (min, max) => {
-		let options = { distance: new Tombola().range(min, max), direction: 135 }
-		let selectedNode = this.nodeDeck.draw()
-		let result = selectedNode.createEdge(options)
-		this.nodeDeck.insert(result.newNode)
-		this.nodes.add(result.newNode)
-	}
-
-	generateWestNode = (min, max) => {
-		let options = { distance: new Tombola().range(min, max), direction: 180 }
-		let selectedNode = this.nodeDeck.draw()
-		let result = selectedNode.createEdge(options)
-		this.nodeDeck.insert(result.newNode)
-		this.nodes.add(result.newNode)
-	}
-
-	generateNorthWestNode = (min, max) => {
-		let options = { distance: new Tombola().range(min, max), direction: 225 }
-		let selectedNode = this.nodeDeck.draw()
-		let result = selectedNode.createEdge(options)
-		this.nodeDeck.insert(result.newNode)
-		this.nodes.add(result.newNode)
-	}
 
 	generateSocialHub = () => {
 		let options = { distance: new Tombola().range(60, 130), direction: 225, nodeType: 'hub' }
 		let selectedNode = this.nodeDeck.draw()
 		let result = selectedNode.createEdge(options)
+		this.edges.add(result.newEdge)
 		this.nodeDeck.insert(result.newNode)
 		this.nodes.add(result.newNode)
 		this.socialHubs.add(result.newNode)
+		this.regions.currentHubs.add(result.newNode)
+		console.log(this.regions.currentHubs)
+		return result.newNode
 	}
 
 	initPopulation = (populationSize) => {
@@ -414,7 +416,7 @@ class Map {
 
 		for (var i = 0; i < populationSize; i++) {
 			let randomIndex = Math.floor(Math.random() * nodesArray.length)
-			var bot = new Single(this.stage, nodesArray[randomIndex], {});
+			var bot = new Single(this.stage, nodesArray[0], {});
 			this.bots.add(bot)
 		}
 	}

@@ -103,8 +103,9 @@ window.onload = function()
       }
 
     let m = new Map(_viewport)
-    RootState.map = m;
-    // let a = m.createNode(300, 300, {sourceNode: m.source })
+	RootState.map = m;
+	console.log(m.walls)
+	// let a = m.createNode(0, 0, {sourceNode: m.walls.nodes[2] })
     // let b = m.createNode(600, 600, {sourceNode: a})
     // let c = m.createNode(500, 300, {sourceNode: b})
     // let d = m.createNode(400, 250, {sourceNode: c})
@@ -114,81 +115,20 @@ window.onload = function()
     const ticker = new Ticker(m)
 
     window.setInterval(function(){
-        m.createRandomNode()
+		// m.createRandomNode()
+		//let freePlot = m.getRandomFreePlot()
+
+		// if(freePlot) {
+		// 	freePlot.drawHouse()
+		// }
+		console.log(m.socialHubsRegionStatus())
       }, 1000 )
-
-    window.setInterval(function(){
-        _viewport.zoom(0.14)
-    }, 1)
-
-    for (let i=0; i<5; i++) {
+    for (let i=0; i <2; i++) {
         m.createRandomNode()
-        if(i % 2 !== 0) {
-			m.generateSocialHub();
-        }
+		m.generateSocialHub();
 	}
 
-    // let a = new Node(_viewport, {posX: 100, posY: -100})
-    // a.createRandomEdge({ distance: 100 })
-
-    // highlight()
-    
-    // let node = m.source //don't push
-    // let node2 = Array.from(node.getConnectedNodes())[0];
-
-    // var girlBot = new Single(_viewport, node, {age: 59});
-
-
-    m.initPopulation(40)
-
-    // let socialHubs = Array.from(m.socialHubs)
-
-    // girlBot.moveToNode(socialHubs[0])
-    // window.setInterval(function(){
-    //     girlBot.tick()
-    //   }, 100 )
-
-    // for (let bot of m.bots) {
-    //     bot.wait(Math.floor(Math.random()*10000))
-    //     bot.moveToNode(socialHubs[0])
-    // }
-
-    
-    // var boyBot = new Single(_viewport, node2, {age: 19});
-    // m.bots.add(girlBot);
-    // m.bots.add(boyBot);
-    // girlBot.targetIdentity = [boyBot.identity];
-    // boyBot.targetIdentity = [girlBot.identity];
-    // // girlBot.identity = [""];
-    // // boyBot.identity = [""];
-    // console.log("boy identity: " + boyBot.identity);
-    // console.log("girl identity: " + girlBot.identity);
-    // // console.log("boy target identity: " + boyBot.identity);
-    // console.log("girl target identity: " + girlBot.identity);
-
-	//var couple = new Couple(_viewport, girlBot, boyBot);
-	// m.botSet.add(couple)
-
-        // window.setInterval(function(){
-        //     if(girlBot.alive){
-        //         console.log("proposal: " + girlBot.propose(boyBot));
-        //     }
-        // }, 5000)
-  
-    
+    m.initPopulation(100)
 
 }
 
-// const colours = new Colours();
-
-// girlBot.personality = "GP";
-// girlBot.looks = "GL";
-// boyBot.personality = "BP";
-// boyBot.looks = "BL";
-// girlBot.targetPersonality = ["BP"];
-// girlBot.targetLooks = ["BL"];
-// boyBot.targetPersonality = ["GP"];
-// boyBot.targetLooks = ["GL"];
-
-// console.log(girlBot.propose(boyBot));
-// console.log(girlBot.relationship.haveSex());

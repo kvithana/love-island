@@ -54,7 +54,7 @@ class Bot {
 
     //this function is overridden in both single and couple. 
     tick() {
-      // If the Bot is not busy
+	  // If the Bot is not busy
       if (!this.isBusy) {
         let node = this.state.moveQueue.pop()
         if (node) {
@@ -89,6 +89,10 @@ class Bot {
         this.state.moveQueue.push(options.finalPosition)
         this.state.moveQueue.push(...RootState.map.pathFinder.pathTo(node, this.node))
       } else {
+		if (!node) {
+			console.log("current node on bot is undefined")
+			throw ("err")
+		}
         this.state.moveQueue.push(...RootState.map.pathFinder.pathTo(node, this.node))
       }
     }

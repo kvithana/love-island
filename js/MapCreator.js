@@ -32,8 +32,8 @@ class MapCreator {
         let angle = Math.round(Math.atan2(newNode.position.posY - options.sourceNode.position.posY,
             newNode.position.posX - options.sourceNode.position.posX) * 180 / Math.PI)
         let newEdge = new Edge(this.stage, { connectingNodes: [options.sourceNode, newNode], angle: angle, type: options.type })
-        newNode.addEdge(newEdge)
-        options.sourceNode.addEdge(newEdge)
+        // newNode.addEdge(newEdge)
+        // options.sourceNode.addEdge(newEdge)
         return { node: newNode, edge: newEdge }
     }
 }
