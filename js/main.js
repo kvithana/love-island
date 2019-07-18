@@ -130,7 +130,7 @@ window.onload = function()
         _viewport.zoom(0.14)
     }, 1)
 
-    m.initPopulation(10)
+    m.initPopulation(200)
 
 }
 

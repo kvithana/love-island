@@ -3,7 +3,7 @@ class Colours{
     LIGHT_BLUE = 0x7CA1CC;
     DARK_RED = 0xD9736A;
     LIGHT_RED = 0xFF897E;
-    DARK_YELLOW = 0xB36DDD;
+    DARK_YELLOW = 0xFFC821;
     LIGHT_YELLOW = 0xFFE083;
 
     pallet = [this.DARK_BLUE, this.LIGHT_BLUE, this.DARK_RED, this.LIGHT_RED, this.DARK_YELLOW, this.LIGHT_YELLOW];

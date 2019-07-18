@@ -7,12 +7,12 @@ const _ = require('underscore');
 const PIXI = require('pixi.js');
 const Tombola = require('./math/tombola')
 import { ease } from 'pixi-ease'
-const legalAge = 11;
+const legalAge = 50;
 
 const animationTime = RootState.animationTime;
 const numberOfColours = Colours.numColours;
 //every milestoneYears years they will lower their standards
-const milestoneYears = 10;
+const milestoneYears = 50;
 
 class Single extends Bot {
     personalRelationshipSatisfaction = null; //instantiated with a successful proposal
@@ -154,6 +154,7 @@ class Single extends Bot {
             //if they're over 30, and unlucky, they die (chance increases each year)
             var randomValue = Math.random();
             if (randomValue < ((this.age - this.ageToStartDying) / this.invincibility)){
+                console.log("single dying")
                 this.alive = false;
                 this.circle.destroy();
                 this.stage.removeChild(this.circle)

@@ -22,8 +22,8 @@ const animationTime = 1000;
 class Bot {
     // alive = true; //changed if they die
     //called in sub classes getOlder, higher number = less chance of dying year to year
-	invincibility = 1000;
-	ageToStartDying = 50;
+	invincibility = 20000;
+	ageToStartDying = 150;
     constructor(stage, node, options) {
         this.stage = stage
         let defaults = {
