@@ -53,7 +53,7 @@ class Edge {
         if (this.type == "wall") {
             let positions = this.getPositions()
             let rectangle = new PIXI.Graphics()
-            rectangle.beginFill(0x2c3e50); // Dark blue gray 'ish
+            rectangle.beginFill(0xBAB0A2); // Light tan yellow
             rectangle.drawRect(0, 0, this.length, 20); // drawRect(x, y, width, height)
             let newPosX = positions[0].posX + Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))
             let newPosY = positions[0].posY + Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))

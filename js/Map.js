@@ -399,8 +399,8 @@ class Map {
 
 
 	generateSocialHub = () => {
-		let options = { distance: new Tombola().range(60, 130), direction: 225, nodeType: 'hub' }
-		let selectedNode = this.nodeDeck.draw()
+        let selectedNode = this.nodeDeck.draw()
+		let options = { distance: new Tombola().range(150, 300), direction: this.findValidAngle(selectedNode), nodeType: 'hub' }
 		let result = selectedNode.createEdge(options)
 		this.edges.add(result.newEdge)
 		this.nodeDeck.insert(result.newNode)
