@@ -64,6 +64,7 @@ class Edge {
             let rectangle = new PIXI.Graphics()
             rectangle.beginFill(colour); // Dark blue gray 'ish
             rectangle.drawRect(0, 0, 1, 10); // drawRect(x, y, width, height)
+            rectangle.alpha = 0;
             let newPosX = positions[0].posX + Math.round(5 * Math.cos((this.angle - 90) * Math.PI / 180))
             let newPosY = positions[0].posY + Math.round(5 * Math.sin((this.angle - 90) * Math.PI / 180))
             rectangle.position.set(newPosX, newPosY)
@@ -71,7 +72,7 @@ class Edge {
             rectangle.angle = this.angle
             this.stage.addChildAt(rectangle, 0)
             // Animate Rectangle
-            ease.add(rectangle, { width: this.length }, { duration: 1000, reverse: false })
+            ease.add(rectangle, { width: this.length, alpha: 1 }, { duration: 1000, reverse: false })
             this.rectangle = rectangle
         }
 

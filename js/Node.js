@@ -46,12 +46,13 @@ class Node {
             let circle = new PIXI.Graphics()
             circle.lineStyle(0)
             circle.beginFill(0xA1A1A1, 1);
+            circle.alpha = 0;
             // circle.drawCircle(0, 0, 4);
             circle.drawStar(0, 0, 3, 5, 5, 0);
             circle.endFill();
             circle.position.set(this.position.posX, this.position.posY)
             this.stage.addChildAt(circle, 1)
-            ease.add(circle, { scale: 4 }, { duration: 1000, reverse: false })
+            ease.add(circle, { scale: 4, alpha: 1 }, { duration: 1000, reverse: false })
 			this.drawObject = circle
 			this.circle = circle
 
@@ -73,11 +74,12 @@ class Node {
             rectangle.lineStyle(0);
             rectangle.beginFill(0xBBBBBB, 1);
             rectangle.drawRect(0, 0, 2.5, 2.5);
+            rectangle.alpha = 0;
             rectangle.endFill();
             rectangle.position.set(this.position.posX - 2*rectangle.width, this.position.posY - 2*rectangle.height)
             this.stage.addChildAt(rectangle, 1)
             // Animate rectangle
-            ease.add(rectangle, { scale: 4 }, { duration: 1000, reverse: false })
+            ease.add(rectangle, { scale: 4, alpha: 1 }, { duration: 1000, reverse: false })
             this.drawObject = rectangle
         }
     }
@@ -155,8 +157,7 @@ class Node {
 			availableHouses.push(...edge.getEdgeVacancies());
 		}
 		return availableHouses;
-	}
-
+    }
 }
 
 class SocialHub extends Node {
@@ -173,9 +174,8 @@ class SocialHub extends Node {
         if (this.bots.size >= 10) {
             size = MAX_SIZE;
         } else {
-            size = Math.log(this.bots.size + 1);
+            size = this.bots.size / 2;
 		}
-		console.log('circle: ', this.circle)
         ease.add(this.circle, { scale: size + HUB_SIZE }, { duration: 1000, reverse: false })
     }
 }
