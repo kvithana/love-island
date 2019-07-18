@@ -35,8 +35,8 @@ class House {
         // Draw a house somewhere on the edge
         let house = new PIXI.Graphics()
         // Either terracotta or light yellow
-        let color = Math.random() < 0.9 ? 0xfdfd96 : 0xd09292;
-        house.beginFill(color)
+        // let color = Math.random() < 0.9 ? 0xfdfd96 : 0xd09292;
+        house.beginFill(0xd09292)
         house.drawRect(0, 0, this.width, 0.01)
         house.alpha = 0;
         house.position.set(this.posX, this.posY)
