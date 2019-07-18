@@ -38,13 +38,14 @@ class House {
         let color = Math.random() < 0.9 ? 0xFFFBCF : 0xFFCFD3;
         house.beginFill(color)
         house.drawRect(0, 0, this.width, 0.01)
+        house.alpha = 0;
         house.position.set(this.posX, this.posY)
         house.endFill();
         house.angle = this.angle
         this.stage.addChildAt(house, 0)
 
         // Animate house
-        ease.add(house, { height: this.height}, { duration: 1000, reverse: false })
+        ease.add(house, { height: this.height, alpha: 1 }, { duration: 1000, reverse: false })
         ease.add(house, { skewX: 0.4 }, { duration: 500, reverse: true })
 
         // Set it to habited
