@@ -108,57 +108,25 @@ window.onload = function()
     // let b = m.createNode(600, 600, {sourceNode: a})
     // let c = m.createNode(500, 300, {sourceNode: b})
     // let d = m.createNode(400, 250, {sourceNode: c})
-    // console.log(m.pathFinder.pathTo(m.source, d))
 
     // m.drawLine()
-
-
-    // m.generateNorthNode(100, 100)
-    // m.generateEastNode(100, 100)
-    // m.generateSouthNode(100, 100)
-    // m.generateSouthNode(100, 100)
-    // m.generateEastNode(100, 100)
-    // m.generateSouthNode(100, 100)
-    // m.generateWestNode(100, 100)
-    // m.generateWestNode(100, 100)
-    // m.generateWestNode(100, 100)
-    // m.generateWestNode(100, 100)
-    // m.generateNorthNode(100, 100)
-    // m.generateEastNode(100, 100)
-    // m.generateNorthNode(100, 100)
-    // m.generateNorthNode(100, 100)
-    // m.generateWestNode(100, 100)
-    // m.generateNorthNode(100, 100)
-    // m.generateEastNode(100, 100)
-    // m.generateEastNode(100, 100)
-    // m.generateEastNode(100, 100)
 
     const ticker = new Ticker(m)
 
     window.setInterval(function(){
-		// m.createRandomNode()
-		//let freePlot = m.getRandomFreePlot()
-
-		// if(freePlot) {
-		// 	freePlot.drawHouse()
-		// }
-      }, 1000 )
-    for (let i=0; i<15; i++) {
         m.createRandomNode()
-        if(i % 5 == 0) {
+      }, 1000 )
+
+    window.setInterval(function(){
+        _viewport.zoom(0.14)
+    }, 1)
+
+    for (let i=0; i<5; i++) {
+        m.createRandomNode()
+        if(i % 2 !== 0) {
 			m.generateSocialHub();
         }
 	}
-
-	// for (let i=0; i<5; i++) {
-	// 	let freePlot = m.getRandomFreePlot()
-
-	// 	if(freePlot) {
-	// 		freePlot.drawHouse()
-	// 	}
-	// }
-
-
 
     // let a = new Node(_viewport, {posX: 100, posY: -100})
     // a.createRandomEdge({ distance: 100 })
