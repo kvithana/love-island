@@ -49,8 +49,12 @@ class Map {
 	}
 
 	initWalls = () => {
-		let walls = this.MapCreator.createWalls({posX: 0, posY: 0}, 1200)
+        let walls = this.MapCreator.createWalls({posX: 0, posY: 0}, 1200)
+        let river = this.MapCreator.createRiver()
         for (const edge of walls.edges) {
+            this.edges.add(edge)
+        }
+        for (const edge of river.edges) {
             this.edges.add(edge)
         }
         for (const node of walls.nodes) {
@@ -102,6 +106,12 @@ class Map {
                     this.edges.add(newEdge)
                     this.nodes.add(wallNode)
                     this.nodeDeck.insert(wallNode)
+
+                    if(results[0].wallNode == this.walls.bridge[0]) {
+                        this.nodes.add(this.walls.bridge[1])
+                        this.nodeDeck.insert(this.walls.bridge[1])
+                        // this.walls.bridge[2].draw()
+                    }
                 }
             }
         }

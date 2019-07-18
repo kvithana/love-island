@@ -41,15 +41,24 @@ class MapCreator {
         let finalEdge = new Edge(this.stage, { connectingNodes: [nodes[0], nodes[nodes.length - 1]], angle: angle, type: "wall" })
         edges.push(finalEdge)
         console.log(edges, nodes)
+        console.log("nodes", nodes[12])
+        let newNode = this.createNode(1500, -300, {type: "bridge", sourceNode: nodes[12]})
+        newNode.node.addEdge(newNode.edge)
+        nodes[12].addEdge(newNode.edge)
         return { 
             edges,
-            nodes: entries
+            nodes: entries,
+            bridge: [nodes[12], newNode.node, newNode.edge]
     }
     }
 
     createRiver = () => {
-        
-        
+        let n1 = new Node(this.stage, { posX: 2000, posY: -4000 , type: "river" })
+        let a = this.createNode(650, -1500, { type: "river", sourceNode: n1 })
+        // let b = this.createNode(650, -1500, { type: "river", sourceNode: a.node})
+        let c = this.createNode(1700, 400, { type: "river", sourceNode: a.node})
+        let d = this.createNode(2000, 3000, { type: "river", sourceNode: c.node})
+        return { edges: [a.edge, c.edge, d.edge] }
     }
 
     createNode = (newPosX, newPosY, options) => {
