@@ -18,6 +18,7 @@ const VALID_ANGLE_BUFFER_DIST = 300
 const VALID_ANGLE_BUFFER_WIDTH = 100
 const EXTEND_EDGE_BUFFER_DIST = 500
 const EXTEND_EDGE_BUFFER_WIDTH = 50
+const SOCIAL_HUB_MIN_DIST = 400
 
 
 
@@ -46,7 +47,7 @@ class Map {
 	}
 
 	initWalls = () => {
-		let walls = this.MapCreator.createWalls()
+		let walls = this.MapCreator.createWalls({posX: 0, posY: 0}, 1500)
         for (const edge of walls.edges) {
             this.edges.add(edge)
         }
@@ -85,9 +86,8 @@ class Map {
 		for (var socialHub of this.regions.currentHubs) {
 			resultArray.push({ socialHub, density: this.getRegionStatus(socialHub, 300) })
 		}
-		console.log("resultArray", resultArray)
 		resultArray.forEach(socialHubDensity => {
-			if (socialHubDensity.density > 0.1) {
+			if (socialHubDensity.density > 0.2) {
 				console.log('social hub is too dense, generating new suburb')
 				let randomNodeArray = []
 				for(var i = 0; i < 10; i++) {
@@ -439,17 +439,38 @@ class Map {
 
 
 	generateSocialHub = () => {
-        let selectedNode = this.nodeDeck.draw()
-		let options = { distance: new Tombola().range(150, 300), direction: this.findValidAngle(selectedNode), nodeType: 'hub' }
-		let result = selectedNode.createEdge(options)
-		this.edges.add(result.newEdge)
-		this.nodeDeck.insert(result.newNode)
-		this.nodes.add(result.newNode)
-		this.socialHubs.add(result.newNode)
-		this.regions.currentHubs.add(result.newNode)
-		console.log(this.regions.currentHubs)
-		return result.newNode
-	}
+        let validLocation = true
+        let count = 0
+        while (validLocation) {
+            count ++
+            if (count == 100) {
+                throw "Cannot generate social hub with current nodeDeck"
+            }
+            let selectedNode = this.nodeDeck.look()
+            for (const hub of this.socialHubs) {
+                if (new Helper().calculateDistanceFromNodes(selectedNode, hub) < SOCIAL_HUB_MIN_DIST) {
+                    validLocation = false
+                    break
+                }
+            validLocation = true 
+        }
+        if (!validLocation) {
+            console.log("cannot generate social hub with constraints")
+            selectedNode = this.nodeDeck.draw()
+        }
+        let options = { distance: new Tombola().range(150, 300), direction: this.findValidAngle(selectedNode), nodeType: 'hub' }
+        let result = selectedNode.createEdge(options)
+        this.edges.add(result.newEdge)
+        this.nodeDeck.insert(result.newNode)
+        this.nodes.add(result.newNode)
+        this.socialHubs.add(result.newNode)
+        this.regions.currentHubs.add(result.newNode)
+        console.log(this.regions.currentHubs)
+        return result.newNode
+        // let selectedNode = this.nodeDeck.look()
+
+    }
+}
 
 	initPopulation = (populationSize) => {
 		let nodesArray = Array.from(this.nodes)

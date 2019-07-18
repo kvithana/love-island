@@ -123,7 +123,7 @@ window.onload = function()
 		// }
 		console.log(m.socialHubsRegionStatus())
       }, 1000 )
-    for (let i=0; i <2; i++) {
+    for (let i=0; i <1; i++) {
         m.createRandomNode()
 		m.generateSocialHub();
 	}
