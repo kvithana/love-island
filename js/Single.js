@@ -151,15 +151,15 @@ class Single extends Bot {
         if (this.age == legalAge){
             this.actions.push(this.moveToHub);
 			this.traits.push(10);
-			console.log(this.circle)
+			// console.log(this.circle)
 			if(this.alive) {
 				ease.add(this.circle, { scale: 2 }, { duration: 1000, reverse: false })
 			}
         }
-        if (this.age > 30){
+        if (this.age > this.ageToStartDying){
             //if they're over 30, and unlucky, they die (chance increases each year)
             var randomValue = Math.random();
-            if (randomValue < (this.age / this.invincibility)){
+            if (randomValue < ((this.age - this.ageToStartDying) / this.invincibility)){
                 this.alive = false;
                 this.circle.destroy();
                 this.stage.removeChild(this.circle)

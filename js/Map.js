@@ -355,13 +355,53 @@ class Map {
 	}
 
 	getRandomFreePlot = (anniversaryNode) => {
-		if(anniversaryNode.availableHousesDeck.contents.length == 0){
-			this.expandSuburb(anniversaryNode);
-			return anniversaryNode.availableHousesDeck.draw();
+		let lonerChance = Math.random() > 0.9
+
+		if(!lonerChance) {
+			if(anniversaryNode.availableHousesDeck.contents.length == 0){
+				this.expandSuburb(anniversaryNode);
+				return anniversaryNode.availableHousesDeck.draw();
+			}
+			else{
+				return anniversaryNode.availableHousesDeck.draw()
+			}
+		} else {
+			let nodes = Array.from(this.nodes)
+
+			if (nodes.length === 0) {
+				throw "FUKK, the node set is empty"
+			}
+
+			let randomIndex = Math.floor(Math.random() * nodes.length - 1)
+			let node = nodes[randomIndex]
+
+			let infiniteLoopCounter = 0
+
+			while (!node)  {
+				infiniteLoopCounter++
+				randomIndex = Math.floor(Math.random() * nodes.length - 1)
+				node = nodes[randomIndex]
+
+				if (infiniteLoopCounter > 100) {
+					console.log('Trying to pick a random house. A hundred nodes are null, what the fuck is going on.')
+				}
+
+			}
+
+			console.log(node)
+			if (node.availableHousesDeck.contents.length == 0) {
+				this.expandSuburb(node)
+				let drawnHouse = node.availableHousesDeck.draw();
+				console.log('Drew random house: ', drawnHouse, node)
+				return drawnHouse
+			} else {
+				let drawnHouse = node.availableHousesDeck.draw();
+				console.log('Drew random house: ', drawnHouse, node)
+				return drawnHouse
+			}
+			
 		}
-		else{
-			return anniversaryNode.availableHousesDeck.draw()
-		}
+		
 	}
 
 	//updates the node on it's available houses (spreads out wider as they fill up)
