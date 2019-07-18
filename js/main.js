@@ -126,7 +126,11 @@ window.onload = function()
     for (let i=0; i <2; i++) {
         m.createRandomNode()
 		m.generateSocialHub();
-	}
+    }
+    
+    window.setInterval(function(){
+        _viewport.zoom(0.14)
+    }, 1)
 
     m.initPopulation(100)
 
